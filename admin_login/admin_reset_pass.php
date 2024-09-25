@@ -3,44 +3,40 @@ include '../config/db_connect.php';  // Database connection
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['username'];
-    $newPassword = $_POST['newPassword'];
-    $confirmPassword = $_POST['confirmPassword'];
 
-    // Validate if passwords match
-    if ($newPassword !== $confirmPassword) {
-        echo "<script>alert('Passwords do not match.');</script>";
-    } elseif (!preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,12}$/', $newPassword)) {
-        echo "<script>alert('Password must be 8-12 characters long, include letters, numbers, and special characters.');</script>";
+    // Check if the email exists
+    $stmt = $conn->prepare("SELECT user_id FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        // Generate a token
+        $token = bin2hex(random_bytes(32));
+        $expires_at = date("Y-m-d H:i:s", strtotime('+15 minutes'));
+
+        // Insert token into the password_resets table
+        $insert_stmt = $conn->prepare("INSERT INTO password_resets (email, token, expires_at) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE token = ?, expires_at = ?");
+        $insert_stmt->bind_param("sssss", $email, $token, $expires_at, $token, $expires_at);
+        $insert_stmt->execute();
+
+        // Send the password reset link via email
+        $reset_link = "https://yourdomain.com/reset-password.php?token=$token";
+        $message = "Click the link to reset your password: $reset_link";
+
+        // Use PHP's mail function to send the email
+        mail($email, "Password Reset", $message, "From: no-reply@yourdomain.com");
+
+        echo "<script>alert('Password reset link sent to your email address.');</script>";
     } else {
-        // Hash the new password
-        $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
-
-        // Check if the user exists by email
-        $stmt = $conn->prepare("SELECT user_id FROM users WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows === 1) {
-            // User exists, update the password
-            $update_stmt = $conn->prepare("UPDATE users SET password_hash = ? WHERE email = ?");
-            $update_stmt->bind_param("ss", $newPasswordHash, $email);
-            if ($update_stmt->execute()) {
-                echo "<script>alert('Password reset successful!');</script>";
-                header("Location: /admin_login/admin_login.php"); // Redirect to login page
-                exit();
-            } else {
-                echo "<script>alert('An error occurred while resetting the password.');</script>";
-            }
-            $update_stmt->close();
-        } else {
-            echo "<script>alert('No account found with that email address.');</script>";
-        }
-
-        $stmt->close();
+        // Always give the same response to prevent user enumeration
+        echo "<script>alert('If the email exists, a password reset link has been sent.');</script>";
     }
+
+    $stmt->close();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
