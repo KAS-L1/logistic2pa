@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  color: black;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main Content */
+.main-content {
+  padding:20px/* Adjust padding for fixed navbar */
+}
+
+header {
+  border-bottom: 2px solid #333;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  font-size: 32px;
+  color: #000;
+}
+
+header p {
+  font-size: 18px;
+  color: black;
+  font-family: 'Courier New', Courier, monospace;
+}
+  
+/* Inventory Section */
+#inventory {
+  margin-top: 40px;
+}
+
+#inventory h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.stock-item {
+  background-color: #f0f0f0;
+  border-left: 5px solid #333;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.stock-item:hover {
+  transform: scale(1.02);
+}
+
+.stock-item p {
+  margin: 0;
+  font-size: 20px;
+}
+
+.stock-level {
+  font-weight: bold;
+  color: #333;
+}
+
+.use-btn {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.use-btn:hover {
+  background-color: #555;
+  transform: scale(1.05);
+}
+
+/* Replenishment Section */
+#replenishment {
+  margin-top: 40px;
+}
+
+#replenishment h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.replenishment-item {
+  background-color: #f0f0f0;
+  border-left: 5px solid #333;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.replenishment-item p {
+  margin: 0;
+  font-size: 20px;
+}
+
+.replenish-status {
+  font-weight: bold;
+  color: #333;
+}
+
+.replenishment-item:nth-child(2) .replenish-status {
+  color: #777;
+}

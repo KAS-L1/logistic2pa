@@ -7,15 +7,12 @@
                 Dashboard
                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
             </a>
-
             <div class="collapse" id="collapseDashboard" aria-labelledby="headingDashboard" data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="/sub-modules/logistic1/dashboard.php">Logistic 1</a>
-                    <a class="nav-link" href="/sub-modules/logistic2/dashboard.php">Logistic 2</a>
-                    <a class="nav-link" href="/sub-modules/logistic2/vendorportal.php">Vendor Portal</a>
+                <a class="nav-link" href="/sub-modules/logistic1/dashboard.php"><i class="fa-solid fa-truck-fast" style="margin-right: 8px; color: darkgray;"></i> LOGISTIC 1</a>
+                <a class="nav-link" href="/sub-modules/logistic2/dashboard.php"><i class="fa-solid fa-truck-fast" style="margin-right: 8px; color: darkgray;"></i> LOGISTIC 2</a>
                 </nav>
             </div>
-
 
             <!-- Apps Section -->
             <div class="sb-sidenav-menu-heading">Apps</div>
