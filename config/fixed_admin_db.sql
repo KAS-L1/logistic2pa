@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Sep 25, 2024 at 04:52 PM
+-- Generation Time: Sep 26, 2024 at 02:19 AM
 -- Server version: 9.0.1
 -- PHP Version: 8.3.11
 
@@ -143,9 +143,17 @@ DROP TABLE IF EXISTS `password_resets`;
 CREATE TABLE IF NOT EXISTS `password_resets` (
   `email` varchar(191) NOT NULL,
   `token` varchar(255) NOT NULL,
-  `expires_at` datetime NOT NULL,
+  `expires_at` int NOT NULL,
   PRIMARY KEY (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `password_resets`
+--
+
+INSERT INTO `password_resets` (`email`, `token`, `expires_at`) VALUES
+('123@gmail.com', '05ae06534bea8b2076423df449c87029259a280465f0901764017f5acaf0f220', 2024),
+('kasl.54370906@gmail.com', 'd10037e94889578cfb36d09042bd2cf9fcbd2f4d53595740551868c26c88f531', 2024);
 
 -- --------------------------------------------------------
 
@@ -321,10 +329,10 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`user_id`, `username`, `email`, `password_hash`, `role`, `created_at`, `first_name`, `last_name`) VALUES
-(1, 'kasl', 'kasl.54370906@gmail.com', '$2y$10$qCOu1.TOWtVrp.pf/LFe3e1MZw5n1l77ADReeGoIsl98NQtbIo7lK', 'admin', '2024-09-25 16:17:37', '', ''),
+(1, 'kasl', 'kasl.54370906@gmail.com', '$2y$10$Rb1AV2e0eIZFOpxvDB86W.eZNnOnsmD8405a4EZod5jwNlOUqj4q6', 'admin', '2024-09-25 16:17:37', '', ''),
 (3, 'laks', 'test@example.com', '$2y$10$u7EEbl9sYIFgk3wHw8FNxedDu9HqIPx9PP0ndAF.fJPiST5Ku6eF.', 'branch_manager', '2024-09-25 16:20:27', '', ''),
 (4, 'erik12', 'valky@gmail.com', '$2y$10$eMCYGXDxHGwXZn4tEX33FuJxQpTeeRj4Cg7SQSFUlhyFYwVwQBmI2', 'user', '2024-09-25 16:23:15', '', ''),
-(5, '123', '123@gmail.com', '$2y$10$gnjtQJ7BLAtt3tyPYIw7V.yNdp4zi3Mkv0EhgkQxs79H8kj.RPWw.', 'admin', '2024-09-25 16:47:38', '', '');
+(5, '123', '123@gmail.com', '$2y$10$qkFBX/9QKRLzU4sXl8PG8.lWwFDlM8F7m.Bvn6E32vef3hVmmfC5m', 'admin', '2024-09-25 16:47:38', '', '');
 
 -- --------------------------------------------------------
 
