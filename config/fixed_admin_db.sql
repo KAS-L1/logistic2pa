@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Sep 23, 2024 at 10:27 AM
+-- Generation Time: Sep 26, 2024 at 02:19 AM
 -- Server version: 9.0.1
 -- PHP Version: 8.3.11
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `admins`
@@ -52,7 +52,8 @@ INSERT INTO `admins` (`id`, `name`, `last_name`, `username`, `email`, `password`
 (3, 'erik', 'lalas', 'erik12', 'erik@gmail.com', '$2y$10$eqVNx/tZKetJ5/QssMaa5eaGo0/AotFCozks8mHT/Ff/g6n38P4zi', 'admin', '2024-09-23 08:03:30'),
 (4, 'kasl', 'kasl', 'kasl', 'kier@gmail.com', '$2y$10$OykmgON/IEGb7DaDhtxD/edkEohayeZEZtw1r2cBwo0jRj8Ge2ZjG', 'admin', '2024-09-23 08:11:00'),
 (5, 'lakas', 'tama', 'lakas', 'lakas@gmail.com', '$2y$10$5gM3omAvlN8GU0KiAm9pUegTLNRdBrM8BEFDf/TWJWOPiNh0UwwIu', 'admin', '2024-09-23 08:39:05'),
-(6, 'ano', 'ano', '123', 'ano@gmail.com', '$2y$10$V3bML3fKoqeSmnZah2PQ.OgKQ7AlZ03ApXr9jWEgH/ZCaXdn1fvmG', 'admin', '2024-09-23 08:39:31');
+(6, 'ano', 'ano', '123', 'ano@gmail.com', '$2y$10$V3bML3fKoqeSmnZah2PQ.OgKQ7AlZ03ApXr9jWEgH/ZCaXdn1fvmG', 'admin', '2024-09-23 08:39:31'),
+(7, 'emar', 'industriya', 'emar', 'emar@gmail.com', '$2y$10$u7XYOdfv2KwEkD6/GbrvBOslgmdVqihmSDXwdGbXH58lyKd42Ab7q', 'admin', '2024-09-24 02:30:01');
 
 -- --------------------------------------------------------
 
@@ -146,6 +147,38 @@ CREATE TABLE IF NOT EXISTS `password_resets` (
   PRIMARY KEY (`email`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `password_resets`
+--
+
+INSERT INTO `password_resets` (`email`, `token`, `expires_at`) VALUES
+('123@gmail.com', '05ae06534bea8b2076423df449c87029259a280465f0901764017f5acaf0f220', 2024),
+('kasl.54370906@gmail.com', 'd10037e94889578cfb36d09042bd2cf9fcbd2f4d53595740551868c26c88f531', 2024);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `permissions`
+--
+
+DROP TABLE IF EXISTS `permissions`;
+CREATE TABLE IF NOT EXISTS `permissions` (
+  `permission_id` int NOT NULL AUTO_INCREMENT,
+  `role_id` int NOT NULL,
+  `permission` varchar(100) NOT NULL,
+  PRIMARY KEY (`permission_id`),
+  KEY `role_id` (`role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `permissions`
+--
+
+INSERT INTO `permissions` (`permission_id`, `role_id`, `permission`) VALUES
+(1, 1, 'edit_all_profiles'),
+(2, 2, 'edit_own_profile'),
+(3, 3, 'manage_branch_inventory');
+
 -- --------------------------------------------------------
 
 --
@@ -229,6 +262,28 @@ CREATE TABLE IF NOT EXISTS `replenishment_requests` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `roles`
+--
+
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE IF NOT EXISTS `roles` (
+  `role_id` int NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`role_id`, `role_name`) VALUES
+(1, 'admin'),
+(2, 'user'),
+(3, 'branch_manager');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tasks`
 --
 
@@ -260,23 +315,24 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(191) NOT NULL,
   `email` varchar(191) NOT NULL,
   `password_hash` varchar(255) NOT NULL,
-  `role` varchar(50) DEFAULT 'employee',
+  `role` varchar(50) NOT NULL DEFAULT 'employee',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `first_name` varchar(191) NOT NULL,
+  `last_name` varchar(191) NOT NULL,
   PRIMARY KEY (`user_id`),
-  UNIQUE KEY `user_id` (`user_id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `email`, `password_hash`, `role`, `created_at`) VALUES
-(1, 'KASL', 'kiersalise@gmail.com', '$2y$10$GKgVuYcq/iWyYp6./lRxE..es8Nx3dQIydYQSa1Qci0hzStPK4nLC', 'employee', '2024-09-23 02:53:12'),
-(2, 'sheila', 'dump41863@gmail.com', '$2y$10$RdWokoNjQq235ShOtApKWurEW8/e1UTdx7U6.ZmegIXwl6u.33b3u', 'employee', '2024-09-23 03:07:12'),
-(3, 'lol', 'lol@gmail.com', '$2y$10$IJPpskj6U0MWLPrCFFDN/uXs7IfSdHd74uYj1P0DgaPXUlNzHGuQ.', 'employee', '2024-09-23 04:14:08'),
-(4, 'sheil', 'gevacaf250@nastyx.com', '$2y$10$E2TLjTWnhDjDf9umyFNVluyviU82hk/ieRGPfoAhxbi9JY4TLu/l.', 'employee', '2024-09-23 06:22:38');
+INSERT INTO `users` (`user_id`, `username`, `email`, `password_hash`, `role`, `created_at`, `first_name`, `last_name`) VALUES
+(1, 'kasl', 'kasl.54370906@gmail.com', '$2y$10$Rb1AV2e0eIZFOpxvDB86W.eZNnOnsmD8405a4EZod5jwNlOUqj4q6', 'admin', '2024-09-25 16:17:37', '', ''),
+(3, 'laks', 'test@example.com', '$2y$10$u7EEbl9sYIFgk3wHw8FNxedDu9HqIPx9PP0ndAF.fJPiST5Ku6eF.', 'branch_manager', '2024-09-25 16:20:27', '', ''),
+(4, 'erik12', 'valky@gmail.com', '$2y$10$eMCYGXDxHGwXZn4tEX33FuJxQpTeeRj4Cg7SQSFUlhyFYwVwQBmI2', 'user', '2024-09-25 16:23:15', '', ''),
+(5, '123', '123@gmail.com', '$2y$10$qkFBX/9QKRLzU4sXl8PG8.lWwFDlM8F7m.Bvn6E32vef3hVmmfC5m', 'admin', '2024-09-25 16:47:38', '', '');
 
 -- --------------------------------------------------------
 
@@ -334,6 +390,16 @@ CREATE TABLE IF NOT EXISTS `vendors` (
   PRIMARY KEY (`vendor_id`),
   UNIQUE KEY `vendor_id` (`vendor_id`)
 ) ;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `permissions`
+--
+ALTER TABLE `permissions`
+  ADD CONSTRAINT `permissions_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,3 +1,18 @@
+<?php
+session_start(); // Start the session
+
+// Check if the user is not logged in, redirect to login page
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header("Location: /admin_login/admin_login.php"); // Redirect to login page
+    exit(); // Stop further execution
+}
+
+// The rest of your index.php content goes below
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
