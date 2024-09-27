@@ -118,11 +118,11 @@ $con->close();
   <script src="js/JS-LOG1/scriptpm.js"></script>
 
   <footer class="py-4 bg-light mt-auto">
-                     <?php include('../../../includes/logistic2/footer.php'); ?>
+                     <?php include('../../../includes/logistic1/footer.php'); ?>
                 </footer>
             </div>
         </div>
-        <?php include('../../../includes/logistic2/script.php'); ?>
+        <?php include('../../../includes/logistic1/script.php'); ?>
     </body>
 </html>
 
