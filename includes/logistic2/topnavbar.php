@@ -2,7 +2,7 @@
 <!-- Navbar Brand-->
 <a class="navbar-brand ps-3 fw-bolder" href="/sub-modules/logistic2/dashboard.php">
     <img src="/assets/img/paradise_logo.png" alt="Logo" style="width: 40px; height: 40px; margin-right: 10px;">
-    LOGISTIC
+    LOGISTICS
 </a>
 
 <!-- Sidebar Toggle-->
@@ -19,7 +19,7 @@
     <div class="input-group">
         <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
         <button class="btn btn-primary" id="btnNavbarSearch" type="button">
-        <a class="nav-link" href="/index.php"> <i class="fas fa-search" style="margin-right: 8px;"></i> <i class="fa-solid fa-house"></i> </a>
+        <a class="nav-link" href="/index.php"> <i class="fas fa-search" style="margin-right: 8px;"></i></a>
         </button>
     </div>
 </form>
@@ -90,7 +90,7 @@
             <li><a class="dropdown-item" href="#!">Settings</a></li>
             <li><a class="dropdown-item" href="#!">Activity Log</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#!">Logout</a></li>
+            <li><a class="dropdown-item" href="/admin_login/logout.php">Logout</a></li>
         </ul>
     </li>
 </ul>
