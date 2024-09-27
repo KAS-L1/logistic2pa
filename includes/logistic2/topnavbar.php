@@ -11,7 +11,7 @@
 </button>
 
 <!-- Home -->
-<a class="nav-link" href="/index.php">Home</a>
+<a class="nav-link" href="/index.php"><i class="fa-solid fa-house"></i></a>
 
 
 <!-- Navbar Search -->
@@ -19,7 +19,7 @@
     <div class="input-group">
         <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
         <button class="btn btn-primary" id="btnNavbarSearch" type="button">
-        <a class="nav-link" href="/index.php"> <i class="fas fa-search" style="margin-right: 8px;"></i> Home</a>
+        <a class="nav-link" href="/index.php"> <i class="fas fa-search" style="margin-right: 8px;"></i> <i class="fa-solid fa-house"></i> </a>
         </button>
     </div>
 </form>
