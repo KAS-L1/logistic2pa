@@ -1,48 +1,68 @@
 <?php
 include '../config/db_connect.php';  // Database connection
 
+$error = "";  // Initialize an error message variable
+
+// Ensure the email parameter exists in the URL
+if (isset($_GET['email']) && !empty($_GET['email'])) {
+    $email = htmlspecialchars($_GET['email']);  // Sanitize the email
+} else {
+    // Redirect or display an error message if email is missing
+    echo "<script>alert('Email parameter is missing. Please try again.'); window.location.href='/admin_login/admin_reset_pass.php';</script>";
+    exit;
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
     $otp = $_POST['otp'];
     $newPassword = $_POST['newPassword'];
     $confirmPassword = $_POST['confirmPassword'];
 
     // Validate if passwords match
     if ($newPassword !== $confirmPassword) {
-        echo "<script>alert('Passwords do not match.');</script>";
+        $error = "Passwords do not match.";  // Set an error message
     } elseif (!preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,12}$/', $newPassword)) {
-        echo "<script>alert('Password must be 8-12 characters long, include letters, numbers, and special characters.');</script>";
+        $error = "Password must be 8-12 characters long, include letters, numbers, and special characters.";
     } else {
         // Check if OTP is valid
         $stmt = $conn->prepare("SELECT otp, otp_expiration, password_hash FROM users WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
+        
+        if ($stmt) {
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $user = $result->fetch_assoc();
 
-        if ($user && $user['otp'] === $otp && strtotime($user['otp_expiration']) > time()) {
-            // Check if new password is the same as the old one
-            if (password_verify($newPassword, $user['password_hash'])) {
-                echo "<script>alert('New password cannot be the same as the old password.');</script>";
+            if ($user && $user['otp'] === $otp && strtotime($user['otp_expiration']) > time()) {
+                // Check if new password is the same as the old one
+                if (password_verify($newPassword, $user['password_hash'])) {
+                    $error = "New password cannot be the same as the old password.";
+                } else {
+                    // OTP is valid and new password is not the same as the old one, reset the password
+                    $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+
+                    // Update password and clear OTP
+                    $update_stmt = $conn->prepare("UPDATE users SET password_hash = ?, otp = NULL, otp_expiration = NULL WHERE email = ?");
+                    
+                    if ($update_stmt) {
+                        $update_stmt->bind_param("ss", $newPasswordHash, $email);
+                        if ($update_stmt->execute()) {
+                            echo "<script>alert('Password reset successful!');</script>";
+                            header("Location: /admin_login/admin_login.php");
+                            exit();
+                        } else {
+                            $error = "Failed to update password.";
+                        }
+                    }
+                }
             } else {
-                // OTP is valid and new password is not the same as the old one, reset the password
-                $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
-
-                // Update password and clear OTP
-                $update_stmt = $conn->prepare("UPDATE users SET password_hash = ?, otp = NULL, otp_expiration = NULL WHERE email = ?");
-                $update_stmt->bind_param("ss", $newPasswordHash, $email);
-                $update_stmt->execute();
-
-                echo "<script>alert('Password reset successful!');</script>";
-                header("Location: /admin_login/admin_login.php");
-                exit();
+                $error = "Invalid or expired OTP.";
             }
+
+            $stmt->close();  // Only close if the statement was successfully created
         } else {
-            echo "<script>alert('Invalid or expired OTP.');</script>";
+            $error = "Failed to execute query.";
         }
     }
-
-    $stmt->close();
 }
 ?>
 
@@ -124,15 +144,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="card">
         <img src="/assets/img/paradise_logo.png" alt="Paradise Logo" class="logo"> <!-- Update image path -->
         <h2 class="text-center mb-4">Reset Password</h2>
-        <form action="/admin_login/admin_verify_otp.php" method="POST">
-            <input type="hidden" name="email" value="<?php echo htmlspecialchars($_GET['email']); ?>">
+
+        <?php
+        // Display error message if it exists
+        if (!empty($error)) {
+            echo "<div class='alert alert-danger'>$error</div>";
+        }
+        ?>
+
+        <form action="/admin_login/admin_verify_otp.php?email=<?php echo urlencode($email); ?>" method="POST">
+            <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>">
             <div class="mb-3">
-                <input type="text" class="form-control" name="otp" placeholder="Enter OTP" required>
+                <input type="text" class="form-control" name="otp" placeholder="Enter OTP" required value="<?php echo isset($otp) ? htmlspecialchars($otp) : ''; ?>">
             </div>
             
             <!-- New Password field with eye icon -->
             <div class="mb-3 password-container">
-                <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New Password" required>
+                <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New Password" required value="<?php echo isset($newPassword) ? htmlspecialchars($newPassword) : ''; ?>">
                 <span class="toggle-password" onclick="togglePasswordVisibility('newPassword')">
                     <i class="fas fa-eye"></i>
                 </span>
@@ -140,7 +168,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             <!-- Confirm Password field with eye icon -->
             <div class="mb-3 password-container">
-                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm New Password" required>
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm New Password" required value="<?php echo isset($confirmPassword) ? htmlspecialchars($confirmPassword) : ''; ?>">
                 <span class="toggle-password" onclick="togglePasswordVisibility('confirmPassword')">
                     <i class="fas fa-eye"></i>
                 </span>
