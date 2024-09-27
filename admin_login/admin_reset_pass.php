@@ -1,44 +1,72 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+// Load PHPMailer classes
+require '../vendor/autoload.php';  // Adjust the path to your autoload.php
+
 include '../config/db_connect.php';  // Database connection
+
+// Function to send OTP via email
+function sendOTPEmail($email, $otp) {
+    $mail = new PHPMailer(true);
+    try {
+        // SMTP settings
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';  // Your SMTP host
+        $mail->SMTPAuth = true;
+        $mail->Username = 'kasl.54370906@gmail.com';  // Your email address
+        $mail->Password = 'lgrg mpma cwzo uhdv';  // Your email password or app password
+        $mail->SMTPSecure = 'tls';  // TLS encryption
+        $mail->Port = 587;  // SMTP port for TLS
+
+        // Sender and recipient settings
+        $mail->setFrom('no-reply@yourdomain.com', 'Your Company');
+        $mail->addAddress($email);
+
+        // Email content
+        $mail->isHTML(true);
+        $mail->Subject = "Your OTP for Password Reset";
+        $mail->Body = "<p>Your OTP for password reset is: <strong>$otp</strong></p>";
+        $mail->AltBody = "Your OTP for password reset is: $otp";
+
+        // Send the email
+        $mail->send();
+        echo "<script>alert('OTP sent successfully. Please check your email.');</script>";
+    } catch (Exception $e) {
+        echo "<script>alert('Error sending OTP. Mailer Error: {$mail->ErrorInfo}');</script>";
+    }
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['username'];
-    $newPassword = $_POST['newPassword'];
-    $confirmPassword = $_POST['confirmPassword'];
 
-    // Validate if passwords match
-    if ($newPassword !== $confirmPassword) {
-        echo "<script>alert('Passwords do not match.');</script>";
-    } elseif (!preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,12}$/', $newPassword)) {
-        echo "<script>alert('Password must be 8-12 characters long, include letters, numbers, and special characters.');</script>";
+    // Check if the email exists
+    $stmt = $conn->prepare("SELECT user_id FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        // User exists, generate OTP
+        $otp = rand(100000, 999999);  // Generate a random 6-digit OTP
+        $otpExpiration = date("Y-m-d H:i:s", strtotime("+15 minutes"));  // Set expiration time (15 minutes)
+        
+        // Save OTP and expiration in the database
+        $update_stmt = $conn->prepare("UPDATE users SET otp = ?, otp_expiration = ? WHERE email = ?");
+        $update_stmt->bind_param("sss", $otp, $otpExpiration, $email);
+        $update_stmt->execute();
+
+        // Send OTP using PHPMailer
+        sendOTPEmail($email, $otp);
+
+        // Redirect to OTP verification page
+        header("Location: /admin_login/admin_verify_otp.php?email=$email");
     } else {
-        // Hash the new password
-        $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
-
-        // Check if the user exists by email
-        $stmt = $conn->prepare("SELECT user_id FROM users WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows === 1) {
-            // User exists, update the password
-            $update_stmt = $conn->prepare("UPDATE users SET password_hash = ? WHERE email = ?");
-            $update_stmt->bind_param("ss", $newPasswordHash, $email);
-            if ($update_stmt->execute()) {
-                echo "<script>alert('Password reset successful!');</script>";
-                header("Location: /admin_login/admin_login.php"); // Redirect to login page
-                exit();
-            } else {
-                echo "<script>alert('An error occurred while resetting the password.');</script>";
-            }
-            $update_stmt->close();
-        } else {
-            echo "<script>alert('No account found with that email address.');</script>";
-        }
-
-        $stmt->close();
+        echo "<script>alert('No account found with that email address.');</script>";
     }
+
+    $stmt->close();
 }
 ?>
 
@@ -47,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Password Reset</title>
+    <title>Request OTP</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -55,12 +83,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: url('/assets/img/paradisebg.jpg') no-repeat center center fixed; /* Logistics background image */
+            background: url('/assets/img/paradisebg.jpg') no-repeat center center fixed;
             background-size: cover;
             position: relative;
         }
-
-        /* Green overlay for contrast */
         body::before {
             content: '';
             position: absolute;
@@ -68,118 +94,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(40, 167, 69, 0.5); /* Green overlay with transparency */
+            background-color: rgba(40, 167, 69, 0.5);
             z-index: 1;
         }
-
         .card {
-            z-index: 2; /* Ensure the card stays above the overlay */
+            z-index: 2;
             width: 400px;
             padding: 20px;
             background-color: #ffffff;
             border-radius: 0.375rem;
-            box-shadow: 0 0 20px rgba(40, 167, 69, 0.6); /* Green shadow around the card */
+            box-shadow: 0 0 20px rgba(40, 167, 69, 0.6);
         }
-
-        /* Styling for password field with eye icon */
-        .password-container {
-            position: relative;
-        }
-        .password-container input {
-            padding-right: 45px;
-        }
-        .toggle-password {
-            position: absolute;
-            top: 50%;
-            right: 10px;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: rgba(0, 0, 0, 0.5);
-        }
-        .toggle-password:hover {
-            color: rgba(0, 0, 0, 0.8);
-        }
-
-        /* Apply green shadow to input fields */
         .form-control {
-            border: 1px solid #28a745; /* Green border */
-            box-shadow: 0 0 10px rgba(40, 167, 69, 0.6); /* Green shadow */
-            border-radius: 0.375rem; /* Optional: round corners */
+            border: 1px solid #28a745;
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.6);
+            border-radius: 0.375rem;
         }
-
-        /* Apply green shadow to buttons */
         .btn-primary {
-            background-color: #28a745; /* Green background */
-            border: none; /* Remove border */
-            box-shadow: 0 0 10px rgba(40, 167, 69, 0.6); /* Green shadow */
-            transition: box-shadow 0.3s ease-in-out; /* Smooth shadow transition on hover */
+            background-color: #28a745;
+            border: none;
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.6);
         }
-
         .btn-primary:hover {
-            box-shadow: 0 0 15px rgba(40, 167, 69, 0.8); /* More intense shadow on hover */
+            box-shadow: 0 0 15px rgba(40, 167, 69, 0.8);
         }
-
-        /* Apply green shadow to the form card */
-        .card {
-            box-shadow: 0 0 20px rgba(40, 167, 69, 0.6); /* Green shadow around the card */
-        }
-
-        /* Logo styling */
         .logo {
             display: block;
             margin: 0 auto 20px auto;
-            max-width: 150px; /* Adjust the size of the logo as needed */
+            max-width: 150px;
         }
     </style>
 </head>
 <body>
     <div class="card">
-        <!-- Display Logo -->
-        <img src="/assets/img/paradise_logo.png" alt="Paradise Logo" class="logo">
-
-        <h2 class="text-center mb-4">Reset Password</h2>
+        <img src="/assets/img/paradise_logo.png" alt="Paradise Logo" class="logo"> <!-- Update image path -->
+        <h2 class="text-center mb-4">Request OTP</h2>
         <form action="/admin_login/admin_reset_pass.php" method="POST">
             <div class="mb-3">
                 <input type="text" class="form-control" name="username" placeholder="Email" required>
             </div>
-
-            <!-- New Password with eye icon -->
-            <div class="mb-3 password-container">
-                <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New Password" required>
-                <span class="toggle-password" onclick="togglePasswordVisibility('newPassword', this)">
-                    <i class="fas fa-eye"></i>
-                </span>
-            </div>
-
-            <!-- Confirm Password without eye icon -->
-            <div class="mb-3">
-                <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm New Password" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100">Reset Password</button>
+            <button type="submit" class="btn btn-primary w-100">Request OTP</button>
         </form>
         <div class="mt-3 text-center">
             <a href="/admin_login/admin_login.php">Back to login</a>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <script>
-        function togglePasswordVisibility(id, icon) {
-            const passwordField = document.getElementById(id);
-            const iconElement = icon.querySelector('i');
-
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                iconElement.classList.remove('fa-eye');
-                iconElement.classList.add('fa-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                iconElement.classList.remove('fa-eye-slash');
-                iconElement.classList.add('fa-eye');
-            }
-        }
-    </script>
 </body>
 </html>
