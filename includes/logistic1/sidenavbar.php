@@ -3,15 +3,16 @@
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link href="/css/rokkito.css" rel="stylesheet">
+        <link href="/css/condense.css" rel="stylesheet">
 </head>
 
 <div class="sb-sidenav-menu">
         <div class="nav">
             <!-- Core Section -->
-            <div class="sb-sidenav-menu-heading">Core</div>
-            <a class="nav-link collapsed fw-bold" style="font-family: 'Montserrat'" href="#" id="logisticDropdown" data-bs-toggle="collapse" data-bs-target="#collapseDashboard" aria-expanded="false" aria-controls="collapseDashboard">
-                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+            <div class="sb-sidenav-menu-heading" style="color: #3CB371;">Core</div>
+            <a class="nav-link collapsed fw-bold" style="font-family: 'Cabin Condensed Static'" href="#" id="logisticDropdown" data-bs-toggle="collapse" data-bs-target="#collapseDashboard" aria-expanded="false" aria-controls="collapseDashboard">
+                <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-shipping-fast"></i></div>
                 LOGISTIC 1
                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
             </a>
@@ -19,13 +20,13 @@
             <div class="collapse" id="collapseDashboard" aria-labelledby="headingDashboard" data-bs-parent="#sidenavAccordion">
             <nav class="sb-sidenav-menu-nested nav">
                 <!-- Project Management Dropdown -->
-                <a class="nav-link collapsed fw-bold fst-italic" href="#" data-bs-toggle="collapse" data-bs-target="#collapseProjectManagement" aria-expanded="false" aria-controls="collapseProjectManagement">
-                    <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
+                <a class="nav-link collapsed fw-bold fst-italic" style="font-family: 'Rokkitt'" href="#" data-bs-toggle="collapse" data-bs-target="#collapseProjectManagement" aria-expanded="false" aria-controls="collapseProjectManagement">
+                    <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-tasks"></i></div>
                     Project Management
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
                 <div class="collapse" id="collapseProjectManagement" aria-labelledby="headingProjectManagement" data-bs-parent="#collapseDashboard">
-                <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', sans-serif; color: #333333;">
+                <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">
                         <a class="nav-link" href="/sub-modules/logistic1/project-management/home.php">Home</a>
                         <a class="nav-link" href="/sub-modules/logistic1/project-management/track-ass.php">Tracking Assignment</a>
                         <a class="nav-link" href="/sub-modules/logistic1/project-management/Project-Management.php">Monitoring Task</a>
@@ -36,26 +37,26 @@
 
 
                 <!-- Warehouse and Vehicle Reservation Links -->
-                <a class="nav-link collapsed fw-bold fst-italic" href="#" data-bs-toggle="collapse" data-bs-target="#collapseWarehouse" aria-expanded="false" aria-controls="collapseWarehouse">
-                    <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
+                <a class="nav-link collapsed fw-bold fst-italic" style="font-family: 'Rokkitt'" href="#" data-bs-toggle="collapse" data-bs-target="#collapseWarehouse" aria-expanded="false" aria-controls="collapseWarehouse">
+                    <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-warehouse"></i></div>
                     Warehouse
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
                 <div class="collapse" id="collapseWarehouse" aria-labelledby="headingWarehouse" data-bs-parent="#collapseDashboard">
-                    <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', sans-serif; color: #333333;">
+                    <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">
                     <a class="nav-link" href="/sub-modules/logistic1/warehouse/home.php">Home</a>
                     <a class="nav-link" href="/sub-modules/logistic1/warehouse/stock-monitoring.php">Stock Monirotring</a>
                     <a class="nav-link" href="/sub-modules/logistic1/warehouse/inventory-update">Inventory Update</a>
                     </nav>
                 </div>
 
-                <a class="nav-link collapsed fw-bold fst-italic" href="#" data-bs-toggle="collapse" data-bs-target="#collapseVehicleReservation" aria-expanded="false" aria-controls="collapseVehicleReservation">
-                    <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
+                <a class="nav-link collapsed fw-bold fst-italic" style="font-family: 'Rokkitt'" href="#" data-bs-toggle="collapse" data-bs-target="#collapseVehicleReservation" aria-expanded="false" aria-controls="collapseVehicleReservation">
+                    <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-truck"></i></div>
                     Vehicle Reservation
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
                 <div class="collapse" id="collapseVehicleReservation" aria-labelledby="headingVehicleReservation" data-bs-parent="#collapseDashboard">
-                    <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', sans-serif; color: #333333;">
+                    <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">
                     <a class="nav-link" href="/sub-modules/logistic1/vehicle-reservation/home.php">Home</a>
                     <a class="nav-link" href="/sub-modules/logistic1/vehicle-reservation/vehicle-reservation.php">Vehicle Reservation</a>
                     <a class="nav-link" href="/sub-modules/logistic1/vehicle-reservation/view-vehicle">View Vehicle Reservation</a>
@@ -68,40 +69,40 @@
         </div>
 
         <!-- Apps Section -->
-        <div class="sb-sidenav-menu-heading">Apps</div>
-        <a class="nav-link" href="chat.php  fst-italic" style="font-family: 'Rokkitt', sans-serif; color: #333333;">
-            <div class="sb-nav-link-icon"><i class="fas fa-comment-dots"></i></div>
+        <div class="sb-sidenav-menu-heading" style="color: #3CB371;">Apps</div>
+        <a class="nav-link" href="chat.php  fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">
+        <div class="sb-nav-link-icon"  style="color: #3CB371;"><i class="fas fa-comment-dots"></i></div>
             Chat
         </a>
-        <a class="nav-link" href="mailbox.php fst-italic"  style="font-family: 'Rokkitt', sans-serif; color: #333333;">
-            <div class="sb-nav-link-icon"><i class="fas fa-envelope"></i></div>
+        <a class="nav-link" href="mailbox.php fst-italic"  style="font-family: 'Rokkitt', sans-serif; color: black;">
+            <div class="sb-nav-link-icon" style="color: #3CB371;" ><i class="fas fa-envelope"></i></div>
             Mailbox
         </a>
-        <a class="nav-link" href="todolist.php  fst-italic" style="font-family: 'Rokkitt', sans-serif; color: #333333;">
-            <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
+        <a class="nav-link" href="todolist.php  fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">
+            <div class="sb-nav-link-icon" style="color: #3CB371;" ><i class="fas fa-list"></i></div>
             Todo List
         </a>
-        <a class="nav-link" href="notes.php  fst-italic" style="font-family: 'Rokkitt', sans-serif; color: #333333;">
-            <div class="sb-nav-link-icon"><i class="fas fa-sticky-note"></i></div>
+        <a class="nav-link" href="notes.php  fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">
+            <div class="sb-nav-link-icon" style="color: #3CB371;" ><i class="fas fa-sticky-note"></i></div>
             Notes
         </a>
-        <a class="nav-link" href="scrumboard.php  fst-italic" style="font-family: 'Rokkitt', sans-serif; color: #333333;">
-            <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
+        <a class="nav-link" href="scrumboard.php  fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">
+            <div class="sb-nav-link-icon" style="color: #3CB371;" ><i class="fas fa-tasks"></i></div>
             Scrumboard
         </a>
-        <a class="nav-link" href="contacts.php  fst-italic" style="font-family: 'Rokkitt', sans-serif; color: #333333;">
-            <div class="sb-nav-link-icon"><i class="fas fa-address-book"></i></div>
+        <a class="nav-link" href="contacts.php  fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">
+            <div class="sb-nav-link-icon" style="color: #3CB371;" ><i class="fas fa-address-book"></i></div>
             Contacts
         </a>
 
         <!-- Invoice Section with Dropdown -->
         <a class="nav-link collapsed fw-bold fst-italic" href="#" data-bs-toggle="collapse" data-bs-target="#collapseInvoice" aria-expanded="false" aria-controls="collapseInvoice">
-            <div class="sb-nav-link-icon"><i class="fas fa-dollar-sign"></i></div>
+            <div class="sb-nav-link-icon" style="color: #3CB371;" ><i class="fas fa-dollar-sign"></i></div>
             Invoice
             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
         </a>
         <div class="collapse" id="collapseInvoice" aria-labelledby="headingInvoice" data-bs-parent="#sidenavAccordion">
-            <nav class="sb-sidenav-menu-nested nav  fst-italic" style="font-family: 'Rokkitt', sans-serif; color: #333333;">
+            <nav class="sb-sidenav-menu-nested nav  fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">
                 <a class="nav-link" href="invoice-list.php">List</a>
                 <a class="nav-link" href="invoice-preview.php">Preview</a>
                 <a class="nav-link" href="invoice-add.php">Add</a>
@@ -110,8 +111,8 @@
         </div>
 
         <!-- Calendar Section -->
-        <a class="nav-link" href="calendar.php  fst-italic" style="font-family: 'Rokkitt', sans-serif; color: #333333;">
-            <div class="sb-nav-link-icon"><i class="fas fa-calendar"></i></div>
+        <a class="nav-link" href="calendar.php  fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">
+            <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-calendar"></i></div>
             Calendar
         </a>
     </div>
