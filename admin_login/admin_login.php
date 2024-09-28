@@ -31,13 +31,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Redirect user based on role
         if ($user['role'] == 'admin') {
-            header("Location: /index.php");  // Use appropriate paths
-            exit();  // Ensure script stops after redirect
-        } elseif ($user['role'] == 'branch_manager') {
-            header("Location: /index.php");
+            header("Location: /index.php");  // Unified admin dashboard for managing all
+            exit();
+        } elseif ($user['role'] == 'logistic1_admin') {
+            header("Location: /sub-modules/logistic1/dashboard.php");  // Redirect to Logistic 1 Dashboard
+            exit();
+        } elseif ($user['role'] == 'logistic2_admin') {
+            header("Location: /sub-modules/logistic2/dashboard.php");  // Redirect to Logistic 2 Dashboard
             exit();
         } else {
-            header("Location: /index.php");
+            header("Location: /index.php");  // Default redirection for other users
             exit();
         }
     } else {
@@ -180,8 +183,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <button type="submit" class="btn btn-primary w-100">Log In</button>
         </form>
-        <div class="mt-3 text-center">
+        <!-- <div class="mt-3 text-center">
             <a href="/admin_login/admin_register.php">Don't have an account? Sign up</a>
+        </div> -->
+        <div class="text-center mt-4">
+            <p>Need an account? <a href="/admin_login/request_account.php">Request one here</a>.</p>
         </div>
         <div class="mt-2 text-center">
             <a href="/admin_login/admin_reset_pass.php">Forgot Password?</a>
