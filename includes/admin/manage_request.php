@@ -113,52 +113,84 @@ function sendApprovalEmail($email, $name, $password) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php include('../index/header.php'); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Account Requests</title>
+    <title>Manage Users</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="container mt-5">
-        <h1>Pending Account Requests</h1>
+<body class="sb-nav-fixed">
+    <!-- Top Navigation Bar -->
+    <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
+        <?php include('../index/topnavbar.php'); ?>
+    </nav>
 
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Reason</th>
-                    <th>Requested Role</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>{$row['name']}</td>";
-                        echo "<td>{$row['email']}</td>";
-                        echo "<td>{$row['reason']}</td>";
-                        echo "<td>{$row['role']}</td>";  // Display the requested role
-                        echo "<td>{$row['status']}</td>";
-                        echo "<td>
-                                <form method='POST'>
-                                    <input type='hidden' name='request_id' value='{$row['request_id']}'>
-                                    <button type='submit' name='approve' class='btn btn-success btn-sm'>Approve</button>
-                                    <button type='submit' name='reject' class='btn btn-danger btn-sm'>Reject</button>
-                                    <button type='submit' name='delete' class='btn btn-warning btn-sm'>Delete</button>
-                                </form>
-                              </td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='6' class='text-center'>No pending requests</td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
+    <!-- Main Layout for Sidebar and Content -->
+    <div id="layoutSidenav">
+        <!-- Sidebar -->
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+                <?php include('../index/sidenavbar.php'); ?>
+            </nav>
+        </div>
+
+        <!-- Main Content Area -->
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Pending Account Requests</h1>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Reason</th>
+                                        <th>Requested Role</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<tr>";
+                                            echo "<td>{$row['name']}</td>";
+                                            echo "<td>{$row['email']}</td>";
+                                            echo "<td>{$row['reason']}</td>";
+                                            echo "<td>{$row['role']}</td>";  // Display the requested role
+                                            echo "<td>{$row['status']}</td>";
+                                            echo "<td>
+                                                    <form method='POST'>
+                                                        <input type='hidden' name='request_id' value='{$row['request_id']}'>
+                                                        <button type='submit' name='approve' class='btn btn-success btn-sm'>Approve</button>
+                                                        <button type='submit' name='reject' class='btn btn-danger btn-sm'>Reject</button>
+                                                        <button type='submit' name='delete' class='btn btn-warning btn-sm'>Delete</button>
+                                                    </form>
+                                                  </td>";
+                                            echo "</tr>";
+                                        }
+                                    } else {
+                                        echo "<tr><td colspan='6' class='text-center'>No pending requests</td></tr>";
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer class="py-4 bg-light mt-auto">
+                <?php include('../index/footer.php'); ?>
+            </footer>
+        </div>
     </div>
+
+    <!-- Scripts -->
+    <?php include('../index/script.php'); ?>
 </body>
 </html>

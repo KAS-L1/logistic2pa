@@ -23,6 +23,27 @@
                 </nav>
             </div>
 
+            <!-- admin panel -->
+            <div class="sb-sidenav-menu">
+        <div class="nav">
+            <!-- Core Section -->
+            <div class="sb-sidenav-menu-heading">Admin</div>
+            <a class="nav-link collapsed fw-bold" style="font-family: 'Cabin Condensed Static'" href="#" id="AdminDropdown" data-bs-toggle="collapse" data-bs-target="#collapseAdmin" aria-expanded="false" aria-controls="collapseAdmin">
+                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt" style="color: #3CB371;"></i></div>
+                ADMIN PANEL
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <div class="collapse fw-bold fst-italic" style="font-family: 'Rokkitt'" id="collapseAdmin" aria-labelledby="headingDashboard" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">
+                <a class="nav-link" href="/includes/admin/dashboard.php"><i class="fa-solid fa-truck-fast" style="margin-right: 8px; color: #3CB371;" ></i>HOME</a>
+                <a class="nav-link" href="/includes/admin/manage_users.php"><i class="fa-solid fa-truck-fast" style="margin-right: 8px; color: #3CB371;" ></i>USER MANAGEMENT</a>
+                <a class="nav-link" href="/includes/admin/manage_branches.php"><i class="fa-solid fa-truck-fast" style="margin-right: 8px; color:  #3CB371;"></i>BRANCHES MANAGEMENT</a>
+                <a class="nav-link" href="/includes/admin/manage_request.php"><i class="fa-solid fa-truck-fast" style="margin-right: 8px; color:  #3CB371;"></i>MANAGE REQUEST</a>
+                
+                </nav>
+            </div>
+            <!-- end of admin panel -->
+
             <!-- Apps Section -->
             <div class="sb-sidenav-menu-heading">Apps</div>
         <a class="nav-link" href="chat.php  fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">

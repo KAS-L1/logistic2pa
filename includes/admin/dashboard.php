@@ -17,12 +17,24 @@ $result = $conn->query($query);
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<?php include('../index/header.php'); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
+            <?php include('../index/topnavbar.php'); ?>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+                <?php include('../index/sidenavbar.php'); ?>
+                </nav>
+            </div>
+            
+            <div id="layoutSidenav_content">
     <div class="container mt-5">
         <h1>Manage Users</h1>
 
@@ -88,5 +100,11 @@ $result = $conn->query($query);
             </tbody>
         </table>
     </div>
-</body>
+<footer class="py-4 bg-light mt-auto">
+                     <?php include('../index/footer.php'); ?>
+                </footer>
+            </div>
+        </div>
+        <?php include('../index/script.php'); ?>
+    </body>
 </html>

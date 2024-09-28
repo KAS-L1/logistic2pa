@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Sep 26, 2024 at 02:19 AM
+-- Generation Time: Sep 28, 2024 at 02:47 PM
 -- Server version: 9.0.1
 -- PHP Version: 8.3.11
 
@@ -20,6 +20,24 @@ SET time_zone = "+00:00";
 --
 -- Database: `admin_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `account_requests`
+--
+
+DROP TABLE IF EXISTS `account_requests`;
+CREATE TABLE IF NOT EXISTS `account_requests` (
+  `request_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `reason` text NOT NULL,
+  `status` enum('pending','approved','rejected') DEFAULT 'pending',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `role` varchar(50) NOT NULL DEFAULT 'user',
+  PRIMARY KEY (`request_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -90,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `branches` (
   PRIMARY KEY (`branch_id`),
   UNIQUE KEY `branch_id` (`branch_id`),
   KEY `fk_manager` (`manager_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -144,6 +162,7 @@ CREATE TABLE IF NOT EXISTS `password_resets` (
   `email` varchar(191) NOT NULL,
   `token` varchar(255) NOT NULL,
   `expires_at` int NOT NULL,
+  `expire_at` datetime NOT NULL,
   PRIMARY KEY (`email`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -151,9 +170,10 @@ CREATE TABLE IF NOT EXISTS `password_resets` (
 -- Dumping data for table `password_resets`
 --
 
-INSERT INTO `password_resets` (`email`, `token`, `expires_at`) VALUES
-('123@gmail.com', '05ae06534bea8b2076423df449c87029259a280465f0901764017f5acaf0f220', 2024),
-('kasl.54370906@gmail.com', 'd10037e94889578cfb36d09042bd2cf9fcbd2f4d53595740551868c26c88f531', 2024);
+INSERT INTO `password_resets` (`email`, `token`, `expires_at`, `expire_at`) VALUES
+('123@gmail.com', '05ae06534bea8b2076423df449c87029259a280465f0901764017f5acaf0f220', 2024, '0000-00-00 00:00:00'),
+('kasl.54370906@gmail.com', '869d36da2fc2f59e155dee0d16b198573e4d9ee7d2f253c611bab4008480c0b081534a335e36397e0441110f0586be09eced', 2024, '2024-09-27 04:27:32'),
+('valkyrievee00@gmail.com', 'f1dd80d1826f5b846819a12689f2b6624ea96a4138337543a923ec9be57df8a03e0d890dea2678b5af07e05aeb6901873c84', 0, '2024-09-27 05:10:42');
 
 -- --------------------------------------------------------
 
@@ -319,20 +339,23 @@ CREATE TABLE IF NOT EXISTS `users` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `first_name` varchar(191) NOT NULL,
   `last_name` varchar(191) NOT NULL,
+  `otp` varchar(6) DEFAULT NULL,
+  `otp_expiration` timestamp NULL DEFAULT NULL,
+  `branch_id` bigint UNSIGNED DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `email`, `password_hash`, `role`, `created_at`, `first_name`, `last_name`) VALUES
-(1, 'kasl', 'kasl.54370906@gmail.com', '$2y$10$Rb1AV2e0eIZFOpxvDB86W.eZNnOnsmD8405a4EZod5jwNlOUqj4q6', 'admin', '2024-09-25 16:17:37', '', ''),
-(3, 'laks', 'test@example.com', '$2y$10$u7EEbl9sYIFgk3wHw8FNxedDu9HqIPx9PP0ndAF.fJPiST5Ku6eF.', 'branch_manager', '2024-09-25 16:20:27', '', ''),
-(4, 'erik12', 'valky@gmail.com', '$2y$10$eMCYGXDxHGwXZn4tEX33FuJxQpTeeRj4Cg7SQSFUlhyFYwVwQBmI2', 'user', '2024-09-25 16:23:15', '', ''),
-(5, '123', '123@gmail.com', '$2y$10$qkFBX/9QKRLzU4sXl8PG8.lWwFDlM8F7m.Bvn6E32vef3hVmmfC5m', 'admin', '2024-09-25 16:47:38', '', '');
+INSERT INTO `users` (`user_id`, `username`, `email`, `password_hash`, `role`, `created_at`, `first_name`, `last_name`, `otp`, `otp_expiration`, `branch_id`) VALUES
+(23, 'kasl', 'kasl.54370906@gmail.com', '$2y$10$KuFZkyfpWzXTAyJoQnrc5emf8r6p53yUvZXqEHQ.YchmK1WgeIT2S', 'admin', '2024-09-28 10:00:34', '', '', NULL, NULL, 0),
+(25, 'admin', 'dump41863@gmail.com', '$2y$10$/BLOFSicdI8vkFxJ1V2ineW3bu0oPV7bYusvW0V8EVCln0.NAkFGO', 'admin', '2024-09-28 11:25:58', '', '', NULL, NULL, NULL),
+(26, 'EY', 'valkyrievee00@gmail.com', '$2y$10$XksGCfh58sbsdyVA1sSIbOMvw9BVXjyMwV3lC3s.aAdGX/5I/tzHu', 'logistic2_admin', '2024-09-28 13:56:59', '', '', NULL, NULL, NULL),
+(31, 'admino', 'xoyeh20931@rinseart.com', '$2y$10$HswDKsv79M58C/Rk45NkGeRoXJy4N95N7sfxxBjw0i2Xhfdk6b5H6', 'admin', '2024-09-28 14:42:45', '', '', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
