@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $remember = isset($_POST['remember']); // Check if remember me is set
 
     // Prevent SQL Injection
-    $stmt = $conn->prepare("SELECT user_id, username, password_hash, role FROM users WHERE username = ? OR email = ?");
+    $stmt = $conn->prepare("SELECT user_id, username, password_hash, role, profile_pic FROM users WHERE username = ? OR email = ?");
     $stmt->bind_param("ss", $username, $username);  // Check both username and email
     $stmt->execute();
     $result = $stmt->get_result();
@@ -20,6 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['loggedin'] = true;
         $_SESSION['username'] = $user['username'];
         $_SESSION['role'] = $user['role'];
+        $_SESSION['user_id'] = $user['user_id'];  // Add user_id to session for profile access
+        $_SESSION['profile_pic'] = $user['profile_pic'] ?? '/assets/img/default_profile.png';  // Ensure the profile picture is set
 
         // Set cookie if remember me is checked
         if ($remember) {
@@ -50,6 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->close();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
