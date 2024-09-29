@@ -28,7 +28,7 @@
 <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
     <!-- Light/Dark Mode Toggle Button -->
     <li class="nav-item">
-        <a class="nav-link" href="javascript:void(0);" id="darkModeToggle">
+        <a class="nav-link" href="javascript:void(0);" id="darkModeToggle" style="color: #3CB371;">
             <i class="fas fa-sun" id="themeIcon"></i> <!-- Default is sun icon for light mode -->
         </a>
     </li>
@@ -37,10 +37,10 @@
 
     <!-- Messages Dropdown -->
     <li class="nav-item dropdown">
-        <a class="nav-link" href="#" id="messagesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link" style="color: #3CB371;" href="#" id="messagesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fas fa-envelope"></i>
         </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="messagesDropdown">
+        <ul class="dropdown-menu dropdown-menu-end"  aria-labelledby="messagesDropdown">
             <li class="dropdown-header">Messages</li>
             <li><a class="dropdown-item" href="#!">
                 <strong>John Doe</strong>
@@ -60,7 +60,7 @@
 
     <!-- Notifications Dropdown -->
     <li class="nav-item dropdown">
-        <a class="nav-link" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link" style="color: #3CB371;" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fas fa-bell"></i>
         </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
@@ -83,7 +83,7 @@
 
     <!-- User Dropdown -->
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" style="color: #3CB371;" id="userDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fas fa-user fa-fw"></i>
         </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">

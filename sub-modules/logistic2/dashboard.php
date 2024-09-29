@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -18,9 +19,7 @@
 
             <!-- Main Content -->
              
-              
-
-
+             
                 
                 <footer class="py-4 bg-light mt-auto">
                      <?php include('../../includes/logistic2/footer.php'); ?>
