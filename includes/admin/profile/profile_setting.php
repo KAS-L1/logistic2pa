@@ -103,6 +103,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #preview {
+            display: block;
+            margin: 10px 0;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        #profileModal .modal-content {
+            background-color: rgba(0, 0, 0, 0.75);
+            color: white;
+        }
+        .modal-img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
@@ -112,12 +131,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
             
             <div class="mb-3">
-                <!-- Check if profile picture exists, else use a default -->
-                <img src="<?php echo htmlspecialchars($_SESSION['profile_pic'] ?? '/assets/img/default_profile.png'); ?>" alt="Profile Picture" style="width: 100px; height: 100px;">
+                <!-- Profile Picture Preview -->
+                <img id="preview" src="<?php echo htmlspecialchars($_SESSION['profile_pic'] ?? '/assets/img/default_profile.png'); ?>" alt="Profile Picture" style="width: 100px; height: 100px;" data-bs-toggle="modal" data-bs-target="#profileModal">
             </div>
             <div class="mb-3">
                 <label for="profile_pic" class="form-label">Upload New Profile Picture</label>
-                <input type="file" class="form-control" id="profile_pic" name="profile_pic">
+                <input type="file" class="form-control" id="profile_pic" name="profile_pic" onchange="previewImage(event)">
             </div>
             <div class="mb-3">
                 <label for="first_name" class="form-label">First Name</label>
@@ -147,7 +166,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
     </div>
 
+    <!-- Modal for Zooming Image -->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <img id="modalImage" class="modal-img" src="<?php echo htmlspecialchars($_SESSION['profile_pic'] ?? '/assets/img/default_profile.png'); ?>" alt="Zoomed Profile Picture">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        function previewImage(event) {
+            var preview = document.getElementById('preview');
+            var modalImage = document.getElementById('modalImage');
+            preview.src = URL.createObjectURL(event.target.files[0]);
+            modalImage.src = preview.src;
+        }
+
         // Password strength validation
         function validatePassword() {
             var password = document.getElementById("password").value;
@@ -172,5 +209,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             return true;
         }
     </script>
+    <script>
+    // Password strength validation
+    function validatePassword() {
+        var password = document.getElementById("password").value;
+
+        // If the password field is empty, we skip validation as the user is not changing it
+        if (password === "") {
+            return true; // Skip password validation when it's empty
+        }
+
+        var errorMsg = "";
+
+        if (password.length < 8) {
+            errorMsg = "Password must be at least 8 characters.";
+        } else if (!/[A-Z]/.test(password)) {
+            errorMsg = "Password must contain at least one uppercase letter.";
+        } else if (!/[a-z]/.test(password)) {
+            errorMsg = "Password must contain at least one lowercase letter.";
+        } else if (!/[0-9]/.test(password)) {
+            errorMsg = "Password must contain at least one number.";
+        } else if (!/[!@#$%^&*]/.test(password)) {
+            errorMsg = "Password must contain at least one special character.";
+        }
+
+        if (errorMsg !== "") {
+            alert(errorMsg);
+            return false;
+        }
+        return true;
+    }
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
