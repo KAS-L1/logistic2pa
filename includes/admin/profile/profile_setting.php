@@ -99,71 +99,169 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php include('../../index/header.php'); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/rokkito.css" rel="stylesheet">
+    <link href="/css/condense.css" rel="stylesheet">
     <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .profile-card {
+            max-width: 600px;
+            margin: 30px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 50px;
+        }
+        .profile-card h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
         #preview {
             display: block;
-            margin: 10px 0;
-            width: 100px;
-            height: 100px;
+            margin: 10px auto;
+            width: 120px;
+            height: 120px;
             object-fit: cover;
             border-radius: 50%;
+            border: 2px solid #ccc;
             cursor: pointer;
         }
         #profileModal .modal-content {
             background-color: rgba(0, 0, 0, 0.75);
             color: white;
         }
+        .form-group {
+            margin-bottom: 15px;
+            font-family: 'Rokkitt', Courier, monospace;
+        }
+        .btn-primary1 {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            background: linear-gradient(135deg, #3CB371, #008cff);
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .btn-primary1:hover {
+            background: linear-gradient(135deg, #2ca657, #0077e6); /* Slightly darker hover effect */
+        }
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #6c757d;
+            font-weight: bold;
+            font-family: 'Cabin Condensed Static', serif;
+        }
         .modal-img {
             max-width: 100%;
             height: auto;
         }
+        /* Flexbox layout */
+        #layoutSidenav {
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        #layoutSidenav_nav {
+            flex: 0 0 250px;
+        }
+        #layoutSidenav_content {
+            flex: 1;
+            padding: 20px;
+        }
     </style>
 </head>
-<body>
-    <div class="container mt-5">
-        <h1>Edit Profile</h1>
-        <form action="/includes/admin/profile/profile_setting.php" method="POST" enctype="multipart/form-data" onsubmit="return validatePassword();">
-            <!-- CSRF Token -->
-            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
-            
-            <div class="mb-3">
-                <!-- Profile Picture Preview -->
-                <img id="preview" src="<?php echo htmlspecialchars($_SESSION['profile_pic'] ?? '/assets/img/default_profile.png'); ?>" alt="Profile Picture" style="width: 100px; height: 100px;" data-bs-toggle="modal" data-bs-target="#profileModal">
-            </div>
-            <div class="mb-3">
-                <label for="profile_pic" class="form-label">Upload New Profile Picture</label>
-                <input type="file" class="form-control" id="profile_pic" name="profile_pic" onchange="previewImage(event)">
-            </div>
-            <div class="mb-3">
-                <label for="first_name" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="first_name" name="first_name" value="<?php echo htmlspecialchars($first_name); ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="last_name" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="last_name" name="last_name" value="<?php echo htmlspecialchars($last_name); ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="contact_number" class="form-label">Contact Number</label>
-                <input type="text" class="form-control" id="contact_number" name="contact_number" value="<?php echo htmlspecialchars($contact_number); ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" value="<?php echo htmlspecialchars($username); ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">New Password (optional)</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Leave blank to keep current password">
-            </div>
-            <button type="submit" class="btn btn-primary">Update Profile</button>
-        </form>
+
+<body class="sb-nav-fixed">
+    <!-- Top Navigation Bar -->
+    <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
+        <?php include('../../index/topnavbar.php'); ?>
+    </nav>
+
+    <div id="layoutSidenav">
+        <!-- Sidebar -->
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+                <?php include('../../index/sidenavbar.php'); ?>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container">
+                    <div class="profile-card">
+                        <h1>Edit Profile</h1>
+                        <form action="/includes/admin/profile/profile_setting.php" method="POST" enctype="multipart/form-data" onsubmit="return validatePassword();">
+                            <!-- CSRF Token -->
+                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+
+                            <div class="text-center mb-3">
+                                <!-- Profile Picture Preview -->
+                                <img id="preview" src="<?php echo htmlspecialchars($_SESSION['profile_pic'] ?? '/assets/img/default_profile.png'); ?>" alt="Profile Picture" data-bs-toggle="modal" data-bs-target="#profileModal">
+                            </div>
+                            <div class="mb-3">
+                                <label for="profile_pic" style="font-family: 'Cabin Condensed Static'" class="form-label">Upload New Profile Picture</label>
+                                <input type="file" class="form-control" id="profile_pic" name="profile_pic" onchange="previewImage(event)">
+                            </div>
+
+                            <!-- Section 1: Personal Information -->
+                            <div class="section-title">Personal Information</div>
+                            <div class="form-group">
+                                <label for="first_name" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" value="<?php echo htmlspecialchars($first_name); ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" value="<?php echo htmlspecialchars($last_name); ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact_number" class="form-label">Contact Number</label>
+                                <input type="text" class="form-control" id="contact_number" name="contact_number" value="<?php echo htmlspecialchars($contact_number ?? '', ENT_QUOTES, 'UTF-8'); ?>" required>
+                            </div>
+
+                            <!-- Section 2: Account Information -->
+                            <div class="section-title">Account Information</div>
+                            <div class="form-group">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" value="<?php echo htmlspecialchars($username); ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required>
+                            </div>
+
+                            <!-- Section 3: Change Password -->
+                            <div class="section-title">Change Password</div>
+                            <div class="form-group">
+                                <label for="password" class="form-label">New Password (optional)</label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Leave blank to keep current password">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary1">Update Profile</button>
+                        </form>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer class="py-4 bg-light mt-auto">
+                <?php include('../../index/footer.php'); ?>
+            </footer>
+        </div>
     </div>
 
     <!-- Modal for Zooming Image -->
@@ -185,7 +283,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             modalImage.src = preview.src;
         }
 
-        // Password strength validation
         function validatePassword() {
             var password = document.getElementById("password").value;
             var errorMsg = "";
@@ -206,42 +303,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 alert(errorMsg);
                 return false;
             }
+
             return true;
         }
     </script>
-    <script>
-    // Password strength validation
-    function validatePassword() {
-        var password = document.getElementById("password").value;
 
-        // If the password field is empty, we skip validation as the user is not changing it
-        if (password === "") {
-            return true; // Skip password validation when it's empty
-        }
+            <!-- Footer -->
+            <footer class="py-4 bg-light mt-auto">
+                <?php include('../../index/footer.php'); ?>
+            </footer>
+        </div>
+    </div>
 
-        var errorMsg = "";
-
-        if (password.length < 8) {
-            errorMsg = "Password must be at least 8 characters.";
-        } else if (!/[A-Z]/.test(password)) {
-            errorMsg = "Password must contain at least one uppercase letter.";
-        } else if (!/[a-z]/.test(password)) {
-            errorMsg = "Password must contain at least one lowercase letter.";
-        } else if (!/[0-9]/.test(password)) {
-            errorMsg = "Password must contain at least one number.";
-        } else if (!/[!@#$%^&*]/.test(password)) {
-            errorMsg = "Password must contain at least one special character.";
-        }
-
-        if (errorMsg !== "") {
-            alert(errorMsg);
-            return false;
-        }
-        return true;
-    }
-    </script>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Scripts -->
+    <?php include('../../index/script.php'); ?>
 </body>
 </html>
