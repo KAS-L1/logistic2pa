@@ -258,9 +258,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </main>
 
             <!-- Footer -->
-            <footer class="py-4 bg-light mt-auto">
+            <!-- <footer class="py-4 bg-light mt-auto">
                 <?php include('../../index/footer.php'); ?>
-            </footer>
+            </footer> -->
         </div>
     </div>
 

@@ -1,3 +1,11 @@
+<?php
+// Start session if it's not started already
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+
+
 <head>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
@@ -9,6 +17,16 @@
 
 <div class="sb-sidenav-menu">
         <div class="nav">
+            <!-- Main Admin Link (added) -->
+        <?php
+        if ($_SESSION['role'] === 'admin') {
+            echo '
+            <a class="nav-link collapsed fw-bold" style="font-family: \'Cabin Condensed Static\'; color: black;" href="/index.php">
+                <div class="sb-nav-link-icon"><i class="fas fa-th-large" style="color: #3CB371; margin-right: 8px;"></i></div>
+                Main Admin
+            </a>';
+        }
+        ?>
             <!-- Core Section -->
             <div class="sb-sidenav-menu-heading" style="color: #3CB371;">Core</div>
             <a class="nav-link collapsed fw-bold" style="font-family: 'Cabin Condensed Static'" href="#" id="logisticDropdown" data-bs-toggle="collapse" data-bs-target="#collapseDashboard" aria-expanded="false" aria-controls="collapseDashboard">

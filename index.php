@@ -1,14 +1,24 @@
 <?php
-session_start(); // Start the session
+session_start();
 
-// Check if the user is not logged in, redirect to login page
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("Location: /admin_login/admin_login.php"); // Redirect to login page
-    exit(); // Stop further execution
+if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'admin') {
+    header("Location: /not_authorized.php");  // Redirect to the 'Not Authorized' page
+    exit();
 }
 
-// The rest of your index.php content goes below
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Check if the logged-in user is not a main admin, redirect them
+if ($_SESSION['role'] !== 'admin') {
+    header("Location: /not_authorized.php");  // Redirect to an unauthorized page
+    exit();
+}
+// Rest of the page content
 ?>
+
 
 
 

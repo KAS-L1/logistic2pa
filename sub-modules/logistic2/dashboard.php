@@ -1,15 +1,15 @@
-<!-- <?php 
-
+<?php
 session_start();
 
-// Check if the user is logged in and has the correct role
-if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'logistic2_admin') {
-    // If the user is not logged in or does not have the correct role, redirect
-    header("Location: /not_authorized.php");  // Redirect to a "Not Authorized" page
+if (!isset($_SESSION['loggedin']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'logistic2_admin')) {
+    header("Location: /not_authorized.php");  // Redirect to the 'Not Authorized' page
     exit();
 }
 
-?> -->
+// Rest of the page content
+?>
+
+
 
 
 

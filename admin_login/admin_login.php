@@ -16,16 +16,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Ensure we check against 'password_hash'
     if ($user && password_verify($password, $user['password_hash'])) {
+        // Regenerate session to prevent session fixation
+        session_regenerate_id(true);
+
         // Start a new session and set session variables
         $_SESSION['loggedin'] = true;
-        $_SESSION['username'] = $user['username'];
+        $_SESSION['username'] = htmlspecialchars($user['username']); // Sanitize for session use
         $_SESSION['role'] = $user['role'];
         $_SESSION['user_id'] = $user['user_id'];  // Add user_id to session for profile access
         $_SESSION['profile_pic'] = $user['profile_pic'] ?? '/assets/img/default_profile.png';  // Ensure the profile picture is set
 
-        // Set cookie if remember me is checked
+        // Set secure cookie attributes if remember me is checked
         if ($remember) {
-            setcookie("username", $username, time() + (86400 * 30), "/"); // 30 days expiration
+            setcookie("username", $username, time() + (86400 * 30), "/", "", false, true); // 30 days expiration, httponly
         } else {
             // Clear the cookie if remember me is not checked
             setcookie("username", "", time() - 3600, "/");
@@ -53,7 +56,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,12 +71,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: url('/assets/img/paradisebg.jpg') no-repeat center center fixed; /* Apply your logistics image */
+            background: url('/assets/img/paradisebg.jpg') no-repeat center center fixed;
             background-size: cover;
             position: relative;
         }
-
-        /* Green overlay for better contrast */
         body::before {
             content: '';
             position: absolute;
@@ -82,63 +82,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(40, 167, 69, 0.5); /* Green overlay with transparency */
+            background-color: rgba(40, 167, 69, 0.5);
             z-index: 1;
         }
-
         .card {
-            z-index: 2; /* Ensure the card stays above the overlay */
+            z-index: 2;
             width: 400px;
             padding: 20px;
             background-color: #ffffff;
             border-radius: 0.375rem;
-            box-shadow: 0 0 20px rgba(40, 167, 69, 0.6); /* Green shadow around the card */
+            box-shadow: 0 0 20px rgba(40, 167, 69, 0.6);
         }
-
-        /* Styling for the logo */
         .logo {
             display: block;
             margin: 0 auto 20px auto;
-            max-width: 150px; /* Adjust the size of the logo as needed */
+            max-width: 150px;
         }
-
-        /* Apply green shadow to input fields */
         .form-control {
-            border: 1px solid #28a745; /* Green border */
-            box-shadow: 0 0 10px rgba(40, 167, 69, 0.6); /* Green shadow */
-            border-radius: 0.375rem; /* Optional: round corners */
+            border: 1px solid #28a745;
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.6);
+            border-radius: 0.375rem;
         }
-
-        /* Apply green shadow to buttons */
         .btn-primary {
-            background-color: #28a745; /* Green background */
-            border: none; /* Remove border */
-            box-shadow: 0 0 10px rgba(40, 167, 69, 0.6); /* Green shadow */
-            transition: box-shadow 0.3s ease-in-out; /* Smooth shadow transition on hover */
+            background-color: #28a745;
+            border: none;
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.6);
+            transition: box-shadow 0.3s ease-in-out;
         }
-
         .btn-primary:hover {
-            box-shadow: 0 0 15px rgba(40, 167, 69, 0.8); /* More intense shadow on hover */
+            box-shadow: 0 0 15px rgba(40, 167, 69, 0.8);
         }
-
-        /* Input group styling */
         .input-group {
             border-radius: 0.375rem;
             overflow: hidden;
         }
-
-        /* Email and key icons with green shadow */
         .input-group-text i {
-            color: #28a745; /* Green color for icons */
-            box-shadow: 0 0 5px rgba(40, 167, 69, 0.6); /* Green shadow around the icons */
+            color: #28a745;
+            box-shadow: 0 0 5px rgba(40, 167, 69, 0.6);
         }
-
-        /* Password container for eye icon */
         .password-container {
             position: relative;
         }
-
-        /* Positioning the eye icon */
         .password-container .toggle-password {
             position: absolute;
             right: 10px;
@@ -148,7 +132,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             color: rgba(0, 0, 0, 0.5);
             z-index: 10;
         }
-
         .password-container .toggle-password:hover {
             color: rgba(0, 0, 0, 0.8);
         }
@@ -186,9 +169,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <button type="submit" class="btn btn-primary w-100">Log In</button>
         </form>
-        <!-- <div class="mt-3 text-center">
-            <a href="/admin_login/admin_register.php">Don't have an account? Sign up</a>
-        </div> -->
+
         <div class="text-center mt-4">
             <p>Need an account? <a href="/admin_login/request_account.php">Request one here</a>.</p>
         </div>
