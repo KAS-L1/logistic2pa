@@ -1,9 +1,9 @@
 <?php
 session_start();
-// if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'admin') {
-//     header("Location: /admin_login/admin_login.php");
-//     exit();
-// }
+if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'admin') {
+    header("Location: /admin_login/admin_login.php");
+    exit();
+}
 
 include '../../config/db_connect.php';  // Database connection
 

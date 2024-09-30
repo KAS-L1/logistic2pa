@@ -1,3 +1,14 @@
+<?php
+ob_start(); // Starts output buffering
+
+// Start session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Rest of your code...
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
