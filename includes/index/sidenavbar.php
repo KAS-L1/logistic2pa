@@ -1,18 +1,23 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+    session_start(); 
 }
-
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="/css/rokkito.css" rel="stylesheet">
     <link href="/css/condense.css" rel="stylesheet">
+    <title>Sidebar Navigation</title>
 </head>
+<body>
 
 <div class="sb-sidenav-menu">
     <div class="nav">
@@ -28,13 +33,13 @@ if (session_status() === PHP_SESSION_NONE) {
         <div class="collapse fw-bold fst-italic" style="font-family: 'Rokkitt'" id="collapseDashboard" aria-labelledby="headingDashboard" data-bs-parent="#sidenavAccordion">
             <nav class="sb-sidenav-menu-nested nav">
                 <!-- Dynamic Links for Logistic 1 and Logistic 2 -->
-                <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'logistic1_admin') : ?>
+                <?php if (isset($_SESSION['role']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'logistic1_admin')) : ?>
                     <a class="nav-link" href="/sub-modules/logistic1/dashboard.php">
                         <i class="fa-solid fa-truck-fast" style="margin-right: 8px; color: #3CB371;"></i> LOGISTIC 1
                     </a>
                 <?php endif; ?>
 
-                <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'logistic2_admin') : ?>
+                <?php if (isset($_SESSION['role']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'logistic2_admin')) : ?>
                     <a class="nav-link" href="/sub-modules/logistic2/dashboard.php">
                         <i class="fa-solid fa-truck-fast" style="margin-right: 8px; color: #3CB371;"></i> LOGISTIC 2
                     </a>
@@ -43,7 +48,7 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
 
         <!-- Admin Panel for Main Admin -->
-        <?php if ($_SESSION['role'] == 'admin') : ?>
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') : ?>
             <div class="sb-sidenav-menu-heading">Admin</div>
             <a class="nav-link collapsed fw-bold" style="font-family: 'Cabin Condensed Static'" href="#" id="AdminDropdown" data-bs-toggle="collapse" data-bs-target="#collapseAdmin" aria-expanded="false" aria-controls="collapseAdmin">
                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt" style="color: #3CB371;"></i></div>
@@ -121,5 +126,16 @@ if (session_status() === PHP_SESSION_NONE) {
 <!-- Footer Section -->
 <div class="sb-sidenav-footer">
     <div class="small">Logged in as:</div>
-    <div><?php echo htmlspecialchars($_SESSION['username']); ?> (<?php echo htmlspecialchars($_SESSION['role']); ?>)</div>
+    <div>
+        <?php 
+        if (isset($_SESSION['username']) && isset($_SESSION['role'])) {
+            echo htmlspecialchars($_SESSION['username']) . ' (' . htmlspecialchars($_SESSION['role']) . ')';
+        } else {
+            echo 'Guest';
+        }
+        ?>
+    </div>
 </div>
+
+</body>
+</html>
