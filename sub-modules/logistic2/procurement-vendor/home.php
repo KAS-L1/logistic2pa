@@ -1,4 +1,10 @@
-<!DOCTYPE html>
+<?php
+ob_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?><!DOCT
+YPE html>
 <html lang="en">
     <head>
         <?php include('../../../includes/logistic2/header.php'); ?>

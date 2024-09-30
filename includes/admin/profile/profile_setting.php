@@ -14,6 +14,15 @@ if (empty($_SESSION['csrf_token'])) {
 
 include '../../../config/db_connect.php';
 
+// Load PHPMailer
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+// Include PHPMailer files
+require '../../../vendor/phpmailer/phpmailer/src/Exception.php';
+require '../../../vendor/phpmailer/phpmailer/src/PHPMailer.php';
+require '../../../vendor/phpmailer/phpmailer/src/SMTP.php';
+
 $user_id = $_SESSION['user_id']; // Use session user_id
 
 // Fetch user information from the database
@@ -24,13 +33,35 @@ $stmt->bind_result($username, $email, $profile_pic, $first_name, $last_name, $co
 $stmt->fetch();
 $stmt->close();
 
-// Function to send profile update notification
+// Function to send profile update notification using PHPMailer
 function sendProfileUpdateNotification($email, $username) {
-    $subject = "Profile Updated Successfully";
-    $message = "Hello $username,\n\nYour profile has been updated successfully.\n\nIf you did not make these changes, please contact support immediately.";
-    $headers = "From: no-reply@logisticsystem.com";
+    $mail = new PHPMailer(true); // Create a new PHPMailer instance
 
-    mail($email, $subject, $message, $headers);
+    try {
+        // Server settings
+        $mail->isSMTP(); // Set mailer to use SMTP
+        $mail->Host = 'smtp.gmail.com'; // Specify main and backup SMTP servers
+        $mail->SMTPAuth = true; // Enable SMTP authentication
+        $mail->Username = 'kasl.54370906@gmail.com'; // SMTP username
+        $mail->Password = 'lgrg mpma cwzo uhdv'; // SMTP password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Enable TLS encryption
+        $mail->Port = 587; // TCP port to connect to
+
+        // Recipients
+        $mail->setFrom('no-reply@logisticsystem.com', 'Logistic System');
+        $mail->addAddress($email); // Add recipient
+
+        // Content
+        $mail->isHTML(true); // Set email format to HTML
+        $mail->Subject = 'Profile Updated Successfully';
+        $mail->Body    = "Hello $username,<br><br>Your profile has been updated successfully.<br><br>If you did not make these changes, please contact support immediately.";
+        $mail->AltBody = "Hello $username,\n\nYour profile has been updated successfully.\n\nIf you did not make these changes, please contact support immediately."; // Fallback for non-HTML clients
+
+        $mail->send(); // Send the email
+        // echo 'Profile update notification has been sent';
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }
 }
 
 // Handle form submission
@@ -237,11 +268,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="section-title">Account Information</div>
                             <div class="form-group">
                                 <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" name="username" value="<?php echo htmlspecialchars($username); ?>" required>
+                                <input type="text" class="form-control" id="username" name="username" value="<?php echo htmlspecialchars($username ?? '', ENT_QUOTES, 'UTF-8'); ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required>
+                                <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($email ?? '', ENT_QUOTES, 'UTF-8'); ?>" required>
                             </div>
 
                             <!-- Section 3: Change Password -->
@@ -276,37 +307,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <script>
-        function previewImage(event) {
-            var preview = document.getElementById('preview');
-            var modalImage = document.getElementById('modalImage');
-            preview.src = URL.createObjectURL(event.target.files[0]);
-            modalImage.src = preview.src;
+    function previewImage(event) {
+        var preview = document.getElementById('preview');
+        var modalImage = document.getElementById('modalImage');
+        preview.src = URL.createObjectURL(event.target.files[0]);
+        modalImage.src = preview.src;
+    }
+
+    function validatePassword() {
+        var password = document.getElementById("password").value;
+
+        // Skip validation if the password field is empty (optional password change)
+        if (password === "") {
+            return true; // No password provided, skip validation and allow form submission
         }
 
-        function validatePassword() {
-            var password = document.getElementById("password").value;
-            var errorMsg = "";
+        var errorMsg = "";
 
-            if (password.length < 8) {
-                errorMsg = "Password must be at least 8 characters.";
-            } else if (!/[A-Z]/.test(password)) {
-                errorMsg = "Password must contain at least one uppercase letter.";
-            } else if (!/[a-z]/.test(password)) {
-                errorMsg = "Password must contain at least one lowercase letter.";
-            } else if (!/[0-9]/.test(password)) {
-                errorMsg = "Password must contain at least one number.";
-            } else if (!/[!@#$%^&*]/.test(password)) {
-                errorMsg = "Password must contain at least one special character.";
-            }
-
-            if (errorMsg !== "") {
-                alert(errorMsg);
-                return false;
-            }
-
-            return true;
+        if (password.length < 8) {
+            errorMsg = "Password must be at least 8 characters.";
+        } else if (!/[A-Z]/.test(password)) {
+            errorMsg = "Password must contain at least one uppercase letter.";
+        } else if (!/[a-z]/.test(password)) {
+            errorMsg = "Password must contain at least one lowercase letter.";
+        } else if (!/[0-9]/.test(password)) {
+            errorMsg = "Password must contain at least one number.";
+        } else if (!/[!@#$%^&*]/.test(password)) {
+            errorMsg = "Password must contain at least one special character.";
         }
-    </script>
+
+        if (errorMsg !== "") {
+            alert(errorMsg);
+            return false; // Prevent form submission if validation fails
+        }
+
+        return true; // Allow form submission if password is valid
+    }
+</script>
+
 
             <!-- Footer -->
             <footer class="py-4 bg-light mt-auto">
