@@ -92,90 +92,91 @@ function sendEmail($email, $username, $password) {
     <link href="/css/condense.css" rel="stylesheet">
     <link href="/css/inconsolata.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Roboto Condensed', sans-serif;
-            background-color: #f4f6f9;
-            color: #333;
-        }
-        h1, h2 {
-            font-weight: 500;
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 20px;
-            font-family: 'Roboto Condensed';
-        }
-        .container-fluid {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .form-label {
-            font-weight: 600;
-            color: #34495e;
-        }
-        .form-control, .form-select {
-            border-radius: 5px;
-            border: 1px solid #ced4da;
-            transition: all 0.3s ease;
-        }
-        .form-control:focus, .form-select:focus {
-            border-color: #3498db;
-            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-        }
-        .btn-primary {
-            background-color: #3498db;
-            border: none;
-            font-weight: 600;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-        .btn-primary:hover {
-            background-color: #2980b9;
-        }
-        .btn-sm {
-            padding: 5px 10px;
-            font-size: 0.9rem;
-        }
-        .table {
-            background-color: white;
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-        }
-        .table thead {
-            background-color: #3CB371;
-            color: white;
-            font-family: 'Cabin Condensed Static';
-        }
-        .table th, .table td {
-            padding: 15px;
-            vertical-align: middle;
-            text-align: center;
-            font-family: 'Rokkitt';
-        }
-        .table tbody tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-        .btn-warning, .btn-danger {
-            font-weight: 600;
-        }
-        .btn-warning:hover {
-            background-color: #d35400;
-            border-color: #d35400;
-        }
-        .btn-danger:hover {
-            background-color: #c0392b;
-            border-color: #c0392b;
-        }
-        hr.my-4 {
-            border: 0;
-            height: 3px; 
-            background: #3498db;
-            margin: 40px 0;
-            border-radius: 5px; 
-            opacity: 0.8; 
-        }
-        .profile-card {
+    body {
+        font-family: 'Roboto Condensed', sans-serif;
+        background-color: #f4f6f9;
+        color: #333;
+    }
+    h1, h2 {
+        font-weight: 500;
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 20px;
+        font-family: 'Roboto Condensed';
+    }
+    .container-fluid {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .form-label {
+        font-weight: 600;
+        color: #34495e;
+    }
+    .form-control, .form-select {
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        transition: all 0.3s ease;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+    }
+    .btn-primary {
+        background-color: #3498db;
+        border: none;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    .btn-primary:hover {
+        background-color: #2980b9;
+    }
+    .btn-sm {
+        padding: 5px 10px;
+        font-size: 0.9rem;
+    }
+    .table {
+        background-color: white;
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+    .table thead {
+        background-color: #3CB371;
+        color: white;
+        font-family: 'Cabin Condensed Static';
+    }
+    .table th, .table td {
+        padding: 15px;
+        vertical-align: middle;
+        text-align: center;
+        font-family: 'Rokkitt';
+    }
+    .table tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+    .btn-warning, .btn-danger {
+        font-weight: 600;
+    }
+    .btn-warning:hover {
+        background-color: #d35400;
+        border-color: #d35400;
+    }
+    .btn-danger:hover {
+        background-color: #c0392b;
+        border-color: #c0392b;
+    }
+    hr.my-4 {
+    border: 0;
+    height: 3px; 
+    background: #3498db;
+    margin: 40px 0;
+    border-radius: 5px; 
+    opacity: 0.8; 
+    }
+
+    .profile-card {
             max-width: 600px;
             margin: 30px auto;
             background-color: #fff;
@@ -211,9 +212,7 @@ function sendEmail($email, $username, $password) {
             background: linear-gradient(135deg, #2ca657, #0077e6); /* Slightly darker hover effect */
         }
 
-
 </style>
-    </style>
 
 </head>
 
@@ -307,8 +306,4 @@ function sendEmail($email, $username, $password) {
 
     <?php include('../index/script.php'); ?>
 </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> d7b1daadf490ea648d9d25d2582cb7b68b83a78e

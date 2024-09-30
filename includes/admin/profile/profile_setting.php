@@ -39,26 +39,25 @@ function sendProfileUpdateNotification($email, $username) {
 
     try {
         // Server settings
-        $mail->isSMTP(); // Set mailer to use SMTP
-        $mail->Host = 'smtp.gmail.com'; // Specify main and backup SMTP servers
-        $mail->SMTPAuth = true; // Enable SMTP authentication
-        $mail->Username = 'kasl.54370906@gmail.com'; // SMTP username
-        $mail->Password = 'lgrg mpma cwzo uhdv'; // SMTP password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Enable TLS encryption
-        $mail->Port = 587; // TCP port to connect to
+        $mail->isSMTP(); 
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true; 
+        $mail->Username = 'kasl.54370906@gmail.com'; 
+        $mail->Password = 'lgrg mpma cwzo uhdv'; 
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
+        $mail->Port = 587; 
 
         // Recipients
         $mail->setFrom('no-reply@logisticsystem.com', 'Logistic System');
-        $mail->addAddress($email); // Add recipient
+        $mail->addAddress($email); 
 
         // Content
-        $mail->isHTML(true); // Set email format to HTML
+        $mail->isHTML(true); 
         $mail->Subject = 'Profile Updated Successfully';
         $mail->Body    = "Hello $username,<br><br>Your profile has been updated successfully.<br><br>If you did not make these changes, please contact support immediately.";
-        $mail->AltBody = "Hello $username,\n\nYour profile has been updated successfully.\n\nIf you did not make these changes, please contact support immediately."; // Fallback for non-HTML clients
+        $mail->AltBody = "Hello $username,\n\nYour profile has been updated successfully.\n\nIf you did not make these changes, please contact support immediately."; 
 
-        $mail->send(); // Send the email
-        // echo 'Profile update notification has been sent';
+        $mail->send();
     } catch (Exception $e) {
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
@@ -66,7 +65,6 @@ function sendProfileUpdateNotification($email, $username) {
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // CSRF protection check
     if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
         die("Invalid CSRF token.");
     }
@@ -81,7 +79,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validate email
     if (!filter_var($new_email, FILTER_VALIDATE_EMAIL)) {
-        echo "<script>alert('Invalid email format.');</script>";
+        $_SESSION['toast_message'] = 'Invalid email format';
+        $_SESSION['toast_type'] = 'error';
     } else {
         // Check if a new profile picture is uploaded
         if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0) {
@@ -90,20 +89,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $target_file = $target_dir . $filename;
             $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-            // Validate image file type and size
             $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
             $check = getimagesize($_FILES["profile_pic"]["tmp_name"]);
             if ($check !== false && in_array($imageFileType, $allowed_types)) {
                 if ($_FILES['profile_pic']['size'] > 5000000) {
-                    echo "<script>alert('File is too large. Maximum size is 5MB.');</script>";
+                    $_SESSION['toast_message'] = 'File is too large. Maximum size is 5MB.';
+                    $_SESSION['toast_type'] = 'error';
                 } elseif (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file)) {
                     $profile_pic_path = "/includes/admin/profile/uploads/" . $filename;
                     $_SESSION['profile_pic'] = $profile_pic_path;
                 } else {
-                    echo "<script>alert('Error uploading profile picture. Check file permissions.');</script>";
+                    $_SESSION['toast_message'] = 'Error uploading profile picture. Check file permissions.';
+                    $_SESSION['toast_type'] = 'error';
                 }
             } else {
-                echo "<script>alert('Only JPG, JPEG, PNG, and GIF files are allowed.');</script>";
+                $_SESSION['toast_message'] = 'Only JPG, JPEG, PNG, and GIF files are allowed.';
+                $_SESSION['toast_type'] = 'error';
             }
         }
 
@@ -117,13 +118,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         if ($stmt->execute()) {
-            sendProfileUpdateNotification($new_email, $new_username);  // Send notification email
-            echo "<script>alert('Profile updated successfully!'); window.location.href = 'profile_setting.php';</script>";
+            sendProfileUpdateNotification($new_email, $new_username);  
+            $_SESSION['toast_message'] = 'Profile updated successfully!';
+            $_SESSION['toast_type'] = 'success';
         } else {
-            echo "<script>alert('Error updating profile.');</script>";
+            $_SESSION['toast_message'] = 'Error updating profile.';
+            $_SESSION['toast_type'] = 'error';
         }
         $stmt->close();
     }
+
+    // Redirect to the same page to display the toast
+    header("Location: profile_setting.php");
+    exit();
 }
 ?>
 
@@ -135,8 +142,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/rokkito.css" rel="stylesheet">
-    <link href="/css/condense.css" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
@@ -213,14 +218,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             flex: 1;
             padding: 20px;
         }
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .toast {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            color: white;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .toast-success {
+            background-color: #28a745;
+        }
+
+        .toast-error {
+            background-color: #dc3545;
+        }
     </style>
 </head>
+<body>
 
-<body class="sb-nav-fixed">
-    <!-- Top Navigation Bar -->
-    <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
-        <?php include('../../index/topnavbar.php'); ?>
-    </nav>
+    <div class="toast-container" id="toast-container">
+        <div id="toast" class="toast"></div>
+    </div>
 
     <div id="layoutSidenav">
         <!-- Sidebar -->
@@ -230,21 +258,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </nav>
         </div>
 
-        <!-- Main Content -->
         <div id="layoutSidenav_content">
             <main>
                 <div class="container">
                     <div class="profile-card">
                         <h1>Edit Profile</h1>
                         <form action="/includes/admin/profile/profile_setting.php" method="POST" enctype="multipart/form-data" onsubmit="return validatePassword();">
-                            <!-- CSRF Token -->
                             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
 
                             <div class="text-center mb-3">
-                                <!-- Profile Picture Preview -->
-                                <img id="preview" src="<?php echo htmlspecialchars($_SESSION['profile_pic'] ?? '/assets/img/default_profile.png'); ?>" alt="Profile Picture" data-bs-toggle="modal" data-bs-target="#profileModal">
+                                <img id="preview" src="<?php echo htmlspecialchars($_SESSION['profile_pic'] ?? '/assets/img/default_profile.png'); ?>" alt="Profile Picture">
                             </div>
-                            <div class="mb-3">
+
+                            <!-- Profile Edit Fields -->
+                             <div class="mb-3">
                                 <label for="profile_pic" style="font-family: 'Cabin Condensed Static'" class="form-label">Upload New Profile Picture</label>
                                 <input type="file" class="form-control" id="profile_pic" name="profile_pic" onchange="previewImage(event)">
                             </div>
@@ -280,80 +307,75 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="form-group">
                                 <label for="password" class="form-label">New Password (optional)</label>
                                 <input type="password" class="form-control" id="password" name="password" placeholder="Leave blank to keep current password">
-                            </div>
+                            </div>  
+                             
 
                             <button type="submit" class="btn btn-primary1">Update Profile</button>
                         </form>
                     </div>
                 </div>
             </main>
-
-            <!-- Footer -->
-            <!-- <footer class="py-4 bg-light mt-auto">
-                <?php include('../../index/footer.php'); ?>
-            </footer> -->
-        </div>
-    </div>
-
-    <!-- Modal for Zooming Image -->
-    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body text-center">
-                    <img id="modalImage" class="modal-img" src="<?php echo htmlspecialchars($_SESSION['profile_pic'] ?? '/assets/img/default_profile.png'); ?>" alt="Zoomed Profile Picture">
-                </div>
-            </div>
         </div>
     </div>
 
     <script>
-    function previewImage(event) {
-        var preview = document.getElementById('preview');
-        var modalImage = document.getElementById('modalImage');
-        preview.src = URL.createObjectURL(event.target.files[0]);
-        modalImage.src = preview.src;
-    }
+        function showToast(message, type) {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
 
-    function validatePassword() {
-        var password = document.getElementById("password").value;
+            // Add appropriate class based on the type of message
+            if (type === 'success') {
+                toast.classList.add('toast-success');
+            } else if (type === 'error') {
+                toast.classList.add('toast-error');
+            }
 
-        // Skip validation if the password field is empty (optional password change)
-        if (password === "") {
-            return true; // No password provided, skip validation and allow form submission
+            toast.style.display = 'block';
+            toastContainer.style.display = 'block';
+
+            setTimeout(() => {
+                toast.style.display = 'none';
+                toastContainer.style.display = 'none';
+                toast.classList.remove('toast-success', 'toast-error'); // Reset class after toast disappears
+            }, 3000);
         }
 
-        var errorMsg = "";
+        // Display the toast message from PHP
+        <?php if (isset($_SESSION['toast_message'])): ?>
+            showToast('<?php echo $_SESSION['toast_message']; ?>', '<?php echo $_SESSION['toast_type']; ?>');
+            <?php unset($_SESSION['toast_message'], $_SESSION['toast_type']); ?>
+        <?php endif; ?>
 
-        if (password.length < 8) {
-            errorMsg = "Password must be at least 8 characters.";
-        } else if (!/[A-Z]/.test(password)) {
-            errorMsg = "Password must contain at least one uppercase letter.";
-        } else if (!/[a-z]/.test(password)) {
-            errorMsg = "Password must contain at least one lowercase letter.";
-        } else if (!/[0-9]/.test(password)) {
-            errorMsg = "Password must contain at least one number.";
-        } else if (!/[!@#$%^&*]/.test(password)) {
-            errorMsg = "Password must contain at least one special character.";
+        function validatePassword() {
+            var password = document.getElementById("password").value;
+
+            if (password === "") {
+                return true;
+            }
+
+            var errorMsg = "";
+
+            if (password.length < 8) {
+                errorMsg = "Password must be at least 8 characters.";
+            } else if (!/[A-Z]/.test(password)) {
+                errorMsg = "Password must contain at least one uppercase letter.";
+            } else if (!/[a-z]/.test(password)) {
+                errorMsg = "Password must contain at least one lowercase letter.";
+            } else if (!/[0-9]/.test(password)) {
+                errorMsg = "Password must contain at least one number.";
+            } else if (!/[!@#$%^&*]/.test(password)) {
+                errorMsg = "Password must contain at least one special character.";
+            }
+
+            if (errorMsg !== "") {
+                showToast(errorMsg, 'error');
+                return false;
+            }
+
+            return true;
         }
+    </script>
 
-        if (errorMsg !== "") {
-            alert(errorMsg);
-            return false; // Prevent form submission if validation fails
-        }
-
-        return true; // Allow form submission if password is valid
-    }
-</script>
-
-
-            <!-- Footer -->
-            <footer class="py-4 bg-light mt-auto">
-                <?php include('../../index/footer.php'); ?>
-            </footer>
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <?php include('../../index/script.php'); ?>
 </body>
 </html>
