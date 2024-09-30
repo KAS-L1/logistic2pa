@@ -14,9 +14,18 @@ if (isset($_GET['id'])) {
     $stmt->bind_param("i", $user_id);
 
     if ($stmt->execute()) {
-        echo "<script>alert('User deleted successfully.'); window.location.href = 'manage_users.php';</script>";
+        // Set success toast notification
+        $_SESSION['toast_message'] = 'User deleted successfully.';
+        $_SESSION['toast_type'] = 'success'; // Set the type to success
     } else {
-        echo "<script>alert('Error deleting user.'); window.location.href = 'manage_users.php';</script>";
+        // Set error toast notification
+        $_SESSION['toast_message'] = 'Error deleting user.';
+        $_SESSION['toast_type'] = 'danger'; // Set the type to danger
     }
     $stmt->close();
+
+    // Redirect back to manage_users.php to show the toast
+    header("Location: manage_users.php");
+    exit();
 }
+?>

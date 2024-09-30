@@ -22,9 +22,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
     <div class="nav">
         <!-- Main Admin Link (conditionally visible based on session role) -->
         <?php if ($role === 'admin') : ?>
-            <a class="nav-link collapsed fw-bold" style="font-family: 'Cabin Condensed Static'; color: black;" href="/index.php">
+            <a class="nav-link collapsed fw-bold" style="font-family: 'Cabin Condensed Static'; color: black; font-size: 12px;" href="/index.php">
                 <div class="sb-nav-link-icon"><i class="fas fa-th-large" style="color: #3CB371; margin-right: 8px;"></i></div>
-                Admin Dashboard
+                ADMIN DASHBOARD
             </a>
         <?php endif; ?>
         

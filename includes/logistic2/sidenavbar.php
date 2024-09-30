@@ -21,20 +21,17 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
 <div class="sb-sidenav-menu">
     <div class="nav">
         <!-- Main Admin Link (added) -->
-        <?php
-        if ($role === 'admin') {
-            echo '
-            <a class="nav-link collapsed fw-bold" style="font-family: \'Montserrat\', sans-serif; color: black;" href="/index.php">
+          <?php if ($role === 'admin') : ?>
+            <a class="nav-link collapsed fw-bold" style="font-family: 'Cabin Condensed Static'; color: black; font-size: 12px;" href="/index.php">
                 <div class="sb-nav-link-icon"><i class="fas fa-th-large" style="color: #3CB371; margin-right: 8px;"></i></div>
-                Admin Dashboard
-            </a>';
-        }
-        ?>
+                ADMIN DASHBOARD
+            </a>
+        <?php endif; ?>
         
         <!-- Core Section -->
-        <div class="sb-sidenav-menu-heading" style="font-family: 'Nunito', sans-serif;">Core</div>
-        <a class="nav-link collapsed fw-bold" style="font-family: 'Montserrat', sans-serif;" href="#" id="logisticDropdown" data-bs-toggle="collapse" data-bs-target="#collapseDashboard" aria-expanded="false" aria-controls="collapseDashboard">
-            <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-tachometer-alt"></i></div>
+      <div class="sb-sidenav-menu-heading" style="color: #3CB371;">Core</div>
+        <a class="nav-link collapsed fw-bold" style="font-family: 'Cabin Condensed Static';" href="#" id="logisticDropdown" data-bs-toggle="collapse" data-bs-target="#collapseDashboard" aria-expanded="false" aria-controls="collapseDashboard">
+            <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-shipping-fast"></i></div>
             LOGISTIC 2
             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
         </a>

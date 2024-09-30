@@ -56,88 +56,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Register</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: url('/assets/img/paradisebg.jpg') no-repeat center center fixed; /* Logistics image */
-            background-size: cover;
-            position: relative;
-        }
-
-        /* Green overlay for contrast */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(40, 167, 69, 0.5); /* Green overlay with transparency */
-            z-index: 1;
-        }
-
-        .card {
-            z-index: 2; /* Ensure the card stays above the overlay */
-            width: 400px;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 0.375rem;
-            box-shadow: 0 0 20px rgba(40, 167, 69, 0.6); /* Green shadow around the card */
-        }
-
-        /* Styling for the logo */
-        .logo {
-            display: block;
-            margin: 0 auto 20px auto;
-            max-width: 150px; /* Adjust the size of the logo as needed */
-        }
-
-        /* Style for password and eye icon container */
-        .password-container {
-            position: relative;
-        }
-        .password-container input {
-            padding-right: 45px;
-        }
-        .toggle-password {
-            position: absolute;
-            top: 50%;
-            right: 10px;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: rgba(0, 0, 0, 0.5);
-        }
-        .toggle-password:hover {
-            color: rgba(0, 0, 0, 0.8);
-        }
-
-        /* Apply green shadow to input fields */
-        .form-control {
-            border: 1px solid #28a745; /* Green border */
-            box-shadow: 0 0 10px rgba(40, 167, 69, 0.6); /* Green shadow */
-            border-radius: 0.375rem; /* Optional: round corners */
-        }
-
-        /* Apply green shadow to buttons */
-        .btn-primary {
-            background-color: #28a745; /* Green background */
-            border: none; /* Remove border */
-            box-shadow: 0 0 10px rgba(40, 167, 69, 0.6); /* Green shadow */
-            transition: box-shadow 0.3s ease-in-out; /* Smooth shadow transition on hover */
-        }
-
-        .btn-primary:hover {
-            box-shadow: 0 0 15px rgba(40, 167, 69, 0.8); /* More intense shadow on hover */
-        }
-
-        /* Apply green shadow to the form card */
-        .card {
-            box-shadow: 0 0 20px rgba(40, 167, 69, 0.6); /* Green shadow around the card */
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/rokkito.css" rel="stylesheet">
+    <link href="/css/condense.css" rel="stylesheet">
+    <link href="/css/inconsolata.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="/css/admin_css/admin_reg.css" rel="stylesheet">
 </head>
 <body>
     <div class="card">

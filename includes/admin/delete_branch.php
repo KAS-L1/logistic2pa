@@ -1,9 +1,9 @@
 <?php
-// session_start();
-// if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'admin') {
-//     header("Location: /admin_login/admin_login.php");
-//     exit();
-// }
+session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'admin') {
+    header("Location: /admin_login/admin_login.php");
+    exit();
+}
 include '../../config/db_connect.php';  // Database connection
 
 // Check if branch ID is provided
@@ -15,10 +15,18 @@ if (isset($_GET['id'])) {
     $stmt->bind_param("i", $branch_id);
 
     if ($stmt->execute()) {
-        echo "<script>alert('Branch deleted successfully.'); window.location.href = 'manage_branches.php';</script>";
+        // Set success toast notification
+        $_SESSION['toast_message'] = 'Branch deleted successfully.';
+        $_SESSION['toast_type'] = 'success'; // Set the type to success
     } else {
-        echo "<script>alert('Error deleting branch.'); window.location.href = 'manage_branches.php';</script>";
+        // Set error toast notification
+        $_SESSION['toast_message'] = 'Error deleting branch.';
+        $_SESSION['toast_type'] = 'danger'; // Set the type to danger
     }
     $stmt->close();
+
+    // Redirect back to manage_branches.php to show the toast
+    header("Location: manage_branches.php");
+    exit();
 }
 ?>

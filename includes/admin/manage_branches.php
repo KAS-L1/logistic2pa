@@ -10,27 +10,34 @@ include '../../config/db_connect.php';  // Database connection
 $query = "SELECT b.branch_id, b.branch_name, b.location, u.username AS manager FROM branches b LEFT JOIN users u ON b.manager_id = u.user_id";
 $result = $conn->query($query);
 
+// Check if the query was successful
+if (!$result) {
+    die("Database query failed: " . $conn->error);
+}
+
 // Handle branch addition
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_branch'])) {
     $branch_name = $_POST['branch_name'];
     $location = $_POST['location'];
+    $manager_id = $_POST['manager_id']; // Make sure to collect manager_id
 
-    $stmt = $conn->prepare("INSERT INTO branches (branch_name, location) VALUES (?, ?)");
-    $stmt->bind_param("ss", $branch_name, $location); // Only bind branch_name and location
+    $stmt = $conn->prepare("INSERT INTO branches (branch_name, location, manager_id) VALUES (?, ?, ?)");
+    $stmt->bind_param("ssi", $branch_name, $location, $manager_id); // Bind all three values
 
     if ($stmt->execute()) {
-        $_SESSION['branch_added'] = true; // Set a session variable to indicate success
+        $_SESSION['toast_message'] = 'Branch added successfully.'; // Set a session variable for the toast message
+        $_SESSION['toast_type'] = 'success'; // Set a session variable for the toast type
         header("Location: manage_branches.php"); // Redirect to prevent resubmission
         exit(); // Make sure to exit after redirection
     } else {
-        echo "<script>alert('Error adding branch.');</script>";
+        $_SESSION['toast_message'] = 'Error adding branch: ' . $stmt->error; // Error message
+        $_SESSION['toast_type'] = 'danger'; // Error type
     }
     $stmt->close();
 }
 
 // Check for success message
-$branch_added = isset($_SESSION['branch_added']);
-unset($_SESSION['branch_added']); // Clear the session variable after reading it
+$branch_added = isset($_SESSION['toast_type']);
 ?>
 
 <!DOCTYPE html>
@@ -39,131 +46,14 @@ unset($_SESSION['branch_added']); // Clear the session variable after reading it
     <?php include('../index/header.php'); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Branches</title>
+    <title>Manage Users</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/rokkito.css" rel="stylesheet">
     <link href="/css/condense.css" rel="stylesheet">
     <link href="/css/inconsolata.css" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Roboto Condensed', sans-serif;
-            background-color: #f4f6f9;
-            color: #333;
-        }
-        h1, h2 {
-            font-weight: 500;
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 20px;
-            font-family: 'Roboto Condensed';
-        }
-        .container-fluid {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .form-label {
-            font-weight: 600;
-            color: #34495e;
-        }
-        .form-control, .form-select {
-            border-radius: 5px;
-            border: 1px solid #ced4da;
-            transition: all 0.3s ease;
-        }
-        .form-control:focus, .form-select:focus {
-            border-color: #3498db;
-            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-        }
-        .btn-primary {
-            background-color: #3498db;
-            border: none;
-            font-weight: 600;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-        .btn-primary:hover {
-            background-color: #2980b9;
-        }
-        .btn-sm {
-            padding: 5px 10px;
-            font-size: 0.9rem;
-        }
-        .table {
-            background-color: white;
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-        }
-        .table thead {
-            background-color: #3CB371;
-            color: white;
-            font-family: 'Cabin Condensed Static';
-        }
-        .table th, .table td {
-            padding: 15px;
-            vertical-align: middle;
-            text-align: center;
-            font-family: 'Rokkitt';
-        }
-        .table tbody tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-        .btn-warning, .btn-danger {
-            font-weight: 600;
-        }
-        .btn-warning:hover {
-            background-color: #d35400;
-            border-color: #d35400;
-        }
-        .btn-danger:hover {
-            background-color: #c0392b;
-            border-color: #c0392b;
-        }
-        hr.my-4 {
-            border: 0;
-            height: 3px; 
-            background: #3498db;
-            margin: 40px 0;
-            border-radius: 5px; 
-            opacity: 0.8; 
-        }
-        .profile-card {
-            max-width: 600px;
-            margin: 30px auto;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-top: 20px;
-        }
-        .profile-card h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 20px;
-            font-family: 'inconsolata';
-        }
-        .form-group {
-            margin-bottom: 15px;
-            font-family: 'Rokkitt', Courier, monospace;
-        }
-        .btn-primary1 {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            background: linear-gradient(135deg, #3CB371, #008cff);
-            border: none;
-            color: #fff;
-            font-weight: bold;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-            transition: background 0.3s ease;
-        }
-        .btn-primary1:hover {
-            background: linear-gradient(135deg, #2ca657, #0077e6); /* Slightly darker hover effect */
-        }
-    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="/css/admin_css/manage_branch.css" rel="stylesheet">
 </head>
 
 <body class="sb-nav-fixed">
@@ -196,6 +86,23 @@ unset($_SESSION['branch_added']); // Clear the session variable after reading it
                         <div class="form-group mb-3">
                             <label for="location" class="form-label">Location</label>
                             <input type="text" class="form-control" id="location" name="location" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="manager_id" class="form-label">Assign Manager</label>
+                            <select class="form-control" id="manager_id" name="manager_id" required>
+                                <?php
+                                // Fetch managers for the dropdown
+                                $manager_query = "SELECT user_id, username FROM users WHERE role = 'admin'";
+                                $manager_result = $conn->query($manager_query);
+                                if ($manager_result->num_rows > 0) {
+                                    while ($manager_row = $manager_result->fetch_assoc()) {
+                                        echo "<option value='{$manager_row['user_id']}'>{$manager_row['username']}</option>";
+                                    }
+                                } else {
+                                    echo "<option value=''>No managers available</option>";
+                                }
+                                ?>
+                            </select>
                         </div>
                         <button type="submit" class="btn btn-primary1" name="add_branch">Add Branch</button>
                     </form>
@@ -235,7 +142,36 @@ unset($_SESSION['branch_added']); // Clear the session variable after reading it
                 </table>
             </main>
 
-            <!-- Footer -->
+            <!-- Toast Notification -->
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <?php if (isset($_SESSION['toast_type']) && isset($_SESSION['toast_message'])): ?>
+                    <div id="liveToast" class="toast align-items-center text-bg-<?php echo $_SESSION['toast_type']; ?> border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                <?php echo $_SESSION['toast_message']; ?>
+                            </div>
+                            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+            
+            <script>
+                $(document).ready(function() {
+                    <?php if (isset($_SESSION['toast_type']) && isset($_SESSION['toast_message'])): ?>
+                        var toastLive = document.getElementById('liveToast');
+                        var toast = new bootstrap.Toast(toastLive);
+                        toast.show();
+
+                        // Clear session toast variables after displaying
+                        <?php
+                        unset($_SESSION['toast_message']);
+                        unset($_SESSION['toast_type']);
+                        ?>
+                    <?php endif; ?>
+                });
+            </script>
+
             <footer class="py-4 bg-light mt-auto">
                 <?php include('../index/footer.php'); ?>
             </footer>

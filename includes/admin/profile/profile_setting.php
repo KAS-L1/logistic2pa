@@ -137,114 +137,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php include('../../index/header.php'); ?>
+<?php include('../../index/header.php'); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile</title>
+    <title>Manage Users</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .profile-card {
-            max-width: 600px;
-            margin: 30px auto;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-top: 50px;
-        }
-        .profile-card h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-        #preview {
-            display: block;
-            margin: 10px auto;
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 2px solid #ccc;
-            cursor: pointer;
-        }
-        #profileModal .modal-content {
-            background-color: rgba(0, 0, 0, 0.75);
-            color: white;
-        }
-        .form-group {
-            margin-bottom: 15px;
-            font-family: 'Rokkitt', Courier, monospace;
-        }
-        .btn-primary1 {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            background: linear-gradient(135deg, #3CB371, #008cff);
-            border: none;
-            color: #fff;
-            font-weight: bold;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-            transition: background 0.3s ease;
-        }
-
-        .btn-primary1:hover {
-            background: linear-gradient(135deg, #2ca657, #0077e6); /* Slightly darker hover effect */
-        }
-        .section-title {
-            font-size: 18px;
-            margin-bottom: 10px;
-            color: #6c757d;
-            font-weight: bold;
-            font-family: 'Cabin Condensed Static', serif;
-        }
-        .modal-img {
-            max-width: 100%;
-            height: auto;
-        }
-        /* Flexbox layout */
-        #layoutSidenav {
-            display: flex;
-            min-height: 100vh;
-            overflow: hidden;
-        }
-        #layoutSidenav_nav {
-            flex: 0 0 250px;
-        }
-        #layoutSidenav_content {
-            flex: 1;
-            padding: 20px;
-        }
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: none;
-        }
-
-        .toast {
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 14px;
-            color: white;
-            margin-bottom: 10px;
-            display: none;
-        }
-
-        .toast-success {
-            background-color: #28a745;
-        }
-
-        .toast-error {
-            background-color: #dc3545;
-        }
-    </style>
+    <link href="/css/rokkito.css" rel="stylesheet">
+    <link href="/css/condense.css" rel="stylesheet">
+    <link href="/css/inconsolata.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="/css/admin_css/profile.css" rel="stylesheet">
 </head>
 <body>
+<body class="sb-nav-fixed">
+    <!-- Top Navigation Bar -->
+    <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
+        <?php include('../../index/topnavbar.php'); ?>
+    </nav>
 
     <div class="toast-container" id="toast-container">
         <div id="toast" class="toast"></div>
@@ -377,5 +287,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     </script>
 
+    <!-- Scripts -->
+    <footer class="py-4 bg-light mt-auto">
+                <?php include('../../index/footer.php'); ?>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <?php include('../../index/script.php'); ?>
 </body>
 </html>
