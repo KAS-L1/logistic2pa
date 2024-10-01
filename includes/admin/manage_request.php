@@ -143,13 +143,12 @@ function sendApprovalEmail($email, $name, $password) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <link href="/css/admin_css/manage_request.css" rel="stylesheet">
 </head>
+
 <body class="sb-nav-fixed">
-    <!-- Top Navigation Bar -->
     <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
         <?php include('../index/topnavbar.php'); ?>
     </nav>
 
-    <!-- Main Layout for Sidebar and Content -->
     <div id="layoutSidenav">
         <!-- Sidebar -->
         <div id="layoutSidenav_nav">
@@ -163,7 +162,7 @@ function sendApprovalEmail($email, $name, $password) {
             <main>
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Pending Account Requests</h1>
-                    
+
                     <!-- Toast Notification -->
                     <?php if (isset($_SESSION['toast_message'])): ?>
                         <div class="toast-container position-fixed top-0 end-0 p-3">
@@ -213,7 +212,7 @@ function sendApprovalEmail($email, $name, $password) {
                                             echo "</tr>";
                                         }
                                     } else {
-                                        echo "<tr><td colspan='6'>No pending requests.</td></tr>";
+                                        echo "<tr><td colspan='6'>No pending requests found.</td></tr>";
                                     }
                                     ?>
                                 </tbody>
@@ -223,25 +222,29 @@ function sendApprovalEmail($email, $name, $password) {
                 </div>
             </main>
 
-
-    <script>
-        // Show the toast notification if it exists
-        $(document).ready(function() {
-            var toastEl = $('#liveToast');
-            if (toastEl.length) {
-                var toast = new bootstrap.Toast(toastEl);
-                toast.show();
-            }
-        });
-    </script>
-
-<footer class="py-4 bg-light mt-auto">
-                <?php include('../index/footer.php'); ?>
+            <!-- Footer -->
+            <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Logistic &copy; Your Website 2024</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
             </footer>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <?php include('../index/script.php'); ?>
+    <script>
+        // Initialize toast notifications
+        const toastLiveExample = document.getElementById('liveToast');
+        if (toastLiveExample) {
+            const toast = new bootstrap.Toast(toastLiveExample);
+            toast.show();
+        }
+    </script>
 </body>
 </html>

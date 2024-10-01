@@ -75,26 +75,34 @@ flex: 1;
 padding: 20px;
 }
 .toast-container {
-position: fixed;
-top: 20px;
-right: 20px;
-z-index: 1000;
-display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999; /* Ensure it's higher than any other element */
+    display: none; /* Default hidden */
 }
 
 .toast {
-padding: 10px 20px;
-border-radius: 5px;
-font-size: 14px;
-color: white;
-margin-bottom: 10px;
-display: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: white;
+    margin-bottom: 10px;
+    z-index: 9999; /* Match the container's z-index */
+    display: block; /* Set this to block in JavaScript when displaying */
 }
 
 .toast-success {
-background-color: #28a745;
+    background-color: #28a745;
 }
 
 .toast-error {
-background-color: #dc3545;
+    background-color: #dc3545;
 }
+
+.sb-topnav {
+    z-index: 1000; /* Lower than the toast */
+    position: relative; /* Ensure proper stacking context */
+}
+
+

@@ -57,13 +57,11 @@ $branch_added = isset($_SESSION['toast_type']);
 </head>
 
 <body class="sb-nav-fixed">
-    <!-- Top Navigation Bar -->
     <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
-        <?php include('../index/topnavbar.php'); ?>
+       <?php include('../index/topnavbar.php'); ?>
     </nav>
-
+    
     <div id="layoutSidenav">
-        <!-- Sidebar -->
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
                 <?php include('../index/sidenavbar.php'); ?>
@@ -171,14 +169,14 @@ $branch_added = isset($_SESSION['toast_type']);
                     <?php endif; ?>
                 });
             </script>
-
-            <footer class="py-4 bg-light mt-auto">
+    <?php include('../index/script.php'); ?>
+    
+    <footer class="py-4 bg-light mt-auto">
                 <?php include('../index/footer.php'); ?>
             </footer>
         </div>
     </div>
 
-    <!-- Scripts -->
     <?php include('../index/script.php'); ?>
 </body>
 </html>

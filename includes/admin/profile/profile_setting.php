@@ -137,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<?php include('../../index/header.php'); ?>
+    <?php include('../../index/header.php'); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users</title>
@@ -149,23 +149,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <link href="/css/admin_css/profile.css" rel="stylesheet">
 </head>
-<body>
+
 <body class="sb-nav-fixed">
-    <!-- Top Navigation Bar -->
     <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
         <?php include('../../index/topnavbar.php'); ?>
     </nav>
-
-    <div class="toast-container" id="toast-container">
-        <div id="toast" class="toast"></div>
-    </div>
-
     <div id="layoutSidenav">
-        <!-- Sidebar -->
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
                 <?php include('../../index/sidenavbar.php'); ?>
             </nav>
+        </div>
+
+        <div class="toast-container" id="toast-container">
+                <div id="toast" class="toast"></div>
         </div>
 
         <div id="layoutSidenav_content">
@@ -229,6 +226,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <script>
+    // Function to preview the uploaded image
+    function previewImage(event) {
+        const reader = new FileReader();
+        const image = document.getElementById('preview');
+
+        reader.onload = function() {
+            // Set the source of the image to the loaded file
+            image.src = reader.result;
+        }
+
+        // Read the selected file
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+
+    <script>
         function showToast(message, type) {
             const toastContainer = document.getElementById('toast-container');
             const toast = document.getElementById('toast');
@@ -288,13 +301,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </script>
 
     <!-- Scripts -->
+    <?php include('../../index/script.php'); ?>
+    
     <footer class="py-4 bg-light mt-auto">
                 <?php include('../../index/footer.php'); ?>
             </footer>
         </div>
     </div>
 
-    <!-- Scripts -->
     <?php include('../../index/script.php'); ?>
 </body>
 </html>
