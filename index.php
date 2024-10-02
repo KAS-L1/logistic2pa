@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'admin') {
-    header("Location: /not_authorized.php");  // Redirect to the 'Not Authorized' page
+    header("Location: /admin_login/admin_login.php");  // Redirect to the 'Not Authorized' page
     exit();
 }
 
@@ -13,7 +13,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Check if the logged-in user is not a main admin, redirect them
 if ($_SESSION['role'] !== 'admin') {
-    header("Location: /not_authorized.php");  // Redirect to an unauthorized page
+    header("Location: /admin_login/admin_login.php");  // Redirect to an unauthorized page
     exit();
 }
 // Rest of the page content
