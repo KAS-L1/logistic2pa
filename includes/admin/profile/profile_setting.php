@@ -148,6 +148,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <link href="/css/admin_css/profile.css" rel="stylesheet">
+    <style>
+        /* Adjusting modal for smaller image zoom */
+        #preview {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        #preview:hover {
+            transform: scale(1.05);
+        }
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .modal-content {
+            margin: 15% auto;
+            display: block;
+            width: 60%; /* Reduced size */
+            max-width: 400px; /* Smaller max width */
+        }
+        #closeModal {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        #closeModal:hover, #closeModal:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body class="sb-nav-fixed">
@@ -174,7 +213,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
 
                             <div class="text-center mb-3">
-                                <img id="preview" src="<?php echo htmlspecialchars($_SESSION['profile_pic'] ?? '/assets/img/default_profile.png'); ?>" alt="Profile Picture">
+                                <img id="preview" src="<?php echo htmlspecialchars($_SESSION['profile_pic'] ?? '/assets/img/default_profile.png'); ?>" alt="Profile Picture" onclick="openModal();">
                             </div>
 
                             <!-- Profile Edit Fields -->
@@ -225,6 +264,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 
+    <!-- Modal for image zoom -->
+    <div id="imageModal" class="modal">
+        <span id="closeModal">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
     <script>
     // Function to preview the uploaded image
     function previewImage(event) {
@@ -232,14 +277,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         const image = document.getElementById('preview');
 
         reader.onload = function() {
-            // Set the source of the image to the loaded file
             image.src = reader.result;
         }
 
-        // Read the selected file
         reader.readAsDataURL(event.target.files[0]);
     }
-</script>
+
+    // Function to open modal and show zoomed image
+    function openModal() {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const preview = document.getElementById('preview');
+
+        modal.style.display = "block";
+        modalImg.src = preview.src;
+    }
+
+    // Function to close the modal
+    document.getElementById('closeModal').onclick = function() {
+        const modal = document.getElementById('imageModal');
+        modal.style.display = "none";
+    };
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('imageModal');
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    };
+    </script>
 
     <script>
         function showToast(message, type) {

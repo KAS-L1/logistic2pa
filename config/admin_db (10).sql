@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Sep 29, 2024 at 03:26 AM
+-- Generation Time: Oct 02, 2024 at 12:51 AM
 -- Server version: 9.0.1
 -- PHP Version: 8.3.11
 
@@ -37,7 +37,15 @@ CREATE TABLE IF NOT EXISTS `account_requests` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `role` varchar(50) NOT NULL DEFAULT 'user',
   PRIMARY KEY (`request_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `account_requests`
+--
+
+INSERT INTO `account_requests` (`request_id`, `name`, `email`, `reason`, `status`, `created_at`, `role`) VALUES
+(13, 'kupal ako ', 'kupal@gmail.com', 'kupal', 'approved', '2024-10-01 11:43:50', 'logistic1_admin'),
+(12, 'Antoy', 'xoyeh20931@rinseart.com', 'asdasd', 'approved', '2024-09-30 07:25:57', 'logistic1_admin');
 
 -- --------------------------------------------------------
 
@@ -108,7 +116,15 @@ CREATE TABLE IF NOT EXISTS `branches` (
   PRIMARY KEY (`branch_id`),
   UNIQUE KEY `branch_id` (`branch_id`),
   KEY `fk_manager` (`manager_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `branches`
+--
+
+INSERT INTO `branches` (`branch_id`, `branch_name`, `location`, `created_at`, `manager_id`) VALUES
+(12, 'testing', 'fdsfdsfdsf', '2024-09-30 10:29:49', NULL),
+(20, 'kupal', 'lalala', '2024-09-30 10:33:59', NULL);
 
 -- --------------------------------------------------------
 
@@ -347,16 +363,21 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `username`, `email`, `password_hash`, `role`, `created_at`, `first_name`, `last_name`, `otp`, `otp_expiration`, `branch_id`, `profile_pic`, `contact_number`) VALUES
-(23, 'kasl', 'kasl.54370906@gmail.com', '$2y$10$21JJ9r97W6Lhk48x/zTP5us5TKVtqiVnrszFQj/zSJfOf.vtQfL7.', 'admin', '2024-09-28 10:00:34', 'kier', 'salise', NULL, NULL, 0, '/includes/admin/profile/uploads/images.png', '123456789'),
-(25, 'admin', 'dump41863@gmail.com', '$2y$10$/BLOFSicdI8vkFxJ1V2ineW3bu0oPV7bYusvW0V8EVCln0.NAkFGO', 'admin', '2024-09-28 11:25:58', '', '', NULL, NULL, NULL, NULL, NULL),
-(26, 'EY', 'valkyrievee00@gmail.com', '$2y$10$XksGCfh58sbsdyVA1sSIbOMvw9BVXjyMwV3lC3s.aAdGX/5I/tzHu', 'logistic2_admin', '2024-09-28 13:56:59', '', '', NULL, NULL, NULL, NULL, NULL);
+(23, 'lupakakos', 'kasl.54370906@gmail.com', '$2y$10$P2wM1B88UblrYuXoVAzHuuERYbHIyelOsLMyHpo7.Zk0zAc5.YwjW', 'admin', '2024-09-28 10:00:34', 'kiers', 'salise', NULL, NULL, 0, '/includes/admin/profile/uploads/paradise_logo.png', '123456784'),
+(25, 'admins', 'dump41863@gmail.com', '$2y$10$/BLOFSicdI8vkFxJ1V2ineW3bu0oPV7bYusvW0V8EVCln0.NAkFGO', 'logistic2_admin', '2024-09-28 11:25:58', '', '', NULL, NULL, 0, NULL, NULL),
+(26, 'EY', 'valkyrievee00@gmail.com', '$2y$10$vnqXxTByMLFWpYi2i9m/ReaIvA0HMrd15pGNyCCEXAobTV.y623QS', 'logistic2_admin', '2024-09-28 13:56:59', '', '', NULL, NULL, NULL, NULL, NULL),
+(33, 'dadasdasdsdfsd', 'adfdsf@gmail.com', '$2y$10$YC6u37QDCWemsYlJfhC9y.4zX163y1lmJsNudTYnjz4DXlSprbys6', 'admin', '2024-09-30 07:04:13', '', '', NULL, NULL, NULL, NULL, NULL),
+(35, 'Antoy', 'xoyeh20931@rinseart.com', '$2y$10$TgSREG986uSYqWdP9zLjBeR81./hQRpzFNDq91g4lg9FUZGZCpawS', 'logistic1_admin', '2024-09-30 07:26:53', '', '', NULL, NULL, NULL, NULL, NULL),
+(36, 'kupal', 'hawalic249@sgatra.com', '$2y$10$GW4uzAEQ57X/LJaDJVP80.sy7QFpE6OAxaLkTumuzeJb7r.VK3tyO', 'admin', '2024-09-30 07:28:14', '', '', NULL, NULL, NULL, NULL, NULL),
+(41, 'hipak us', 'marktayamora124@gmail.com', '$2y$10$pue/6mDLSkP2p53VwIDZfOYPPcA1/.2y5KbSWnfYHuyOW6T05Tk2W', 'admin', '2024-09-30 07:41:00', '', '', NULL, NULL, NULL, NULL, NULL),
+(42, 'kupal ako ', 'kupal@gmail.com', '$2y$10$1.y.ROtE1JkxePNdfCnP7Oi8QjfjAiZM0P0JOHoOSk0FZtVgwa38e', 'logistic1_admin', '2024-10-01 11:44:16', '', '', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 

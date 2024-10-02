@@ -1,23 +1,143 @@
 <?php
 session_start();
-if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'admin') {
+
+// Check if the user is logged in
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("Location: /admin_login/admin_login.php");
     exit();
 }
 
-include '../../config/db_connect.php';  // Database connection
+// Generate a CSRF token for form security
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
-// Fetch all users from the database
-$query = "SELECT u.user_id, u.username, u.email, u.role, b.branch_name 
-          FROM users u 
-          LEFT JOIN branches b ON u.branch_id = b.branch_id";
-$result = $conn->query($query);
+include '../../../config/db_connect.php';
+
+// Load PHPMailer
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+// Include PHPMailer files
+require '../../../vendor/phpmailer/phpmailer/src/Exception.php';
+require '../../../vendor/phpmailer/phpmailer/src/PHPMailer.php';
+require '../../../vendor/phpmailer/phpmailer/src/SMTP.php';
+
+$user_id = $_SESSION['user_id']; // Use session user_id
+
+// Fetch user information from the database
+$stmt = $conn->prepare("SELECT username, email, profile_pic, first_name, last_name, contact_number FROM users WHERE user_id = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$stmt->bind_result($username, $email, $profile_pic, $first_name, $last_name, $contact_number);
+$stmt->fetch();
+$stmt->close();
+
+// Function to send profile update notification using PHPMailer
+function sendProfileUpdateNotification($email, $username) {
+    $mail = new PHPMailer(true); // Create a new PHPMailer instance
+
+    try {
+        // Server settings
+        $mail->isSMTP(); 
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true; 
+        $mail->Username = 'kasl.54370906@gmail.com'; 
+        $mail->Password = 'lgrg mpma cwzo uhdv'; 
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
+        $mail->Port = 587; 
+
+        // Recipients
+        $mail->setFrom('no-reply@logisticsystem.com', 'Logistic System');
+        $mail->addAddress($email); 
+
+        // Content
+        $mail->isHTML(true); 
+        $mail->Subject = 'Profile Updated Successfully';
+        $mail->Body    = "Hello $username,<br><br>Your profile has been updated successfully.<br><br>If you did not make these changes, please contact support immediately.";
+        $mail->AltBody = "Hello $username,\n\nYour profile has been updated successfully.\n\nIf you did not make these changes, please contact support immediately."; 
+
+        $mail->send();
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }
+}
+
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("Invalid CSRF token.");
+    }
+
+    $new_username = htmlspecialchars($_POST['username']);
+    $new_email = htmlspecialchars($_POST['email']);
+    $new_password = !empty($_POST['password']) ? password_hash($_POST['password'], PASSWORD_DEFAULT) : null;
+    $new_first_name = htmlspecialchars($_POST['first_name']);
+    $new_last_name = htmlspecialchars($_POST['last_name']);
+    $new_contact_number = htmlspecialchars($_POST['contact_number']);
+    $profile_pic_path = $profile_pic; // Default to existing profile picture
+
+    // Validate email
+    if (!filter_var($new_email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['toast_message'] = 'Invalid email format';
+        $_SESSION['toast_type'] = 'error';
+    } else {
+        // Check if a new profile picture is uploaded
+        if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0) {
+            $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/includes/admin/profile/uploads/";
+            $filename = preg_replace("/[^a-zA-Z0-9\._-]/", "", basename($_FILES["profile_pic"]["name"]));
+            $target_file = $target_dir . $filename;
+            $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+            $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
+            $check = getimagesize($_FILES["profile_pic"]["tmp_name"]);
+            if ($check !== false && in_array($imageFileType, $allowed_types)) {
+                if ($_FILES['profile_pic']['size'] > 5000000) {
+                    $_SESSION['toast_message'] = 'File is too large. Maximum size is 5MB.';
+                    $_SESSION['toast_type'] = 'error';
+                } elseif (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file)) {
+                    $profile_pic_path = "/includes/admin/profile/uploads/" . $filename;
+                    $_SESSION['profile_pic'] = $profile_pic_path;
+                } else {
+                    $_SESSION['toast_message'] = 'Error uploading profile picture. Check file permissions.';
+                    $_SESSION['toast_type'] = 'error';
+                }
+            } else {
+                $_SESSION['toast_message'] = 'Only JPG, JPEG, PNG, and GIF files are allowed.';
+                $_SESSION['toast_type'] = 'error';
+            }
+        }
+
+        // Update query for profile information
+        if ($new_password) {
+            $stmt = $conn->prepare("UPDATE users SET username = ?, email = ?, password_hash = ?, profile_pic = ?, first_name = ?, last_name = ?, contact_number = ? WHERE user_id = ?");
+            $stmt->bind_param("sssssssi", $new_username, $new_email, $new_password, $profile_pic_path, $new_first_name, $new_last_name, $new_contact_number, $user_id);
+        } else {
+            $stmt = $conn->prepare("UPDATE users SET username = ?, email = ?, profile_pic = ?, first_name = ?, last_name = ?, contact_number = ? WHERE user_id = ?");
+            $stmt->bind_param("ssssssi", $new_username, $new_email, $profile_pic_path, $new_first_name, $new_last_name, $new_contact_number, $user_id);
+        }
+
+        if ($stmt->execute()) {
+            sendProfileUpdateNotification($new_email, $new_username);  
+            $_SESSION['toast_message'] = 'Profile updated successfully!';
+            $_SESSION['toast_type'] = 'success';
+        } else {
+            $_SESSION['toast_message'] = 'Error updating profile.';
+            $_SESSION['toast_type'] = 'error';
+        }
+        $stmt->close();
+    }
+
+    // Redirect to the same page to display the toast
+    header("Location: profile_setting.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php include('../index/header.php'); ?>
+    <?php include('../../index/header.php'); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users</title>
@@ -25,216 +145,170 @@ $result = $conn->query($query);
     <link href="/css/rokkito.css" rel="stylesheet">
     <link href="/css/condense.css" rel="stylesheet">
     <link href="/css/inconsolata.css" rel="stylesheet">
-    
-    <style>
-    body {
-        font-family: 'Roboto Condensed', sans-serif;
-        background-color: #f4f6f9;
-        color: #333;
-    }
-    h1, h2 {
-        font-weight: 500;
-        color: #2c3e50;
-        text-align: center;
-        margin-bottom: 20px;
-        font-family: 'Roboto Condensed';
-    }
-    .container-fluid {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-    .form-label {
-        font-weight: 600;
-        color: #34495e;
-    }
-    .form-control, .form-select {
-        border-radius: 5px;
-        border: 1px solid #ced4da;
-        transition: all 0.3s ease;
-    }
-    .form-control:focus, .form-select:focus {
-        border-color: #3498db;
-        box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-    }
-    .btn-primary {
-        background-color: #3498db;
-        border: none;
-        font-weight: 600;
-        padding: 10px 20px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-    }
-    .btn-primary:hover {
-        background-color: #2980b9;
-    }
-    .btn-sm {
-        padding: 5px 10px;
-        font-size: 0.9rem;
-    }
-    .table {
-        background-color: white;
-        border-radius: 5px;
-        overflow: hidden;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-    }
-    .table thead {
-        background-color: #3CB371;
-        color: white;
-        font-family: 'Cabin Condensed Static';
-    }
-    .table th, .table td {
-        padding: 15px;
-        vertical-align: middle;
-        text-align: center;
-        font-family: 'Rokkitt';
-    }
-    .table tbody tr:nth-child(even) {
-        background-color: #f8f9fa;
-    }
-    .btn-warning, .btn-danger {
-        font-weight: 600;
-    }
-    .btn-warning:hover {
-        background-color: #d35400;
-        border-color: #d35400;
-    }
-    .btn-danger:hover {
-        background-color: #c0392b;
-        border-color: #c0392b;
-    }
-    hr.my-4 {
-    border: 0;
-    height: 3px; 
-    background: #3498db;
-    margin: 40px 0;
-    border-radius: 5px; 
-    opacity: 0.8; 
-    }
-
-    .profile-card {
-            max-width: 600px;
-            margin: 30px auto;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-top: 20px;
-        }
-        .profile-card h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 20px;
-            font-family: 'inconsolata';
-        }
-        .form-group {
-            margin-bottom: 15px;
-            font-family: 'Rokkitt', Courier, monospace;
-        }
-        .btn-primary1 {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            background: linear-gradient(135deg, #3CB371, #008cff);
-            border: none;
-            color: #fff;
-            font-weight: bold;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-            transition: background 0.3s ease;
-        }
-
-        .btn-primary1:hover {
-            background: linear-gradient(135deg, #2ca657, #0077e6); /* Slightly darker hover effect */
-        }
-
-</style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="/css/admin_css/profile.css" rel="stylesheet">
 </head>
 
 <body class="sb-nav-fixed">
-        <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
-            <?php include('../index/topnavbar.php'); ?>
-        </nav>
-        <div id="layoutSidenav">
-            <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
-                <?php include('../index/sidenavbar.php'); ?>
-                </nav>
-            </div>
-            
-            <div id="layoutSidenav_content">
-    <div class="container mt-5">
-        <h1>Manage Users</h1>
-
-        <!-- Button to navigate to Manage Requests -->
-        <div class="mb-3">
-            <a href="/includes/admin/manage_request.php"  class="btn btn-primary1">Manage Account Requests</a>
+    <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
+        <?php include('../../index/topnavbar.php'); ?>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+                <?php include('../../index/sidenavbar.php'); ?>
+            </nav>
         </div>
 
-        <!-- Form to Add New User -->
-        <div class="profile-card">
-        <h2>Add New User</h2>
-        <form action="manage_users.php" method="POST">
-            <div class="form-group mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" required>
-            </div>
-            <div class="form-group mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-            <div class="form-group mb-3">
-                <label for="role" class="form-label">Role</label>
-                <select class="form-control" id="role" name="role" required>
-                    <option value="admin">Admin</option>
-                    <option value="logistic1_admin">Logistic 1 Admin</option>
-                    <option value="logistic2_admin">Logistic 2 Admin</option>
-                    <option value="user">User</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary1" name="add_user">Add User</button>
-        </form>
+        <div class="toast-container" id="toast-container">
+                <div id="toast" class="toast"></div>
         </div>
-        
-        <hr class="my-4">
-        <!-- Table to Display All Users -->
-        <h2 class="mt-5">Existing Users</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Branch</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>{$row['username']}</td>";
-                        echo "<td>{$row['email']}</td>";
-                        echo "<td>{$row['role']}</td>";
-                        echo "<td>{$row['branch_name']}</td>";
-                        echo "<td>
-                                <a href='edit_user.php?id={$row['user_id']}' class='btn btn-warning btn-sm'>Edit</a>
-                                <a href='delete_user.php?id={$row['user_id']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure?\")'>Delete</a>
-                              </td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='5' class='text-center'>No users found</td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
+
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container">
+                    <div class="profile-card">
+                        <h1>Edit Profile</h1>
+                        <form action="/includes/admin/profile/profile_setting.php" method="POST" enctype="multipart/form-data" onsubmit="return validatePassword();">
+                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+
+                            <div class="text-center mb-3">
+                                <img id="preview" src="<?php echo htmlspecialchars($_SESSION['profile_pic'] ?? '/assets/img/default_profile.png'); ?>" alt="Profile Picture">
+                            </div>
+
+                            <!-- Profile Edit Fields -->
+                             <div class="mb-3">
+                                <label for="profile_pic" style="font-family: 'Cabin Condensed Static'" class="form-label">Upload New Profile Picture</label>
+                                <input type="file" class="form-control" id="profile_pic" name="profile_pic" onchange="previewImage(event)">
+                            </div>
+
+                            <!-- Section 1: Personal Information -->
+                            <div class="section-title">Personal Information</div>
+                            <div class="form-group">
+                                <label for="first_name" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" value="<?php echo htmlspecialchars($first_name); ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" value="<?php echo htmlspecialchars($last_name); ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact_number" class="form-label">Contact Number</label>
+                                <input type="text" class="form-control" id="contact_number" name="contact_number" value="<?php echo htmlspecialchars($contact_number ?? '', ENT_QUOTES, 'UTF-8'); ?>" required>
+                            </div>
+
+                            <!-- Section 2: Account Information -->
+                            <div class="section-title">Account Information</div>
+                            <div class="form-group">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" value="<?php echo htmlspecialchars($username ?? '', ENT_QUOTES, 'UTF-8'); ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($email ?? '', ENT_QUOTES, 'UTF-8'); ?>" required>
+                            </div>
+
+                            <!-- Section 3: Change Password -->
+                            <div class="section-title">Change Password</div>
+                            <div class="form-group">
+                                <label for="password" class="form-label">New Password (optional)</label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Leave blank to keep current password">
+                            </div>  
+                             
+
+                            <button type="submit" class="btn btn-primary1">Update Profile</button>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
     </div>
-<footer class="py-4 bg-light mt-auto">
-                     <?php include('../index/footer.php'); ?>
-                </footer>
-            </div>
+
+    <script>
+    // Function to preview the uploaded image
+    function previewImage(event) {
+        const reader = new FileReader();
+        const image = document.getElementById('preview');
+
+        reader.onload = function() {
+            // Set the source of the image to the loaded file
+            image.src = reader.result;
+        }
+
+        // Read the selected file
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+
+    <script>
+        function showToast(message, type) {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+
+            // Add appropriate class based on the type of message
+            if (type === 'success') {
+                toast.classList.add('toast-success');
+            } else if (type === 'error') {
+                toast.classList.add('toast-error');
+            }
+
+            toast.style.display = 'block';
+            toastContainer.style.display = 'block';
+
+            setTimeout(() => {
+                toast.style.display = 'none';
+                toastContainer.style.display = 'none';
+                toast.classList.remove('toast-success', 'toast-error'); // Reset class after toast disappears
+            }, 3000);
+        }
+
+        // Display the toast message from PHP
+        <?php if (isset($_SESSION['toast_message'])): ?>
+            showToast('<?php echo $_SESSION['toast_message']; ?>', '<?php echo $_SESSION['toast_type']; ?>');
+            <?php unset($_SESSION['toast_message'], $_SESSION['toast_type']); ?>
+        <?php endif; ?>
+
+        function validatePassword() {
+            var password = document.getElementById("password").value;
+
+            if (password === "") {
+                return true;
+            }
+
+            var errorMsg = "";
+
+            if (password.length < 8) {
+                errorMsg = "Password must be at least 8 characters.";
+            } else if (!/[A-Z]/.test(password)) {
+                errorMsg = "Password must contain at least one uppercase letter.";
+            } else if (!/[a-z]/.test(password)) {
+                errorMsg = "Password must contain at least one lowercase letter.";
+            } else if (!/[0-9]/.test(password)) {
+                errorMsg = "Password must contain at least one number.";
+            } else if (!/[!@#$%^&*]/.test(password)) {
+                errorMsg = "Password must contain at least one special character.";
+            }
+
+            if (errorMsg !== "") {
+                showToast(errorMsg, 'error');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+
+    <!-- Scripts -->
+    <?php include('../../index/script.php'); ?>
+    
+    <footer class="py-4 bg-light mt-auto">
+                <?php include('../../index/footer.php'); ?>
+            </footer>
         </div>
-        <?php include('../index/script.php'); ?>
-    </body>
+    </div>
+
+    <?php include('../../index/script.php'); ?>
+</body>
 </html>
