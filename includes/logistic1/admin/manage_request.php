@@ -8,8 +8,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'admin') {
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require '../../vendor/autoload.php';  // Include PHPMailer if using Composer
-include '../../config/db_connect.php';  // Database connection
+require '../../../vendor/autoload.php';  // Include PHPMailer if using Composer
+include '../../../config/db_connect.php';  // Database connection
 
 // Fetch all pending account requests from the database
 $query = "SELECT * FROM account_requests WHERE status = 'pending'";
@@ -131,7 +131,7 @@ function sendApprovalEmail($email, $name, $password) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php include('../index/header.php'); ?>
+    <?php include('../../logistic1/header.php'); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users</title>
@@ -146,14 +146,14 @@ function sendApprovalEmail($email, $name, $password) {
 
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
-        <?php include('../index/topnavbar.php'); ?>
+        <?php include('../../logistic1/topnavbar.php'); ?>
     </nav>
 
     <div id="layoutSidenav">
         <!-- Sidebar -->
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
-                <?php include('../index/sidenavbar.php'); ?>
+                <?php include('../../logistic1/sidenavbar.php'); ?>
             </nav>
         </div>
 
@@ -223,7 +223,7 @@ function sendApprovalEmail($email, $name, $password) {
             </main>
 
             <!-- Footer -->
-            <?php include('../index/script.php'); ?>
+            <?php include('../../logistic1/script.php'); ?>
             <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
@@ -246,7 +246,7 @@ function sendApprovalEmail($email, $name, $password) {
             toast.show();
         }
     </script>
-        <?php include('../index/script.php'); ?>
+        <?php include('../../logistic1/script.php'); ?>
         <script src="/js/scripts.js"></script>
 </body>
 </html>

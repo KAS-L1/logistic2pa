@@ -12,16 +12,16 @@ if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-include '../../../config/db_connect.php';
+include '../../../../config/db_connect.php';
 
 // Load PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 // Include PHPMailer files
-require '../../../vendor/phpmailer/phpmailer/src/Exception.php';
-require '../../../vendor/phpmailer/phpmailer/src/PHPMailer.php';
-require '../../../vendor/phpmailer/phpmailer/src/SMTP.php';
+require '../../../../vendor/phpmailer/phpmailer/src/Exception.php';
+require '../../../../vendor/phpmailer/phpmailer/src/PHPMailer.php';
+require '../../../../vendor/phpmailer/phpmailer/src/SMTP.php';
 
 $user_id = $_SESSION['user_id']; // Use session user_id
 
@@ -137,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php include('../../index/header.php'); ?>
+    <?php include('../../../index/header.php'); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users</title>
@@ -191,12 +191,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
-        <?php include('../../index/topnavbar.php'); ?>
+        <?php include('../../../logistic2/topnavbar.php'); ?>
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
-                <?php include('../../index/sidenavbar.php'); ?>
+                <?php include('../../../logistic2/sidenavbar.php'); ?>
             </nav>
         </div>
 
@@ -209,7 +209,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="container">
                     <div class="profile-card">
                         <h1>Edit Profile</h1>
-                        <form action="/includes/admin/profile/profile_setting.php" method="POST" enctype="multipart/form-data" onsubmit="return validatePassword();">
+                        <form action="/includes/logistic2/admin/profile/profile_setting.php" method="POST" enctype="multipart/form-data" onsubmit="return validatePassword();">
                             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
 
                             <div class="text-center mb-3">
@@ -367,15 +367,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </script>
 
     <!-- Scripts -->
-    <?php include('../../index/script.php'); ?>
+    <?php include('../../../index/script.php'); ?>
     
     <footer class="py-4 bg-light mt-auto">
-                <?php include('../../index/footer.php'); ?>
+                <?php include('../../../index/footer.php'); ?>
             </footer>
         </div>
     </div>
 
-    <?php include('../../index/script.php'); ?>
+    <?php include('../../../index/script.php'); ?>
         <script src="/js/scripts.js"></script>
 </body>
 </html>

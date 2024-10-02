@@ -4,7 +4,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'admin') {
     header("Location: /admin_login/admin_login.php");
     exit();
 }
-include '../../config/db_connect.php';  // Database connection
+include '../../../config/db_connect.php';  // Database connection
 
 // Fetch all branches from the database
 $query = "SELECT b.branch_id, b.branch_name, b.location, u.username AS manager FROM branches b LEFT JOIN users u ON b.manager_id = u.user_id";
@@ -43,7 +43,7 @@ $branch_added = isset($_SESSION['toast_type']);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php include('../index/header.php'); ?>
+    <?php include('../../logistic2/header.php'); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users</title>
@@ -59,12 +59,12 @@ $branch_added = isset($_SESSION['toast_type']);
 
 <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
-            <?php include('../index/topnavbar.php'); ?>
+            <?php include('../../logistic2/topnavbar.php'); ?>
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
-                <?php include('../index/sidenavbar.php'); ?>
+                <?php include('../../logistic2/sidenavbar.php'); ?>
                 </nav>
             </div>
         <!-- Main Content -->
@@ -168,15 +168,15 @@ $branch_added = isset($_SESSION['toast_type']);
                     <?php endif; ?>
                 });
             </script>
-    <?php include('../index/script.php'); ?>
+    <?php include('../../logistic2/script.php'); ?>
     
     <footer class="py-4 bg-light mt-auto">
-                <?php include('../index/footer.php'); ?>
+                <?php include('../../logistic2/footer.php'); ?>
             </footer>
         </div>
     </div>
 
-    <?php include('../index/script.php'); ?>
+    <?php include('../../logistic2/script.php'); ?>
         <script src="/js/scripts.js"></script>
     
 </body>

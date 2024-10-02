@@ -45,7 +45,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <!-- Admin Panel for Main Admin -->
         <?php if ($_SESSION['role'] == 'admin') : ?>
             <div class="sb-sidenav-menu-heading">Admin</div>
-            <a class="nav-link collapsed fw-bold" style="font-family: 'Cabin Condensed Static'" href="#" id="AdminDropdown" data-bs-toggle="collapse" data-bs-target="#collapseAdmin" aria-expanded="false" aria-controls="collapseAdmin">
+            <a class="nav-link collapsed fw-bold" style="font-family: 'Cabin Condensed Static'" href="#!" id="AdminDropdown" data-bs-toggle="collapse" data-bs-target="#collapseAdmin" aria-expanded="false" aria-controls="collapseAdmin">
                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt" style="color: #3CB371;"></i></div>
                 ADMIN PANEL
                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>

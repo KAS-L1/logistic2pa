@@ -5,7 +5,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
-include '../../config/db_connect.php';  // Database connection
+include '../../../config/db_connect.php';  // Database connection
 
 // Fetch all users from the database
 $query = "SELECT u.user_id, u.username, u.email, u.role, b.branch_name 
@@ -17,7 +17,7 @@ $result = $conn->query($query);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php include('../index/header.php'); ?>
+    <?php include('../../logistic1/header.php'); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users</title>
@@ -152,12 +152,12 @@ $result = $conn->query($query);
 
 <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
-            <?php include('../index/topnavbar.php'); ?>
+            <?php include('../../logistic1/topnavbar.php'); ?>
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
-                <?php include('../index/sidenavbar.php'); ?>
+                <?php include('../../logistic1/sidenavbar.php'); ?>
                 </nav>
             </div>
             
@@ -231,10 +231,10 @@ $result = $conn->query($query);
         </table>
     </div>
 <footer class="py-4 bg-light mt-auto">
-                     <?php include('../index/footer.php'); ?>
+                     <?php include('../../logistic1/footer.php'); ?>
                 </footer>
             </div>
         </div>
-        <?php include('../index/script.php'); ?>
+        <?php include('../../logistic1/script.php'); ?>
     </body>
 </html>

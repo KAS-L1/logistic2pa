@@ -26,7 +26,7 @@ if ($_SESSION['role'] !== 'admin') {
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <?php include('includes/index/header.php'); ?>
+        <?php include('./includes/index/header.php'); ?>
     <link href="/css/IM Fell Great Primer SC.css" rel="stylesheet">    
     </head>
     <body class="sb-nav-fixed">
