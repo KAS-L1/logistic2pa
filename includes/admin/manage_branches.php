@@ -46,7 +46,7 @@ $branch_added = isset($_SESSION['toast_type']);
     <?php include('../index/header.php'); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Users</title>
+    <title>Manage Branches</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/rokkito.css" rel="stylesheet">
     <link href="/css/condense.css" rel="stylesheet">
@@ -73,70 +73,76 @@ $branch_added = isset($_SESSION['toast_type']);
                 <h1>Manage Branches</h1>
                 
                 <!-- Form to Add New Branch -->
-                <div class="profile-card">
+                <div class="profile-card p-4">
                     <h2>ADD NEW BRANCH</h2>
                     <form action="manage_branches.php" method="POST">
-                        <div class="form-group mb-3">
-                            <label for="branch_name" class="form-label">Branch Name</label>
-                            <input type="text" class="form-control" id="branch_name" name="branch_name" required>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="branch_name" class="form-label">Branch Name</label>
+                                <input type="text" class="form-control" id="branch_name" name="branch_name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="location" class="form-label">Location</label>
+                                <input type="text" class="form-control" id="location" name="location" required>
+                            </div>
                         </div>
-                        <div class="form-group mb-3">
-                            <label for="location" class="form-label">Location</label>
-                            <input type="text" class="form-control" id="location" name="location" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="manager_id" class="form-label">Assign Manager</label>
-                            <select class="form-control" id="manager_id" name="manager_id" required>
-                                <?php
-                                // Fetch managers for the dropdown
-                                $manager_query = "SELECT user_id, username FROM users WHERE role = 'admin'";
-                                $manager_result = $conn->query($manager_query);
-                                if ($manager_result->num_rows > 0) {
-                                    while ($manager_row = $manager_result->fetch_assoc()) {
-                                        echo "<option value='{$manager_row['user_id']}'>{$manager_row['username']}</option>";
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="manager_id" class="form-label">Assign Manager</label>
+                                <select class="form-control" id="manager_id" name="manager_id" required>
+                                    <?php
+                                    // Fetch managers for the dropdown
+                                    $manager_query = "SELECT user_id, username FROM users WHERE role = 'admin'";
+                                    $manager_result = $conn->query($manager_query);
+                                    if ($manager_result->num_rows > 0) {
+                                        while ($manager_row = $manager_result->fetch_assoc()) {
+                                            echo "<option value='{$manager_row['user_id']}'>{$manager_row['username']}</option>";
+                                        }
+                                    } else {
+                                        echo "<option value=''>No managers available</option>";
                                     }
-                                } else {
-                                    echo "<option value=''>No managers available</option>";
-                                }
-                                ?>
-                            </select>
+                                    ?>
+                                </select>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary1" name="add_branch">Add Branch</button>
+                        <button type="submit" class="btn btn-primary w-100" name="add_branch">Add Branch</button>
                     </form>
                 </div>
 
                 <hr class="my-4">
                 <!-- Table to Display All Branches -->
                 <h2 class="mt-5">Existing Branches</h2>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Branch Name</th>
-                            <th>Location</th>
-                            <th>Manager</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<tr>";
-                                echo "<td>{$row['branch_name']}</td>";
-                                echo "<td>{$row['location']}</td>";
-                                echo "<td>{$row['manager']}</td>";
-                                echo "<td>
-                                        <a href='edit_branch.php?id={$row['branch_id']}' class='btn btn-warning btn-sm'>Edit</a>
-                                        <a href='delete_branch.php?id={$row['branch_id']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure?\")'>Delete</a>
-                                      </td>";
-                                echo "</tr>";
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Branch Name</th>
+                                <th>Location</th>
+                                <th>Manager</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<tr>";
+                                    echo "<td>{$row['branch_name']}</td>";
+                                    echo "<td>{$row['location']}</td>";
+                                    echo "<td>{$row['manager']}</td>";
+                                    echo "<td>
+                                            <a href='edit_branch.php?id={$row['branch_id']}' class='btn btn-warning btn-sm'>Edit</a>
+                                            <a href='delete_branch.php?id={$row['branch_id']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure?\")'>Delete</a>
+                                          </td>";
+                                    echo "</tr>";
+                                }
+                            } else {
+                                echo "<tr><td colspan='4' class='text-center'>No branches found</td></tr>";
                             }
-                        } else {
-                            echo "<tr><td colspan='4' class='text-center'>No branches found</td></tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
             </main>
 
             <!-- Toast Notification -->
@@ -171,13 +177,13 @@ $branch_added = isset($_SESSION['toast_type']);
     <?php include('../index/script.php'); ?>
     
     <footer class="py-4 bg-light mt-auto">
-                <?php include('../index/footer.php'); ?>
-            </footer>
-        </div>
-    </div>
+        <?php include('../index/footer.php'); ?>
+    </footer>
+</div>
+</div>
 
-    <?php include('../index/script.php'); ?>
-        <script src="/js/scripts.js"></script>
-    
+<?php include('../index/script.php'); ?>
+<script src="/js/scripts.js"></script>
+
 </body>
 </html>

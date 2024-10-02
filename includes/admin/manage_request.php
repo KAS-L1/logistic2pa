@@ -134,7 +134,7 @@ function sendApprovalEmail($email, $name, $password) {
     <?php include('../index/header.php'); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Users</title>
+    <title>Manage Account Requests</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/rokkito.css" rel="stylesheet">
     <link href="/css/condense.css" rel="stylesheet">
@@ -179,7 +179,7 @@ function sendApprovalEmail($email, $name, $password) {
                     <?php endif; ?>
 
                     <div class="card mb-4">
-                        <div class="card-body">
+                        <div class="card-body table-responsive">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>

@@ -33,7 +33,6 @@ if (!isset($_SESSION['loggedin']) || ($_SESSION['role'] !== 'admin' && $_SESSION
 
             <!-- Main Content -->
              
-             
                 
                 <footer class="py-4 bg-light mt-auto">
                      <?php include('../../includes/logistic2/footer.php'); ?>

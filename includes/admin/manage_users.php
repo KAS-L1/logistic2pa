@@ -133,81 +133,96 @@ function sendEmail($email, $username, $password) {
                     <a href="/includes/admin/manage_request.php" class="btn btn-primary1">Manage Account Requests</a>
                 </div>
 
-                <div class="profile-card">
+                <!-- Responsive Form to Add New User -->
+                <div class="profile-card p-4">
                     <h2>Add New User</h2>
                     <form action="manage_users.php" method="POST">
-                        <div class="form-group mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" required>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
                         </div>
-                        <div class="form-group mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="role" class="form-label">Role</label>
+                                <select class="form-control" id="role" name="role" required>
+                                    <option value="admin">Admin</option>
+                                    <option value="logistic1_admin">Logistic 1 Admin</option>
+                                    <option value="logistic2_admin">Logistic 2 Admin</option>
+                                    <option value="user">User</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="branch_id" class="form-label">Assign Branch</label>
+                                <select class="form-control" id="branch_id" name="branch_id">
+                                    <option value="">No branch</option>
+                                    <!-- Add dynamic branch options here -->
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group mb-3">
-                            <label for="role" class="form-label">Role</label>
-                            <select class="form-control" id="role" name="role" required>
-                                <option value="admin">Admin</option>
-                                <option value="logistic1_admin">Logistic 1 Admin</option>
-                                <option value="logistic2_admin">Logistic 2 Admin</option>
-                                <option value="user">User</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary1" name="add_user">Add User</button>
+                        <button type="submit" class="btn btn-primary w-100" name="add_user">Add User</button>
                     </form>
                 </div>
 
                 <hr class="my-4">
 
+                <!-- Responsive Table to Display Users -->
                 <h2 class="mt-5">Existing Users</h2>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Branch</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<tr>";
-                                echo "<td>{$row['username']}</td>";
-                                echo "<td>{$row['email']}</td>";
-                                echo "<td>{$row['role']}</td>";
-                                echo "<td>{$row['branch_name']}</td>";
-                                echo "<td>
-                                        <a href='edit_user.php?id={$row['user_id']}' class='btn btn-warning btn-sm'>Edit</a>
-                                        <a href='delete_user.php?id={$row['user_id']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure?\")'>Delete</a>
-                                      </td>";
-                                echo "</tr>";
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Branch</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<tr>";
+                                    echo "<td>{$row['username']}</td>";
+                                    echo "<td>{$row['email']}</td>";
+                                    echo "<td>{$row['role']}</td>";
+                                    echo "<td>{$row['branch_name']}</td>";
+                                    echo "<td>
+                                            <a href='edit_user.php?id={$row['user_id']}' class='btn btn-warning btn-sm'>Edit</a>
+                                            <a href='delete_user.php?id={$row['user_id']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure?\")'>Delete</a>
+                                          </td>";
+                                    echo "</tr>";
+                                }
+                            } else {
+                                echo "<tr><td colspan='5'>No users found</td></tr>";
                             }
-                        } else {
-                            echo "<tr><td colspan='5'>No users found</td></tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
-   <!-- Toast Notification -->
-<div class="toast-container position-fixed top-0 end-0 p-3">
-    <?php if (isset($_SESSION['toast_type']) && isset($_SESSION['toast_message'])): ?>
-        <div id="liveToast" class="toast align-items-center text-bg-<?php echo $_SESSION['toast_type']; ?> border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    <?php echo $_SESSION['toast_message']; ?>
+    <!-- Toast Notification -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <?php if (isset($_SESSION['toast_type']) && isset($_SESSION['toast_message'])): ?>
+            <div id="liveToast" class="toast align-items-center text-bg-<?php echo $_SESSION['toast_type']; ?> border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <?php echo $_SESSION['toast_message']; ?>
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
-                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-        </div>
-    <?php endif; ?>
-</div>
+        <?php endif; ?>
+    </div>
 
 <script>
     $(document).ready(function() {
@@ -227,13 +242,10 @@ function sendEmail($email, $username, $password) {
 <?php include('../index/script.php'); ?>
     
     <footer class="py-4 bg-light mt-auto">
-                <?php include('../index/footer.php'); ?>
-            </footer>
-        </div>
-    </div>
+        <?php include('../index/footer.php'); ?>
+    </footer>
+</div>
 
-    <?php include('../index/script.php'); ?>
-        <script src="/js/scripts.js"></script>
-    
+<script src="/js/scripts.js"></script>
 </body>
 </html>
