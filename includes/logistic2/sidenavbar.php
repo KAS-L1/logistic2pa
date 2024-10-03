@@ -66,11 +66,12 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                 </a>
                 <div class="collapse" id="collapseAuditManagement" aria-labelledby="headingAuditManagement" data-bs-parent="#collapseDashboard">
                     <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', serif; color: black;">
-                        <a class="nav-link" href="/sub-modules/logistic2/audit-management/home.php">Home</a>
-                        <a class="nav-link" href="/sub-modules/logistic2/audit-management/audit-trail.php">Audit Trail Logging</a>
-                        <a class="nav-link" href="/sub-modules/logistic2/audit-management/risk-predict.php">Risk Prediction</a>
-                        <a class="nav-link" href="/sub-modules/logistic2/audit-management/compliance-management.php">Compliance Management</a>
-                        <a class="nav-link" href="/sub-modules/logistic2/audit-management/field-audits.php">Field Audits</a>
+                        <a class="nav-link" href="#">Audit Trail</a>
+                        <a class="nav-link" href="#">Compliance Monitoring</a>
+                        <a class="nav-link" href="#">Scheduled Audits</a>
+                        <a class="nav-link" href="#">Discrepancy Alerts</a>
+                        <a class="nav-link" href="#">Reports</a>
+                        <a class="nav-link" href="#">Settings</a>
                     </nav>
                 </div>
 
@@ -82,11 +83,12 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                 </a>
                 <div class="collapse" id="collapseDocumentTracking" aria-labelledby="headingDocumentTracking" data-bs-parent="#collapseDashboard">
                     <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', serif; color: black;">
-                        <a class="nav-link" href="/sub-modules/logistic2/document-tracking/home.php">Home</a>
-                        <a class="nav-link" href="/sub-modules/logistic2/document-tracking/version-control.php">Version Control</a>
-                        <a class="nav-link" href="/sub-modules/logistic2/document-tracking/document-approval.php">Document Approval Workflow</a>
-                        <a class="nav-link" href="/sub-modules/logistic2/document-tracking/predictive-docs.php">Predictive Analytics for Docs</a>
-                        <a class="nav-link" href="/sub-modules/logistic2/document-tracking/audit-trail.php">Audit Trail Docs</a>
+                        <a class="nav-link" href="">Documents</a>
+                        <a class="nav-link" href="">Version Control</a>
+                        <a class="nav-link" href="">Access Control</a>
+                        <a class="nav-link" href="">Expiry Alerts</a>
+                        <a class="nav-link" href="">Reports</a>
+                        <a class="nav-link" href="">Settings</a>
                     </nav>
                 </div>
             </nav>
