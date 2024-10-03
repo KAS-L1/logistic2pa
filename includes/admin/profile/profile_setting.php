@@ -26,10 +26,10 @@ require '../../../vendor/phpmailer/phpmailer/src/SMTP.php';
 $user_id = $_SESSION['user_id']; // Use session user_id
 
 // Fetch user information from the database
-$stmt = $conn->prepare("SELECT username, email, profile_pic, first_name, last_name, contact_number FROM users WHERE user_id = ?");
+$stmt = $conn->prepare("SELECT username, email, profile_pic, first_name, last_name, contact_number, address FROM users WHERE user_id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
-$stmt->bind_result($username, $email, $profile_pic, $first_name, $last_name, $contact_number);
+$stmt->bind_result($username, $email, $profile_pic, $first_name, $last_name, $contact_number, $address);
 $stmt->fetch();
 $stmt->close();
 
@@ -72,9 +72,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $new_username = htmlspecialchars($_POST['username']);
     $new_email = htmlspecialchars($_POST['email']);
     $new_password = !empty($_POST['password']) ? password_hash($_POST['password'], PASSWORD_DEFAULT) : null;
-    $new_first_name = htmlspecialchars($_POST['first_name']);
-    $new_last_name = htmlspecialchars($_POST['last_name']);
     $new_contact_number = htmlspecialchars($_POST['contact_number']);
+    $new_address = htmlspecialchars($_POST['address']);
     $profile_pic_path = $profile_pic; // Default to existing profile picture
 
     // Validate email
@@ -110,11 +109,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Update query for profile information
         if ($new_password) {
-            $stmt = $conn->prepare("UPDATE users SET username = ?, email = ?, password_hash = ?, profile_pic = ?, first_name = ?, last_name = ?, contact_number = ? WHERE user_id = ?");
-            $stmt->bind_param("sssssssi", $new_username, $new_email, $new_password, $profile_pic_path, $new_first_name, $new_last_name, $new_contact_number, $user_id);
+            $stmt = $conn->prepare("UPDATE users SET username = ?, email = ?, password_hash = ?, profile_pic = ?, contact_number = ?, address = ? WHERE user_id = ?");
+            $stmt->bind_param("ssssssi", $new_username, $new_email, $new_password, $profile_pic_path, $new_contact_number, $new_address, $user_id);
         } else {
-            $stmt = $conn->prepare("UPDATE users SET username = ?, email = ?, profile_pic = ?, first_name = ?, last_name = ?, contact_number = ? WHERE user_id = ?");
-            $stmt->bind_param("ssssssi", $new_username, $new_email, $profile_pic_path, $new_first_name, $new_last_name, $new_contact_number, $user_id);
+            $stmt = $conn->prepare("UPDATE users SET username = ?, email = ?, profile_pic = ?, contact_number = ?, address = ? WHERE user_id = ?");
+            $stmt->bind_param("sssssi", $new_username, $new_email, $profile_pic_path, $new_contact_number, $new_address, $user_id);
         }
 
         if ($stmt->execute()) {
@@ -129,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Redirect to the same page to display the toast
-    header("Location: profile_setting.php");
+    header("Location: /includes/admin/profile/profile_setting.php");
     exit();
 }
 ?>
@@ -209,7 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="container">
                     <div class="profile-card">
                         <h1>Edit Profile</h1>
-                        <form action="/includes/admin/profile/profile_setting.php" method="POST" enctype="multipart/form-data" onsubmit="return validatePassword();">
+                        <form action="/includes/index/admin/profile/profile_setting.php" method="POST" enctype="multipart/form-data" onsubmit="return validatePassword();">
                             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
 
                             <div class="text-center mb-3">
@@ -226,15 +225,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="section-title">Personal Information</div>
                             <div class="form-group">
                                 <label for="first_name" class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="first_name" name="first_name" value="<?php echo htmlspecialchars($first_name); ?>" required>
+                                <input type="text" class="form-control" id="first_name" name="first_name" value="<?php echo htmlspecialchars($first_name); ?>" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="last_name" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="last_name" name="last_name" value="<?php echo htmlspecialchars($last_name); ?>" required>
+                                <input type="text" class="form-control" id="last_name" name="last_name" value="<?php echo htmlspecialchars($last_name); ?>" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="contact_number" class="form-label">Contact Number</label>
                                 <input type="text" class="form-control" id="contact_number" name="contact_number" value="<?php echo htmlspecialchars($contact_number ?? '', ENT_QUOTES, 'UTF-8'); ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="address" name="address" value="<?php echo htmlspecialchars($address ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                             </div>
 
                             <!-- Section 2: Account Information -->
