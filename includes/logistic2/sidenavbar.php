@@ -40,17 +40,21 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
             <nav class="sb-sidenav-menu-nested nav">
                 <!-- Project Management Dropdown -->
                 <a class="nav-link collapsed fw-bold fst-italic" style="font-family: 'Rokkitt', serif;" href="#" data-bs-toggle="collapse" data-bs-target="#collapseProjectManagement" aria-expanded="false" aria-controls="collapseProjectManagement">
-                    <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-handshake"></i></div>
-                    Procurement & Vendor
+                    <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-shopping-cart"></i></div>
+                    Procurement
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
                 <div class="collapse" id="collapseProjectManagement" aria-labelledby="headingProjectManagement" data-bs-parent="#collapseDashboard">
                     <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', serif; color: black;">
-                        <a class="nav-link" href="/sub-modules/logistic2/procurement-vendor/home.php">Home</a>
-                        <a class="nav-link" href="/sub-modules/logistic2/procurement-vendor/procurement.php">Procurement</a>
-                        <a class="nav-link" href="/sub-modules/logistic2/procurement-vendor/vendor-manage.php">Vendor Management</a>
-                        <a class="nav-link" href="/sub-modules/logistic2/procurement-vendor/vendor-portal.php">Vendor Portal</a>
-                        <a class="nav-link" href="/sub-modules/logistic2/procurement-vendor/order-manage.php">Order Management</a>
+                        <a class="nav-link" href="# ">Purchase Orders</a>
+                        <a class="nav-link" href="# ">Suppliers</a>
+                        <a class="nav-link" href="# ">Reports</a>
+                        <a class="nav-link" href="# ">Purchase Requisition</a>
+                        <a class="nav-link" href="# ">RFQ</a>
+                        <a class="nav-link" href="# ">Contract Management</a>
+                        <a class="nav-link" href="# ">Invoice & Payment Management</a>
+                        <a class="nav-link" href="# ">Vendor Management</a>
+                        <a class="nav-link" href="# ">Budget Approval</a>
                     </nav>
                 </div>
 
