@@ -86,30 +86,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                 </div>
             </nav>
         </div>
-        <?php if ($_SESSION['role'] == 'admin') : ?>
-            <div class="sb-sidenav-menu-heading">Admin</div>
-            <a class="nav-link collapsed fw-bold" style="font-family: 'Cabin Condensed Static'" href="#!" id="AdminDropdown" data-bs-toggle="collapse" data-bs-target="#collapseAdmin" aria-expanded="false" aria-controls="collapseAdmin">
-                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt" style="color: #3CB371;"></i></div>
-                ADMIN PANEL
-                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-            </a>
-            <div class="collapse fw-bold fst-italic" style="font-family: 'Rokkitt'" id="collapseAdmin" aria-labelledby="headingDashboard" data-bs-parent="#sidenavAccordion">
-                <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">
-                    <a class="nav-link" href="/includes/logistic1/admin/dashboard.php">
-                        <i class="fa-solid fa-house" style="margin-right: 8px; color: #3CB371;"></i>HOME
-                    </a>
-                    <a class="nav-link" href="/includes/logistic1/admin/manage_users.php">
-                        <i class="fa-solid fa-users" style="margin-right: 8px; color: #3CB371;"></i>USER MANAGEMENT
-                    </a>
-                    <a class="nav-link" href="/includes/logistic1/admin/manage_branches.php">
-                        <i class="fa-solid fa-map" style="margin-right: 8px; color: #3CB371;"></i>BRANCHES MANAGEMENT
-                    </a>
-                    <a class="nav-link" href="/includes/logistic1/admin/manage_request.php">
-                        <i class="fa-solid fa-tasks" style="margin-right: 8px; color: #3CB371;"></i>MANAGE REQUEST
-                    </a>
-                </nav>
-            </div>
-        <?php endif; ?>
 
         <!-- Apps Section -->
         <div class="sb-sidenav-menu-heading" style="color: #3CB371;">Apps</div>
