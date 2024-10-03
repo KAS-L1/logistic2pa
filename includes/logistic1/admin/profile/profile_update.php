@@ -1,5 +1,3 @@
-<!-- eto yung backend ng setting -->
-
 <?php
 session_start();
 include '../config/db_connect.php';
@@ -11,32 +9,45 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'admin') {
 }
 
 // CSRF protection
-if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
     die("Invalid CSRF token.");
 }
 
 // Fetch the current admin's ID
 $user_id = $_SESSION['user_id'];
 
-// Get form inputs
-$username = $_POST['username'];
-$email = $_POST['email'];
-$password = $_POST['password']; // Optional
+// Get and sanitize form inputs
+$username = htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8');
+$email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+$address = htmlspecialchars($_POST['address'], ENT_QUOTES, 'UTF-8'); // Sanitize the address
+$password = isset($_POST['password']) ? $_POST['password'] : null; // Optional password
+
+// Validate email format
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo "<script>alert('Invalid email format.'); window.location.href='profile_settings.php';</script>";
+    exit();
+}
 
 // Prepare SQL query to update the admin's profile
 if (!empty($password)) {
     // If the password is set, hash it and update everything
+    if (strlen($password) < 8) {
+        echo "<script>alert('Password must be at least 8 characters long.'); window.location.href='profile_settings.php';</script>";
+        exit();
+    }
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare("UPDATE users SET username = ?, email = ?, password_hash = ? WHERE user_id = ?");
-    $stmt->bind_param("sssi", $username, $email, $password_hash, $user_id);
+    $stmt = $conn->prepare("UPDATE users SET username = ?, email = ?, password_hash = ?, address = ? WHERE user_id = ?");
+    $stmt->bind_param("ssssi", $username, $email, $password_hash, $address, $user_id);
 } else {
-    // If no password change, update username and email only
-    $stmt = $conn->prepare("UPDATE users SET username = ?, email = ? WHERE user_id = ?");
-    $stmt->bind_param("ssi", $username, $email, $user_id);
+    // If no password change, update username, email, and address only
+    $stmt = $conn->prepare("UPDATE users SET username = ?, email = ?, address = ? WHERE user_id = ?");
+    $stmt->bind_param("sssi", $username, $email, $address, $user_id);
 }
 
 // Execute the query
 if ($stmt->execute()) {
+    // Update successful, reset the CSRF token
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     echo "<script>alert('Profile updated successfully.'); window.location.href='profile_settings.php';</script>";
 } else {
     echo "<script>alert('Error updating profile. Please try again.'); window.location.href='profile_settings.php';</script>";
@@ -44,4 +55,3 @@ if ($stmt->execute()) {
 
 $stmt->close();
 $conn->close();
-

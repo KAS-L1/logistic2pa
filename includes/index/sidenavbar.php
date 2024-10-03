@@ -53,18 +53,18 @@ if (session_status() === PHP_SESSION_NONE) {
             </a>
             <div class="collapse fw-bold fst-italic" style="font-family: 'Rokkitt'" id="collapseAdmin" aria-labelledby="headingDashboard" data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">
-                    <a class="nav-link" href="/includes/admin/dashboard.php">
+                    <!-- <a class="nav-link" href="/includes/admin/dashboard.php">
                         <i class="fa-solid fa-house" style="margin-right: 8px; color: #3CB371;"></i>HOME
-                    </a>
+                    </a> -->
                     <a class="nav-link" href="/includes/admin/manage_users.php">
                         <i class="fa-solid fa-users" style="margin-right: 8px; color: #3CB371;"></i>USER MANAGEMENT
                     </a>
-                    <a class="nav-link" href="/includes/admin/manage_branches.php">
+                    <!-- <a class="nav-link" href="/includes/admin/manage_branches.php">
                         <i class="fa-solid fa-map" style="margin-right: 8px; color: #3CB371;"></i>BRANCHES MANAGEMENT
-                    </a>
-                    <a class="nav-link" href="/includes/admin/manage_request.php">
+                    </a> -->
+                    <!-- <a class="nav-link" href="/includes/admin/manage_request.php">
                         <i class="fa-solid fa-tasks" style="margin-right: 8px; color: #3CB371;"></i>MANAGE REQUEST
-                    </a>
+                    </a> -->
                 </nav>
             </div>
         <?php endif; ?>

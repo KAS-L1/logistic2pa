@@ -144,7 +144,7 @@ try {
             <div class="container">
                 <div class="summary-section text-center">
                     <h4>Quick Stats</h4>
-                    <p>Branches: <?= $branches ?> | Users: <?= $users ?> | Pending Requests: <?= $pending_requests ?></p>
+                    <p>Users: <?= $users ?> | Pending Requests: <?= $pending_requests ?></p>
                 </div>
             </div>
 

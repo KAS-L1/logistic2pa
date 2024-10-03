@@ -170,9 +170,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" class="btn btn-primary w-100">Log In</button>
         </form>
 
-        <div class="text-center mt-4">
+        <!-- <div class="text-center mt-4">
             <p>Need an account? <a href="/admin_login/request_account.php">Request one here</a>.</p>
-        </div>
+        </div> -->
         <div class="mt-2 text-center">
             <a href="/admin_login/admin_reset_pass.php">Forgot Password?</a>
         </div>

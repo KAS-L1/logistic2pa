@@ -11,7 +11,7 @@ require '../../vendor/autoload.php';  // Include PHPMailer if using Composer
 include '../../config/db_connect.php';  // Database connection
 
 // Fetch all users from the database
-$query = "SELECT u.user_id, u.username, u.email, u.role, b.branch_name 
+$query = "SELECT u.user_id, u.username, u.email, u.role, b.branch_name, u.first_name, u.last_name, u.address, u.contact_number 
           FROM users u 
           LEFT JOIN branches b ON u.branch_id = b.branch_id";
 $result = $conn->query($query);
@@ -21,6 +21,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_user'])) {
     $username = $_POST['username'];
     $email = $_POST['email'];
     $role = $_POST['role'];
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $address = $_POST['address'];
+    $contact_number = $_POST['contact_number'];
     $branch_id = !empty($_POST['branch_id']) ? $_POST['branch_id'] : null;  // Optional branch assignment
 
     // Check if the username or email already exists
@@ -38,8 +42,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_user'])) {
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
         // Insert the new user into the database
-        $stmt = $conn->prepare("INSERT INTO users (username, email, password_hash, role, branch_id) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssi", $username, $email, $password_hash, $role, $branch_id);
+        $stmt = $conn->prepare("INSERT INTO users (username, email, password_hash, role, branch_id, first_name, last_name, address, contact_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssissss", $username, $email, $password_hash, $role, $branch_id, $first_name, $last_name, $address, $contact_number);
 
         if ($stmt->execute()) {
             // Send email with PHPMailer
@@ -129,14 +133,20 @@ function sendEmail($email, $username, $password) {
             <div class="container mt-5">
                 <h1>Manage Users</h1>
 
-                <div class="mb-3">
-                    <a href="/includes/admin/manage_request.php" class="btn btn-primary1">Manage Account Requests</a>
-                </div>
-
                 <!-- Responsive Form to Add New User -->
                 <div class="profile-card p-4">
                     <h2>Add New User</h2>
                     <form action="manage_users.php" method="POST">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="first_name" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" required>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="username" class="form-label">Username</label>
@@ -145,6 +155,16 @@ function sendEmail($email, $username, $password) {
                             <div class="col-md-6 mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="address" name="address">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="contact_number" class="form-label">Contact Number</label>
+                                <input type="text" class="form-control" id="contact_number" name="contact_number">
                             </div>
                         </div>
                         <div class="row">
@@ -177,10 +197,14 @@ function sendEmail($email, $username, $password) {
                     <table class="table table-bordered">
                         <thead>
                             <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Role</th>
                                 <th>Branch</th>
+                                <th>Address</th>
+                                <th>Contact Number</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -189,10 +213,14 @@ function sendEmail($email, $username, $password) {
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
                                     echo "<tr>";
+                                    echo "<td>{$row['first_name']}</td>";
+                                    echo "<td>{$row['last_name']}</td>";
                                     echo "<td>{$row['username']}</td>";
                                     echo "<td>{$row['email']}</td>";
                                     echo "<td>{$row['role']}</td>";
                                     echo "<td>{$row['branch_name']}</td>";
+                                    echo "<td>{$row['address']}</td>";
+                                    echo "<td>{$row['contact_number']}</td>";
                                     echo "<td>
                                             <a href='edit_user.php?id={$row['user_id']}' class='btn btn-warning btn-sm'>Edit</a>
                                             <a href='delete_user.php?id={$row['user_id']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure?\")'>Delete</a>
@@ -200,7 +228,7 @@ function sendEmail($email, $username, $password) {
                                     echo "</tr>";
                                 }
                             } else {
-                                echo "<tr><td colspan='5'>No users found</td></tr>";
+                                echo "<tr><td colspan='9'>No users found</td></tr>";
                             }
                             ?>
                         </tbody>
@@ -246,6 +274,7 @@ function sendEmail($email, $username, $password) {
     </footer>
 </div>
 
+<?php include('../index/script.php'); ?>
 <script src="/js/scripts.js"></script>
 </body>
 </html>
