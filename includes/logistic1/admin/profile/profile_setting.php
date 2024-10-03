@@ -379,6 +379,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <?php include('../../../logistic1/script.php'); ?>
-        <script src="../js/scripts.js"></script>
+        <script src="/js/scripts.js"></script>
 </body>
 </html>

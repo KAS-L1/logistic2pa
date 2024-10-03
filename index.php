@@ -45,7 +45,7 @@ if ($_SESSION['role'] !== 'admin') {
 
                 <main>
                     <div class="container-fluid px-4">
-                    <h1 class="mt-4" style="font-family: 'IM Fell Great Primer SC'; font-size: 35px;">PARADISE HOTEL</h1>
+                    <h1 class="mt-4" style="font-family: 'Rokkitt'; font-size: 35px;">PARADISE HOTEL</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">In Paradise, every decision counts!</li>
                         </ol>

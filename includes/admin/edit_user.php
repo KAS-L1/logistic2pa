@@ -10,10 +10,10 @@ include '../../config/db_connect.php';  // Database connection
 // Fetch user data for editing if ID is provided
 if (isset($_GET['id'])) {
     $user_id = $_GET['id'];
-    $stmt = $conn->prepare("SELECT username, email, role, branch_id FROM users WHERE user_id = ?");
+    $stmt = $conn->prepare("SELECT username, email, role, branch_id, first_name, last_name, address, contact_number FROM users WHERE user_id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    $stmt->bind_result($username, $email, $role, $branch_id);
+    $stmt->bind_result($username, $email, $role, $branch_id, $first_name, $last_name, $address, $contact_number);
     $stmt->fetch();
     $stmt->close();
 }
@@ -24,6 +24,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $new_email = $_POST['email'];
     $new_role = $_POST['role'];
     $new_branch_id = $_POST['branch_id'];
+    $new_first_name = $_POST['first_name'];
+    $new_last_name = $_POST['last_name'];
+    $new_address = $_POST['address'];
+    $new_contact_number = $_POST['contact_number'];
 
     // Check if the username already exists for another user
     $check_stmt = $conn->prepare("SELECT user_id FROM users WHERE username = ? AND user_id != ?");
@@ -38,8 +42,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     } else {
         // Proceed with the update
-        $stmt = $conn->prepare("UPDATE users SET username = ?, email = ?, role = ?, branch_id = ? WHERE user_id = ?");
-        $stmt->bind_param("sssii", $new_username, $new_email, $new_role, $new_branch_id, $user_id);
+        $stmt = $conn->prepare("UPDATE users SET username = ?, email = ?, role = ?, branch_id = ?, first_name = ?, last_name = ?, address = ?, contact_number = ? WHERE user_id = ?");
+        $stmt->bind_param("sssissssi", $new_username, $new_email, $new_role, $new_branch_id, $new_first_name, $new_last_name, $new_address, $new_contact_number, $user_id);
 
         if ($stmt->execute()) {
             $_SESSION['toast_message'] = 'User updated successfully.';
@@ -63,13 +67,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php include('../index/header.php'); ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Users</title>
+    <title>Edit User</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/rokkito.css" rel="stylesheet">
     <link href="/css/condense.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="/css/admin_css/manage_user.css" rel="stylesheet">
+    <link href="/css/admin_css/manage_user.css" rel="stylesheet" ?v=<?php echo time();?>>
 </head>
 <body class="sb-nav-fixed">
     <!-- Top Navigation Bar -->
@@ -87,43 +91,69 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <!-- Main Content Area -->
         <div id="layoutSidenav_content">
-            <main class="container-fluid px-4 mt-4">
-                <h1>Manage Users</h1>
+            <main class="container-fluid px-5 mt-4">
+                <h1>Edit User</h1>
 
                 <div class="profile-card">
-                    <h1>Edit User</h1>
                     <form action="" method="POST">
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" value="<?php echo $username; ?>" required>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="first_name" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" value="<?php echo htmlspecialchars($first_name); ?>" required>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" value="<?php echo htmlspecialchars($last_name); ?>" required>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" value="<?php echo $email; ?>" required>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" value="<?php echo $username; ?>" required>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" value="<?php echo $email; ?>" required>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="role" class="form-label">Role</label>
-                            <select class="form-control" id="role" name="role" required>
-                                <option value="admin" <?php if ($role == 'admin') echo 'selected'; ?>>Admin</option>
-                                <option value="logistic1_admin" <?php if ($role == 'logistic1_admin') echo 'selected'; ?>>Logistic 1 Admin</option>
-                                <option value="logistic2_admin" <?php if ($role == 'logistic2_admin') echo 'selected'; ?>>Logistic 2 Admin</option>
-                                <option value="user" <?php if ($role == 'user') echo 'selected'; ?>>User</option>
-                            </select>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="address" name="address" value="<?php echo htmlspecialchars($address  ?? ''); ?>">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="contact_number" class="form-label">Contact Number</label>
+                                <input type="text" class="form-control" id="contact_number" name="contact_number" value="<?php echo htmlspecialchars($contact_number ?? ''); ?>">
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="branch_id" class="form-label">Assign to Branch (Optional)</label>
-                            <select class="form-control" id="branch_id" name="branch_id">
-                                <option value="">None</option>
-                                <?php
-                                $branches_result = $conn->query("SELECT branch_id, branch_name FROM branches");
-                                while ($row = $branches_result->fetch_assoc()) {
-                                    $selected = $row['branch_id'] == $branch_id ? 'selected' : '';
-                                    echo "<option value='{$row['branch_id']}' $selected>{$row['branch_name']}</option>";
-                                }
-                                ?>
-                            </select>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="role" class="form-label">Role</label>
+                                <select class="form-control" id="role" name="role" required>
+                                    <option value="admin" <?php if ($role == 'admin') echo 'selected'; ?>>Admin</option>
+                                    <option value="logistic1_admin" <?php if ($role == 'logistic1_admin') echo 'selected'; ?>>Logistic 1 Admin</option>
+                                    <option value="logistic2_admin" <?php if ($role == 'logistic2_admin') echo 'selected'; ?>>Logistic 2 Admin</option>
+                                    <option value="user" <?php if ($role == 'user') echo 'selected'; ?>>User</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="branch_id" class="form-label">Assign to Branch (Optional)</label>
+                                <select class="form-control" id="branch_id" name="branch_id">
+                                    <option value="">None</option>
+                                    <?php
+                                    $branches_result = $conn->query("SELECT branch_id, branch_name FROM branches");
+                                    while ($row = $branches_result->fetch_assoc()) {
+                                        $selected = $row['branch_id'] == $branch_id ? 'selected' : '';
+                                        echo "<option value='{$row['branch_id']}' $selected>{$row['branch_name']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary1">Update User</button>
+                       
+                        <button type="submit" class="btn btn-primary1 w-100">Update User</button>
                     </form>
                 </div>
             </main>
@@ -144,7 +174,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
     </div>
 
-
     <script>
         $(document).ready(function() {
             <?php if (isset($_SESSION['toast_type']) && isset($_SESSION['toast_message'])): ?>
@@ -160,21 +189,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <?php endif; ?>
         });
     </script>
-        <footer class="py-4 bg-light mt-auto">
-                <?php include('../index/footer.php'); ?>
-            </footer>
-        </div>
-    </div>
+
+    <footer class="py-4 bg-light mt-auto">
+        <?php include('../index/footer.php'); ?>
+    </footer>
 
     <!-- Scripts -->
-    <?php include('../index/script.php'); ?>
-    
-    <footer class="py-4 bg-light mt-auto">
-                <?php include('../index/footer.php'); ?>
-            </footer>
-        </div>
-    </div>
-
     <?php include('../index/script.php'); ?>
 </body>
 </html>

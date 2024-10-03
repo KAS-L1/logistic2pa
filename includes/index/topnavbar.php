@@ -1,5 +1,5 @@
 <!-- Navbar Brand-->
-<a class="navbar-brand ps-3 fw-bolder" href="/index.php">
+<a class="navbar-brand ps-3 fw-bolder" style="font-family: 'Rokkitt';"  href="/index.php">
     <img src="/assets/img/paradise_logo.png" alt="Logo" style="width: 40px; height: 40px; margin-right: 10px;">
     LOGISTICS
 </a>

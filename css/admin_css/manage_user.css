@@ -1,6 +1,6 @@
 
 body {
-font-family: 'Roboto Condensed', sans-serif;
+font-family: 'Rokkitt', sans-serif;
 background-color: #f4f6f9;
 color: #333;
 }
@@ -9,7 +9,7 @@ font-weight: 500;
 color: #2c3e50;
 text-align: center;
 margin-bottom: 20px;
-font-family: 'Roboto Condensed';
+font-family: 'Rokkitt';
 }
 .container-fluid {
 max-width: 1200px;
@@ -18,11 +18,13 @@ margin: 0 auto;
 .form-label {
 font-weight: 600;
 color: #34495e;
+font-family: 'Rokkitt';
 }
 .form-control, .form-select {
 border-radius: 5px;
 border: 1px solid #ced4da;
 transition: all 0.3s ease;
+font-family: 'Rokkitt';
 }
 .form-control:focus, .form-select:focus {
 border-color: #3498db;

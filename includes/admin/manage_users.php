@@ -116,6 +116,8 @@ function sendEmail($email, $username, $password) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <link href="/css/admin_css/manage_user.css" rel="stylesheet">
+    <!-- Link to Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body class="sb-nav-fixed">
@@ -134,41 +136,40 @@ function sendEmail($email, $username, $password) {
                 <h1>Manage Users</h1>
 
                 <!-- Responsive Form to Add New User -->
-                <div class="profile-card p-4">
-                    <h2>Add New User</h2>
+                <div class="profile-card p-5">
                     <form action="manage_users.php" method="POST">
                         <div class="row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6 mb-4">
                                 <label for="first_name" class="form-label">First Name</label>
                                 <input type="text" class="form-control" id="first_name" name="first_name" required>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6 mb-4">
                                 <label for="last_name" class="form-label">Last Name</label>
                                 <input type="text" class="form-control" id="last_name" name="last_name" required>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6 mb-4">
                                 <label for="username" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="username" name="username" required>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6 mb-4">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="email" name="email" required>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6 mb-4">
                                 <label for="address" class="form-label">Address</label>
                                 <input type="text" class="form-control" id="address" name="address">
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6 mb-4">
                                 <label for="contact_number" class="form-label">Contact Number</label>
                                 <input type="text" class="form-control" id="contact_number" name="contact_number">
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6 mb-4">
                                 <label for="role" class="form-label">Role</label>
                                 <select class="form-control" id="role" name="role" required>
                                     <option value="admin">Admin</option>
@@ -177,7 +178,7 @@ function sendEmail($email, $username, $password) {
                                     <option value="user">User</option>
                                 </select>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6 mb-4">
                                 <label for="branch_id" class="form-label">Assign Branch</label>
                                 <select class="form-control" id="branch_id" name="branch_id">
                                     <option value="">No branch</option>
@@ -185,7 +186,7 @@ function sendEmail($email, $username, $password) {
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100" name="add_user">Add User</button>
+                        <button type="submit" class="btn btn-primary1 w-100" name="add_user">Add User</button>
                     </form>
                 </div>
 
@@ -222,8 +223,12 @@ function sendEmail($email, $username, $password) {
                                     echo "<td>{$row['address']}</td>";
                                     echo "<td>{$row['contact_number']}</td>";
                                     echo "<td>
-                                            <a href='edit_user.php?id={$row['user_id']}' class='btn btn-warning btn-sm'>Edit</a>
-                                            <a href='delete_user.php?id={$row['user_id']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure?\")'>Delete</a>
+                                            <a href='edit_user.php?id={$row['user_id']}' class='btn btn-warning btn-sm'>
+                                                <i class='fas fa-edit'></i>
+                                            </a>
+                                            <button class='btn btn-danger btn-sm' onclick='confirmDelete({$row['user_id']})'>
+                                                <i class='fas fa-trash-alt'></i>
+                                            </button>
                                           </td>";
                                     echo "</tr>";
                                 }
@@ -233,6 +238,26 @@ function sendEmail($email, $username, $password) {
                             ?>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-danger" id="deleteModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="fw-bold">Are you sure you want to delete this user?</p>
+                    <i class="fas fa-exclamation-triangle text-danger fa-3x mb-3"></i>
+                </div>
+                <div class="modal-footer border-0 d-flex justify-content-center">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a href="#" id="confirmDeleteBtn" class="btn btn-danger">Delete</a>
                 </div>
             </div>
         </div>
@@ -253,6 +278,15 @@ function sendEmail($email, $username, $password) {
     </div>
 
 <script>
+    // Function to show delete confirmation modal
+    function confirmDelete(userId) {
+        var deleteUrl = 'delete_user.php?id=' + userId;
+        document.getElementById('confirmDeleteBtn').setAttribute('href', deleteUrl);
+        var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        deleteModal.show();
+    }
+
+    // Display toast if exists
     $(document).ready(function() {
         <?php if (isset($_SESSION['toast_type']) && isset($_SESSION['toast_message'])): ?>
             var toastLive = document.getElementById('liveToast');

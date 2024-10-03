@@ -12,6 +12,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="/css/rokkito.css" rel="stylesheet">
     <link href="/css/condense.css" rel="stylesheet">
+    <link href="/css/quicksand.css" rel="stylesheet">
 </head>
 
 <div class="sb-sidenav-menu">
@@ -20,12 +21,12 @@ if (session_status() === PHP_SESSION_NONE) {
         <div class="sb-sidenav-menu-heading">Core</div>
 
         <!-- Main Dashboard -->
-        <a class="nav-link collapsed fw-bold" style="font-family: 'Cabin Condensed Static';" href="#" id="logisticDropdown" data-bs-toggle="collapse" data-bs-target="#collapseDashboard" aria-expanded="false" aria-controls="collapseDashboard">
+        <a class="nav-link collapsed fw-bold" style="font-family: 'Rokkitt';" href="#" id="logisticDropdown" data-bs-toggle="collapse" data-bs-target="#collapseDashboard" aria-expanded="false" aria-controls="collapseDashboard">
             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt" style="color: #3CB371;"></i></div>
             DASHBOARD
             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
         </a>
-        <div class="collapse fw-bold fst-italic" style="font-family: 'Rokkitt';" id="collapseDashboard" aria-labelledby="headingDashboard" data-bs-parent="#sidenavAccordion">
+        <div class="collapse fst-italic" style="font-family: 'Rokkitt';" id="collapseDashboard" aria-labelledby="headingDashboard" data-bs-parent="#sidenavAccordion">
             <nav class="sb-sidenav-menu-nested nav">
                 <!-- Dynamic Links for Logistic 1 and Logistic 2 -->
                 <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'logistic1_admin') : ?>
@@ -46,12 +47,12 @@ if (session_status() === PHP_SESSION_NONE) {
         <!-- Admin Panel for Main Admin -->
         <?php if ($_SESSION['role'] == 'admin') : ?>
             <div class="sb-sidenav-menu-heading">Admin</div>
-            <a class="nav-link collapsed fw-bold" style="font-family: 'Cabin Condensed Static'" href="#!" id="AdminDropdown" data-bs-toggle="collapse" data-bs-target="#collapseAdmin" aria-expanded="false" aria-controls="collapseAdmin">
+            <a class="nav-link collapsed fw-bold" style="font-family: 'Rokkitt'" href="#!" id="AdminDropdown" data-bs-toggle="collapse" data-bs-target="#collapseAdmin" aria-expanded="false" aria-controls="collapseAdmin">
                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt" style="color: #3CB371;"></i></div>
                 ADMIN PANEL
                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
             </a>
-            <div class="collapse fw-bold fst-italic" style="font-family: 'Rokkitt'" id="collapseAdmin" aria-labelledby="headingDashboard" data-bs-parent="#sidenavAccordion">
+            <div class="collapse fst-italic" style="font-family: 'Rokkitt'" id="collapseAdmin" aria-labelledby="headingDashboard" data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">
                     <!-- <a class="nav-link" href="/includes/admin/dashboard.php">
                         <i class="fa-solid fa-house" style="margin-right: 8px; color: #3CB371;"></i>HOME
