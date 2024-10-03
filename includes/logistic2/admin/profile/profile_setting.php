@@ -128,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Redirect to the same page to display the toast
-    header("Location: profile_setting.php");
+    header("Location: /includes/logistic2/admin/profile/profile_setting.php");
     exit();
 }
 ?>
@@ -208,7 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="container">
                     <div class="profile-card">
                         <h1>Edit Profile</h1>
-                        <form action="/includes/admin/profile/profile_setting.php" method="POST" enctype="multipart/form-data" onsubmit="return validatePassword();">
+                        <form action="/includes/logistic2/admin/profile/profile_setting.php" method="POST" enctype="multipart/form-data" onsubmit="return validatePassword();">
                             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
 
                             <div class="text-center mb-3">

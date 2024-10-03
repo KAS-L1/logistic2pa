@@ -24,7 +24,7 @@ $password = isset($_POST['password']) ? $_POST['password'] : null; // Optional p
 
 // Validate email format
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo "<script>alert('Invalid email format.'); window.location.href='profile_settings.php';</script>";
+    echo "<script>alert('Invalid email format.'); window.location.href='/includes/logistic2/admin/profile/profile_setting.php';</script>";
     exit();
 }
 
@@ -32,7 +32,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 if (!empty($password)) {
     // If the password is set, hash it and update everything
     if (strlen($password) < 8) {
-        echo "<script>alert('Password must be at least 8 characters long.'); window.location.href='profile_settings.php';</script>";
+        echo "<script>alert('Password must be at least 8 characters long.'); window.location.href='/includes/logistic2/admin/profile/profile_setting.php';</script>";
         exit();
     }
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
@@ -48,9 +48,9 @@ if (!empty($password)) {
 if ($stmt->execute()) {
     // Update successful, reset the CSRF token
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    echo "<script>alert('Profile updated successfully.'); window.location.href='profile_settings.php';</script>";
+    echo "<script>alert('Profile updated successfully.'); window.location.href='/includes/logistic2/admin/profile/profile_setting.php';</script>";
 } else {
-    echo "<script>alert('Error updating profile. Please try again.'); window.location.href='profile_settings.php';</script>";
+    echo "<script>alert('Error updating profile. Please try again.'); window.location.href='/includes/logistic2/admin/profile/profile_setting.php';</script>";
 }
 
 $stmt->close();
