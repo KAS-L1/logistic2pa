@@ -95,7 +95,30 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
         </div>
 
         <!-- Apps Section -->
+       
         <div class="sb-sidenav-menu-heading" style="font-family: 'Nunito', sans-serif;">Apps</div>
+         <!-- Invoice Section with Dropdown -->
+        <a class="nav-link collapsed fw-bold" href="#" style="font-family: 'Rokkitt', serif;" data-bs-toggle="collapse" data-bs-target="#collapseInvoice" aria-expanded="false" aria-controls="collapseInvoice">
+            <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-cocktail"></i></div>
+            Food and Beverage 
+            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+        </a>
+        <div class="collapse" id="collapseInvoice" aria-labelledby="headingInvoice" data-bs-parent="#sidenavAccordion">
+            <nav class="sb-sidenav-menu-nested nav" style="font-family: 'Rokkitt', serif; color: black;">
+                <a class="nav-link" href="#">Menu Management</a>
+                <a class="nav-link" href="#">Kitchen Order Management</a>
+                <a class="nav-link" href="#">Stock Management</a>
+                <a class="nav-link" href="#">Recipe Management</a>
+                <a class="nav-link" href="#">Food Costing</a>
+                <a class="nav-link" href="#">Waste Management</a>
+                <a class="nav-link" href="#">Reports & Analytics</a>
+                <a class="nav-link" href="#">Settings</a>
+            </nav>
+        </div>
+        <a class="nav-link" href="chat.php" style="font-family: 'Rokkitt', serif; color: black;">
+            <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-route"></i></div>
+            Vendor Portal
+        </a>
         <a class="nav-link" href="chat.php" style="font-family: 'Rokkitt', serif; color: black;">
             <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-comment-dots"></i></div>
             Chat
@@ -108,34 +131,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
             <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-list"></i></div>
             Todo List
         </a>
-        <a class="nav-link" href="notes.php" style="font-family: 'Rokkitt', serif; color: black;">
-            <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-sticky-note"></i></div>
-            Notes
-        </a>
-        <a class="nav-link" href="scrumboard.php" style="font-family: 'Rokkitt', serif; color: black;">
-            <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-tasks"></i></div>
-            Scrumboard
-        </a>
-        <a class="nav-link" href="contacts.php" style="font-family: 'Rokkitt', serif; color: black;">
-            <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-address-book"></i></div>
-            Contacts
-        </a>
-
-        <!-- Invoice Section with Dropdown -->
-        <a class="nav-link collapsed fw-bold" href="#" style="font-family: 'Rokkitt', serif;" data-bs-toggle="collapse" data-bs-target="#collapseInvoice" aria-expanded="false" aria-controls="collapseInvoice">
-            <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-dollar-sign"></i></div>
-            Invoice
-            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-        </a>
-        <div class="collapse" id="collapseInvoice" aria-labelledby="headingInvoice" data-bs-parent="#sidenavAccordion">
-            <nav class="sb-sidenav-menu-nested nav" style="font-family: 'Rokkitt', serif; color: black;">
-                <a class="nav-link" href="invoice-list.php">List</a>
-                <a class="nav-link" href="invoice-preview.php">Preview</a>
-                <a class="nav-link" href="invoice-add.php">Add</a>
-                <a class="nav-link" href="invoice-edit.php">Edit</a>
-            </nav>
-        </div>
-
         <!-- Calendar Section -->
         <a class="nav-link" href="calendar.php" style="font-family: 'Rokkitt', serif; color: black;">
             <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-calendar"></i></div>
