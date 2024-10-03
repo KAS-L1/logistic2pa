@@ -20,12 +20,12 @@ if (session_status() === PHP_SESSION_NONE) {
         <div class="sb-sidenav-menu-heading">Core</div>
 
         <!-- Main Dashboard -->
-        <a class="nav-link collapsed fw-bold" style="font-family: 'Cabin Condensed Static'" href="#" id="logisticDropdown" data-bs-toggle="collapse" data-bs-target="#collapseDashboard" aria-expanded="false" aria-controls="collapseDashboard">
+        <a class="nav-link collapsed fw-bold" style="font-family: 'Cabin Condensed Static';" href="#" id="logisticDropdown" data-bs-toggle="collapse" data-bs-target="#collapseDashboard" aria-expanded="false" aria-controls="collapseDashboard">
             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt" style="color: #3CB371;"></i></div>
             DASHBOARD
             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
         </a>
-        <div class="collapse fw-bold fst-italic" style="font-family: 'Rokkitt'" id="collapseDashboard" aria-labelledby="headingDashboard" data-bs-parent="#sidenavAccordion">
+        <div class="collapse fw-bold fst-italic" style="font-family: 'Rokkitt';" id="collapseDashboard" aria-labelledby="headingDashboard" data-bs-parent="#sidenavAccordion">
             <nav class="sb-sidenav-menu-nested nav">
                 <!-- Dynamic Links for Logistic 1 and Logistic 2 -->
                 <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'logistic1_admin') : ?>
@@ -41,6 +41,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 <?php endif; ?>
             </nav>
         </div>
+
 
         <!-- Admin Panel for Main Admin -->
         <?php if ($_SESSION['role'] == 'admin') : ?>

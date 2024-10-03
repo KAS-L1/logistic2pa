@@ -13,7 +13,7 @@
 </button>
 
 <!-- Home -->
-<a class="nav-link" style="color: #3CB371;" href="/sub-modules/logistic1/dashboard.php"><i class="fa-solid fa-house"></i></a>
+<!-- <a class="nav-link" style="color: #3CB371;" href="/sub-modules/logistic1/dashboard.php"><i class="fa-solid fa-house"></i></a> -->
 
 
 <!-- Navbar Search -->

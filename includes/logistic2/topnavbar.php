@@ -14,7 +14,7 @@
     </button>
 
     <!-- Home -->
-    <a class="nav-link" style="color: #3CB371;" href="/sub-modules/logistic2/dashboard.php"><i class="fa-solid fa-house"></i></a>
+    <!-- <a class="nav-link" style="color: #3CB371;" href="/sub-modules/logistic2/dashboard.php"><i class="fa-solid fa-house"></i></a> -->
 
 
 

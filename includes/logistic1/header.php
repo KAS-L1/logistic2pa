@@ -12,7 +12,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-        <style>
+        <!-- <style>
                 /* Ensure collapse opens on hover */
                 #logisticDropdown:hover + #collapseDashboard {
                 display: block !important;
@@ -34,4 +34,4 @@
                 background-color: #f8f9fa; /* Optional: you can style the dropdown background */
                 padding-left: 20px;
                 }
-        </style>
+        </style> -->

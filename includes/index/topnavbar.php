@@ -9,10 +9,10 @@
     <i class="fas fa-bars"></i>
 </button>
 
-<!-- Navbar Home Icon -->
+<!-- Navbar Home Icon
 <a class="nav-link" style="color: #3CB371;" href="/index.php">
     <i class="fa-solid fa-house"></i>
-</a>
+</a> -->
 
 <!-- Navbar Search -->
 <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
