@@ -46,15 +46,15 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                 </a>
                 <div class="collapse" id="collapseProjectManagement" aria-labelledby="headingProjectManagement" data-bs-parent="#collapseDashboard">
                     <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', serif; color: black;">
-                        <a class="nav-link" href="# ">Purchase Orders</a>
-                        <a class="nav-link" href="# ">Suppliers</a>
-                        <a class="nav-link" href="# ">Reports</a>
-                        <a class="nav-link" href="# ">Purchase Requisition</a>
-                        <a class="nav-link" href="# ">RFQ</a>
-                        <a class="nav-link" href="# ">Contract Management</a>
-                        <a class="nav-link" href="# ">Invoice & Payment Management</a>
-                        <a class="nav-link" href="# ">Vendor Management</a>
-                        <a class="nav-link" href="# ">Budget Approval</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/procurement/Purchase-order.php">Purchase Orders</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/procurement/Supplier.php">Suppliers</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/procurement/Reports.php">Reports</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/procurement/Purchase-req.php">Purchase Requisition</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/procurement/RFQ.php">RFQ</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/procurement/Contract-manage.php">Contract Management</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/procurement/Invoice-payment.php">Invoice & Payment Management</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/procurement/Vendor-management.php">Vendor Management</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/procurement/Budget-approval.php">Budget Approval</a>
                     </nav>
                 </div>
 
@@ -66,12 +66,12 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                 </a>
                 <div class="collapse" id="collapseAuditManagement" aria-labelledby="headingAuditManagement" data-bs-parent="#collapseDashboard">
                     <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', serif; color: black;">
-                        <a class="nav-link" href="#">Audit Trail</a>
-                        <a class="nav-link" href="#">Compliance Monitoring</a>
-                        <a class="nav-link" href="#">Scheduled Audits</a>
-                        <a class="nav-link" href="#">Discrepancy Alerts</a>
-                        <a class="nav-link" href="#">Reports</a>
-                        <a class="nav-link" href="#">Settings</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/auditmanagement/Audit-trail.php">Audit Trail</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/auditmanagement/Compliance-monitor.php">Compliance Monitoring</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/auditmanagement/Scheduled-audits.php">Scheduled Audits</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/auditmanagement/Discrepancy-alerts.php">Discrepancy Alerts</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/auditmanagement/Reports.php">Reports</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/auditmanagement/Setting.php">Settings</a>
                     </nav>
                 </div>
 
@@ -83,12 +83,12 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                 </a>
                 <div class="collapse" id="collapseDocumentTracking" aria-labelledby="headingDocumentTracking" data-bs-parent="#collapseDashboard">
                     <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', serif; color: black;">
-                        <a class="nav-link" href="">Documents</a>
-                        <a class="nav-link" href="">Version Control</a>
-                        <a class="nav-link" href="">Access Control</a>
-                        <a class="nav-link" href="">Expiry Alerts</a>
-                        <a class="nav-link" href="">Reports</a>
-                        <a class="nav-link" href="">Settings</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/document-tracking/Documents.php">Documents</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/document-tracking/Version-Control.php">Version Control</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/document-tracking/Access-Control.php">Access Control</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/document-tracking/Expiry-Alerts.php">Expiry Alerts</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/document-tracking/Reports.php">Reports</a>
+                        <a class="nav-link" href="/sub-modules/logistic2/document-tracking/Settings.php">Settings</a>
                     </nav>
                 </div>
             </nav>
@@ -105,14 +105,14 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
         </a>
         <div class="collapse" id="collapseInvoice" aria-labelledby="headingInvoice" data-bs-parent="#sidenavAccordion">
             <nav class="sb-sidenav-menu-nested nav" style="font-family: 'Rokkitt', serif; color: black;">
-                <a class="nav-link" href="#">Menu Management</a>
-                <a class="nav-link" href="#">Kitchen Order Management</a>
-                <a class="nav-link" href="#">Stock Management</a>
-                <a class="nav-link" href="#">Recipe Management</a>
-                <a class="nav-link" href="#">Food Costing</a>
-                <a class="nav-link" href="#">Waste Management</a>
-                <a class="nav-link" href="#">Reports & Analytics</a>
-                <a class="nav-link" href="#">Settings</a>
+                <a class="nav-link" href="/sub-modules/logistic2/foodandbeverage/Menu-Management.php">Menu Management</a>
+                <a class="nav-link" href="/sub-modules/logistic2/foodandbeverage/Kitchen-Order-Management.php">Kitchen Order Management</a>
+                <a class="nav-link" href="/sub-modules/logistic2/foodandbeverage/Stock-Management.php">Stock Management</a>
+                <a class="nav-link" href="/sub-modules/logistic2/foodandbeverage/Recipe-Management.php">Recipe Management</a>
+                <a class="nav-link" href="/sub-modules/logistic2/foodandbeverage/Food-Costing.php">Food Costing</a>
+                <a class="nav-link" href="/sub-modules/logistic2/foodandbeverage/Waste-Management.php">Waste Management</a>
+                <a class="nav-link" href="/sub-modules/logistic2/foodandbeverage/Reports-Analytics.php">Reports & Analytics</a>
+                <a class="nav-link" href="/sub-modules/logistic2/foodandbeverage/Settings.php">Settings</a>
             </nav>
         </div>
         <a class="nav-link" href="chat.php" style="font-family: 'Rokkitt', serif; color: black;">

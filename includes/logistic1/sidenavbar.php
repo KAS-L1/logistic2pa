@@ -46,11 +46,12 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                 </a>
                 <div class="collapse" id="collapseProjectManagement" aria-labelledby="headingProjectManagement" data-bs-parent="#collapseDashboard">
                     <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">
-                        <a class="nav-link" href="/sub-modules/logistic1/project-management/home.php">Home</a>
-                        <a class="nav-link" href="/sub-modules/logistic1/project-management/track-ass.php">Tracking Assignment</a>
-                        <a class="nav-link" href="/sub-modules/logistic1/project-management/Project-Management.php">Monitoring Task</a>
+                        <a class="nav-link" href="/sub-modules/logistic1/project-management/task-milestone.php">Task & Milestone Tracking</a>
+                        <a class="nav-link" href="/sub-modules/logistic1/project-management/budget-management.php">Budget Management</a>
                         <a class="nav-link" href="/sub-modules/logistic1/project-management/resource-alloc.php">Resource Allocation</a>
-                        <a class="nav-link" href="/sub-modules/logistic1/project-management/budget-track.php">Budget Tracking</a>
+                        <a class="nav-link" href="/sub-modules/logistic1/project-management/Progress-report.php">Progress Reports</a>
+                        <a class="nav-link" href="/sub-modules/logistic1/project-management/Gantt-chart.php">Gantt Chart</a>
+                        <a class="nav-link" href="/sub-modules/logistic1/project-management/Docu-storage.php">Document Storage</a>
                     </nav>
                 </div>
 
@@ -62,9 +63,12 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                 </a>
                 <div class="collapse" id="collapseWarehouse" aria-labelledby="headingWarehouse" data-bs-parent="#collapseDashboard">
                     <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">
-                        <a class="nav-link" href="/sub-modules/logistic1/warehouse/home.php">Home</a>
-                        <a class="nav-link" href="/sub-modules/logistic1/warehouse/stock-monitoring.php">Stock Monitoring</a>
-                        <a class="nav-link" href="/sub-modules/logistic1/warehouse/inventory-update">Inventory Update</a>
+                        <a class="nav-link" href="/sub-modules/logistic1/warehouse/Stock-tracking.php">Stock Tracking</a>
+                        <a class="nav-link" href="/sub-modules/logistic1/warehouse/Replenishment-req.php">Replenishment Request</a>
+                        <a class="nav-link" href="/sub-modules/logistic1/warehouse/Inventory-distribute.php">Inventory Distribution</a>
+                        <a class="nav-link" href="/sub-modules/logistic1/warehouse/Inventory-categorized.php">Inventory Categorization</a>
+                        <a class="nav-link" href="/sub-modules/logistic1/warehouse/Warehouse-audit.php">Warehouse Audits</a>
+                        <a class="nav-link" href="/sub-modules/logistic1/warehouse/Stock-report.php">Stock Reports</a>
                     </nav>
                 </div>
 
@@ -76,12 +80,12 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                 </a>
                 <div class="collapse" id="collapseVehicleReservation" aria-labelledby="headingVehicleReservation" data-bs-parent="#collapseDashboard">
                     <nav class="sb-sidenav-menu-nested nav fst-italic" style="font-family: 'Rokkitt', sans-serif; color: black;">
-                        <a class="nav-link" href="/sub-modules/logistic1/vehicle-reservation/home.php">Home</a>
                         <a class="nav-link" href="/sub-modules/logistic1/vehicle-reservation/vehicle-reservation.php">Vehicle Reservation</a>
                         <a class="nav-link" href="/sub-modules/logistic1/vehicle-reservation/view-vehicle">View Vehicle Reservation</a>
                         <a class="nav-link" href="/sub-modules/logistic1/vehicle-reservation/fleet-driver.php">Fleet Driver</a>
                         <a class="nav-link" href="/sub-modules/logistic1/vehicle-reservation/view-driver.php">View Driver Info</a>
                         <a class="nav-link" href="/sub-modules/logistic1/vehicle-reservation/delivery-confirm.php">Delivery Confirmation</a>
+                        <a class="nav-link" href="/sub-modules/logistic1/vehicle-reservation/View-delivery.php">View Delivery Confirmation</a>
                     </nav>
                 </div>
             </nav>
