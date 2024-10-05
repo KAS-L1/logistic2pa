@@ -34,13 +34,6 @@ if (session_status() === PHP_SESSION_NONE) {
                         <i class="fa-solid fa-truck-fast" style="margin-right: 8px; color: #3CB371;"></i> LOGISTIC 1
                     </a>
                 <?php endif; ?>
-
-                <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'logistic2_admin') : ?>
-                    <a class="nav-link" href="/sub-modules/logistic2/dashboard.php">
-                        <i class="fa-solid fa-truck-fast" style="margin-right: 8px; color: #3CB371;"></i> LOGISTIC 2
-                    </a>
-                <?php endif; ?>
-            </nav>
         </div>
 
 
@@ -72,14 +65,6 @@ if (session_status() === PHP_SESSION_NONE) {
 
         <!-- Apps Section -->
         <div class="sb-sidenav-menu-heading">Apps</div>
-        <a class="nav-link" href="chat.php" style="font-family: 'Rokkitt', sans-serif; color: black;">
-            <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-comment-dots"></i></div>
-            Chat
-        </a>
-        <a class="nav-link" href="mailbox.php" style="font-family: 'Rokkitt', sans-serif; color: black;">
-            <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-envelope"></i></div>
-            Mailbox
-        </a>
         <a class="nav-link" href="todolist.php" style="font-family: 'Rokkitt', sans-serif; color: black;">
             <div class="sb-nav-link-icon" style="color: #3CB371;"><i class="fas fa-list"></i></div>
             Todo List

@@ -174,7 +174,6 @@ function sendEmail($email, $username, $password) {
                                 <select class="form-control" id="role" name="role" required>
                                     <option value="admin">Admin</option>
                                     <option value="logistic1_admin">Logistic 1 Admin</option>
-                                    <option value="logistic2_admin">Logistic 2 Admin</option>
                                     <option value="user">User</option>
                                 </select>
                             </div>
