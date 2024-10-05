@@ -36,6 +36,16 @@ if (session_status() === PHP_SESSION_NONE) {
                 <?php endif; ?>
         </div>
 
+        <div class="collapse fst-italic" style="font-family: 'Rokkitt';" id="collapseDashboard" aria-labelledby="headingDashboard" data-bs-parent="#sidenavAccordion">
+            <nav class="sb-sidenav-menu-nested nav">
+                <!-- Dynamic Links for Logistic 1 and Logistic 2 -->
+                <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'logistic2_admin') : ?>
+                    <a class="nav-link" href="/sub-modules/logistic2/dashboard.php">
+                        <i class="fa-solid fa-truck-fast" style="margin-right: 8px; color: #3CB371;"></i> LOGISTIC 2
+                    </a>
+                <?php endif; ?>
+        </div>
+
 
         <!-- Admin Panel for Main Admin -->
         <?php if ($_SESSION['role'] == 'admin') : ?>
